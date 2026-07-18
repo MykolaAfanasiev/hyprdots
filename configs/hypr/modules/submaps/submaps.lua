@@ -2,7 +2,7 @@
 local vars = require("modules.vars.global")
 
 -- Submaps
-require("clean")
+require("modules.submaps.clean")
 
 -- Functions
 local function switch_submap(name)
@@ -64,6 +64,9 @@ hl.bind(vars.mainMod .. " + V", hl.dsp.layout("togglesplit"))
 -- Focus windows
 -- =============
 hl.bind(vars.mainMod .. " + L", hl.dsp.focus({ direction = "r" }))
+hl.bind(vars.mainMod .. " + H", hl.dsp.focus({ direction = "l" }))
+hl.bind(vars.mainMod .. " + J", hl.dsp.focus({ direction = "d" }))
+hl.bind(vars.mainMod .. " + K", hl.dsp.focus({ direction = "u" }))
 
 -- Focus next monitor / screen
 hl.bind(vars.mainMod .. " + TAB", hl.dsp.focus({ monitor = "+1" }))
