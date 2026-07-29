@@ -16,14 +16,13 @@ end
 -- Return to standard/global mode from any submap
 -- =========================================================
 
-hl.bind(vars.mainMod .. " + CTRL + SHIFT + ALT + RETURN", function()
+hl.bind(vars.mainMod .. " + CTRL + SHIFT + ALT + escape", function()
     hl.dispatch(hl.dsp.exec_cmd([[notify-send "Submap" "Changed to reset"]]))
     hl.dispatch(hl.dsp.submap("reset"))
 end, { 
     submap_universal = true,
     description = "Return to standard/global mode",
   })
-
 
 -- ==========
 -- Other Maps
