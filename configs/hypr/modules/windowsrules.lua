@@ -52,3 +52,8 @@ hl.workspace_rule( {
   workspace = "special:terminal",
   on_created_empty = "kitty",
 })
+
+hl.workspace_rule( {
+  workspace = "special:notes",
+  on_created_empty = "obsidian",
+})

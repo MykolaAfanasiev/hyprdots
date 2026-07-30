@@ -166,6 +166,10 @@ local special_workspaces = {
     name = "terminal",
     key = "T",
   },
+  {
+    name = "notes",
+    key = "N"
+  }
 }
 
 for _, special in ipairs(special_workspaces) do
