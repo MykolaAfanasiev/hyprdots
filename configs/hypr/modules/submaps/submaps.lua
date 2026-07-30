@@ -42,7 +42,7 @@ hl.bind("CTRL + X", hl.dsp.window.close())
 hl.bind(vars.mainMod .. " + SHIFT + V", hl.dsp.exec_cmd(vars.clipboard))
 
 -- Notifications
-hl.bind(vars.mainMod .. " + N", hl.dsp.exec_cmd("swaync-client -t"))
+hl.bind(" ALT + N", hl.dsp.exec_cmd("swaync-client -t"))
 
 -- ==============
 -- Window actions
