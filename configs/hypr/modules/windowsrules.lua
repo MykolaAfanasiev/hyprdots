@@ -48,12 +48,19 @@ hl.window_rule({
 -- Workspace rules
 -- ===============
 
-hl.workspace_rule( {
+hl.workspace_rule({
   workspace = "special:terminal",
   on_created_empty = "kitty",
 })
 
-hl.workspace_rule( {
+hl.workspace_rule({
   workspace = "special:notes",
   on_created_empty = "obsidian",
 })
+
+hl.workspace_rule({
+  workspace = "special:monitor",
+  on_created_empty = "kitty -e btop",
+})
+
+
