@@ -43,24 +43,3 @@ hl.window_rule({
   move  = "20 monitor_h-120",
   float = true,
 })
-
--- ===============
--- Workspace rules
--- ===============
-
-hl.workspace_rule({
-  workspace = "special:terminal",
-  on_created_empty = "kitty",
-})
-
-hl.workspace_rule({
-  workspace = "special:notes",
-  on_created_empty = "obsidian",
-})
-
-hl.workspace_rule({
-  workspace = "special:monitor",
-  on_created_empty = "kitty -e btop",
-})
-
-
