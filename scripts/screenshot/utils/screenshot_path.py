@@ -3,6 +3,8 @@ from pathlib import Path
 from datetime import datetime
 
 # Screenshots path
+
+
 def make_screenshot_path() -> Path:
     # Directory
     save_dir = Path.home() / "Screenshots"

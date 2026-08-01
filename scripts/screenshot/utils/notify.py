@@ -2,6 +2,8 @@
 from .run_command import run_command
 
 # Notification
+
+
 def notify(title: str, message: str, icon: str | None = None) -> None:
     # CMD
     cmd = ["notify-send"]
