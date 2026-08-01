@@ -121,3 +121,20 @@ class ScreenshotTools:
             screenshot_path.unlink(missing_ok=True)
 
         return 0
+
+    def copy_to_clipboard(
+        self,
+        screenshot_path: Path,
+    ) -> int:
+        with screenshot_path.open("rb") as image_file:
+            result = run_command(
+                [
+                    "wl-copy",
+                    "--type",
+                    "image/png",
+                ],
+                stdin=image_file,
+                text=False,
+            )
+
+        return result.returncode
