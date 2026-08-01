@@ -103,7 +103,7 @@ class ScreenshotTools:
                 screenshot_path,
             )
 
-        if not capture_result != 0:
+        if capture_result != 0:
             return 2
 
         if options.edit:
@@ -117,7 +117,7 @@ class ScreenshotTools:
         if options.copy_to_clipboard:
             self.copy_to_clipboard(screenshot_path)
 
-        if not options.save:
+        if options.save:
             screenshot_path.unlink(missing_ok=True)
 
         return 0
