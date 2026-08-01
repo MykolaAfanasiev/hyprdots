@@ -1,55 +1,123 @@
 #!/usr/bin/env python
-
+from pathlib import Path
 from .notify import notify
 from .run_command import run_command
 from .screenshot_path import make_screenshot_path
+from cli.option_class import ScreenshotOptions
 
 
 class ScreenshotTools:
     def __init__(self) -> None:
         self.title = "Screenshot"
         self.save_path = make_screenshot_path()
-    
+
+    def resolve_output_path(
+        self,
+        options: ScreenshotOptions,
+    ) -> Path:
+        """Use the custom output path or generate a default path."""
+
+        if options.output is not None:
+            output_path = options.output.expanduser()
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            return output_path
+
+        return make_screenshot_path()
+
     # Slurp
     def select_area(self) -> str:
         result = run_command(["slurp"], capture_output=True)
         return result.stdout.strip()
-    
+
     # Grim
-    def capture_area(self, selected_area: str) -> int:
-        result = run_command(["grim", "-g", selected_area, str(self.save_path)])
+    def capture_area(
+        self,
+        selected_area: str,
+        screenshot_path: Path,
+    ) -> int:
+
+        result = run_command(
+            [
+                "grim",
+                "-g",
+                selected_area,
+                str(screenshot_path),
+            ]
+        )
+
         return result.returncode
-    
+
+    def capture_fullscreen(
+        self,
+        screenshot_path: Path,
+    ) -> int:
+        result = run_command(
+            [
+                "grim",
+                str(screenshot_path),
+            ]
+        )
+
+        return result.returncode
+
     # Edit
-    def edit_screenshot(self) -> int:
-        result = run_command([
-            "satty",
-            "--filename", str(self.save_path),
-            "--output-filename", str(self.save_path),
-            "--copy-command", "wl-copy",
-        ])
+
+    def edit_with_satty(
+        self,
+        screenshot_path: Path,
+    ) -> int:
+        result = run_command(
+            [
+                "satty",
+                "--filename",
+                str(screenshot_path),
+                "--output-filename",
+                str(screenshot_path),
+                "--copy-command",
+                "wl-copy",
+            ]
+        )
 
         return result.returncode
-
     # Run
-    def run(self) -> int:
-        selected_area = self.select_area()
 
-        if not selected_area:
-            notify(self.title, "Canceled: no area selected.")
-            return 1
+    def run(self, options: ScreenshotOptions) -> int:
+        screenshot_path = self.resolve_output_path(options)
 
-        capture_code = self.capture_area(selected_area)
+        if options.area:
+            geometry = self.select_area()
 
-        if capture_code != 0:
-            notify(self.title, "Error capturing screenshot.")
+            if not geometry:
+                notify(
+                    self.title,
+                    "Area selection cancelled.",
+                )
+                return 1
+
+            capture_result = self.capture_area(
+                geometry,
+                screenshot_path,
+            )
+        else:
+            capture_result = self.capture_fullscreen(
+                screenshot_path,
+            )
+
+        if not capture_result != 0:
             return 2
 
-        edit_code = self.edit_screenshot()
+        if options.edit:
+            edit_result = self.edit_with_satty(
+                screenshot_path,
+            )
 
-        if edit_code == 0:
-            notify(self.title, f"Edited and saved: {self.save_path}", str(self.save_path))
-            return 0
+            if not edit_result:
+                return 3
 
-        notify(self.title, f"Editing canceled. Saved: {self.save_path}", str(self.save_path))
-        return 3
+        if options.copy_to_clipboard:
+            self.copy_to_clipboard(screenshot_path)
+
+        if not options.save:
+            screenshot_path.unlink(missing_ok=True)
+
+        return 0
