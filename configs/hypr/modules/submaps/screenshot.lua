@@ -2,8 +2,13 @@
 -- Screenshot commands
 -- ==========================================
 
+local home = assert(
+    os.getenv("HOME"),
+    "HOME environment variable is not set"
+)
+
 local screenshot_cmd =
-    "screenshot-tool"
+    home .. "/.local/bin/screenshot-tool"
 
 
 -- Runs the screenshot command and returns to the global keymap.
