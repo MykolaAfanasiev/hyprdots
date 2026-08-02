@@ -3,6 +3,7 @@ local vars = require("modules.vars.global")
 
 -- Submaps
 require("modules.submaps.clean")
+require("modules.submaps.screenshot")
 
 -- Functions
 local function switch_submap(name)
