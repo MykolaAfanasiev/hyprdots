@@ -104,6 +104,10 @@ class ScreenshotTools:
             )
 
         if capture_result != 0:
+            notify(
+                self.title,
+                "Failed to capture the screenshot.",
+            )
             return 2
 
         if options.edit:
@@ -112,12 +116,35 @@ class ScreenshotTools:
             )
 
             if not edit_result:
+                notify(
+                    self.title,
+                    "Screenshot editing was cancelled.",
+                )
                 return 3
 
         if options.copy_to_clipboard:
-            self.copy_to_clipboard(screenshot_path)
+            copy_result = self.copy_to_clipboard(
+                screenshot_path,
+            )
+
+            if copy_result != 0:
+                notify(
+                    self.title,
+                    "Failed to copy the screenshot.",
+                )
+                return 4
 
         if options.save:
+            notify(
+                self.title,
+                f"Screenshot saved to:\n{screenshot_path}",
+                icon=str(screenshot_path),
+            )
+        else:
+            notify(
+                self.title,
+                "Screenshot copied to the clipboard.",
+            )
             screenshot_path.unlink(missing_ok=True)
 
         return 0
