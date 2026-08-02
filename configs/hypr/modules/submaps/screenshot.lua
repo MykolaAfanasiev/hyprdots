@@ -3,7 +3,7 @@
 -- ==========================================
 
 local screenshot_cmd =
-    "python /home/arch_linux/Screenshots/screenshot_script/main.py"
+    "python /home/arch_linux/.hyprdots/scripts/screenshot/main.py"
 
 
 -- Runs the screenshot command and returns to the global keymap.
