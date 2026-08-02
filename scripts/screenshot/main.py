@@ -5,6 +5,7 @@ import click
 from utils.screenshot_tools import ScreenshotTools
 from cli.cli_options import apply_options, common_options
 from cli.option_class import ScreenshotOptions
+from utils.dependencies import check_dependencies
 
 
 @click.command()
@@ -28,6 +29,9 @@ def main(
         save=save,
         output=output,
     )
+
+    check_dependencies(options)
+
     screenshot = ScreenshotTools()
     exit_code = screenshot.run(options)
     raise click.exceptions.Exit(exit_code)
