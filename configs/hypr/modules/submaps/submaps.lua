@@ -37,7 +37,7 @@ hl.bind(vars.mainMod .. " + CTRL + SHIFT + C", switch_submap("clean"))
 hl.bind(vars.mainMod .. " + RETURN", hl.dsp.exec_cmd(vars.terminal))
 hl.bind(vars.mainMod .. " + SPACE", hl.dsp.exec_cmd(vars.wofi))
 
-hl.bind("CTRL + X", hl.dsp.window.close())
+hl.bind("CTRL + SHIFT + X", hl.dsp.window.close())
 
 -- Optional: if you use clipboard history very often, keep it here
 hl.bind(vars.mainMod .. " + SHIFT + V", hl.dsp.exec_cmd(vars.clipboard))
