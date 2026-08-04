@@ -8,7 +8,7 @@
 [![Wayland](https://img.shields.io/badge/Wayland-supported-black?logo=linux&logoColor=white)](https://wayland.freedesktop.org/)
 [![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)](#планы)
 
-[English version](README.md) · [Вернуться к hyprdots](../../)
+[English version](README_ScreenshotScript.md) · [Вернуться к hyprdots](../../)
 
 </div>
 

@@ -8,7 +8,7 @@ A small command-line screenshot utility for **Wayland**, built for a keyboard-dr
 [![Wayland](https://img.shields.io/badge/Wayland-supported-black?logo=linux&logoColor=white)](https://wayland.freedesktop.org/)
 [![Status](https://img.shields.io/badge/status-work%20in%20progress-orange)](#roadmap)
 
-[Русская версия](README.ru.md) · [Back to hyprdots](../../)
+[Русская версия](README_ScreenshotScript.ru.md) · [Back to hyprdots](../../)
 
 </div>
 
