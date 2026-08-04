@@ -115,7 +115,7 @@ class ScreenshotTools:
                 screenshot_path,
             )
 
-            if not edit_result:
+            if edit_result:
                 notify(
                     self.title,
                     "Screenshot editing was cancelled.",
