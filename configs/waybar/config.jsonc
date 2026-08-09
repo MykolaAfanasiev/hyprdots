@@ -1,17 +1,29 @@
 {
-    "layer": "top",
-    "position": "top",
-
-    "modules-left": [],
-    "modules-center": [],
-    "modules-right": [
-        "clock"
+  "layer": "top",
+  "position": "top",
+  "modules-left": [],
+  "modules-center": [],
+  "modules-right": [
+    "wireplumber",
+    "clock"
+  ],
+  "clock": {
+    "interval": 1,
+    "format": "{:%H:%M}",
+    "format-alt": "{:%A, %B%e, %Y %H:%M:%S}",
+    "tooltip": false
+  },
+  "wireplumber": {
+    "format": "{icon} {volume}%",
+    "format-muted": "󰖁",
+    "format-icons": [
+      "",
+      "",
+      ""
     ],
-
-    "clock": {
-        "interval": 1,
-        "format": "{:%H:%M}",
-        "format-alt": "{:%A, %B%e, %Y %H:%M:%S}",
-        "tooltip": false
-    }
+    "scroll-step": 5,
+    "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
+    "tooltip": true,
+    "tooltip-format": "{node_name}"
+  }
 }
