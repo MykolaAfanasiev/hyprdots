@@ -36,3 +36,53 @@ window#waybar {
 
     border-radius: 8px;
 }
+
+#workspaces {
+    padding: 0 4px;
+}
+
+#workspaces button {
+    min-width: 24px;
+
+    padding: 0 7px;
+
+    background: transparent;
+    color: @muted;
+
+    border-radius: 6px;
+
+    box-shadow: none;
+    text-shadow: none;
+}
+
+#workspaces button.active {
+    background: @accent;
+    color: @accent_fg;
+}
+
+#workspaces button.special {
+    color: @blue;
+}
+
+#workspaces button.special.active {
+    background: @blue;
+    color: @crust;
+}
+
+#tray,
+#language,
+#wireplumber,
+#custom-clock {
+    color: @module_fg;
+}
+
+#wireplumber.muted {
+    color: @muted;
+}
+
+#submap {
+    background: @accent;
+    color: @accent_fg;
+
+    font-weight: bold;
+}
