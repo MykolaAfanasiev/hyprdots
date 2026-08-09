@@ -1,15 +1,11 @@
-local home = assert(
-    os.getenv("HOME"),
-    "HOME environment variable is not set"
-)
-
+-- Variables
 local vars = require("modules.vars.global")
 local submap = require("modules.submaps.utils")
 
+local current_dir = submap.current_dir()
+
 local clock_cmd =
-    home .. "/.hyprdots/configs/waybar/scripts/clock.sh"
-
-
+    current_dir .. "../../../waybar/scripts/clock.sh"
 -- ==========================================
 -- Open config submap
 -- ==========================================
