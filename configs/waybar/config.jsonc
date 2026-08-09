@@ -38,6 +38,16 @@
   "hyprland/workspaces": {
     "format": "{id}",
     "sort-by": "number",
+    "show-special": true,
+    "special-visible-only": true,
     "tooltip": false,
+  },
+  "format-icons": {
+    "special:terminal": "",
+    "special:notes": "󰎚",
+    "special:monitor": "󰍛",
+    "active": "",
+    "special": "󱥸",
+    "default": "",
   },
 }
