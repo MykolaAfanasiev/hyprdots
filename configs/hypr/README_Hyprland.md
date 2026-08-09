@@ -42,6 +42,7 @@ The setup is designed around:
 - Clipboard history through `cliphist`
 - Media, volume, and brightness controls
 - Touchpad workspace gesture
+- Keyboard-driven configuration submap
 
 ## Directory structure
 
@@ -60,8 +61,10 @@ hypr/
     ├── windowsrules.lua
     ├── submaps/
     │   ├── clean.lua
+    │   ├── config-submap.lua
     │   ├── screenshot.lua
-    │   └── submaps.lua
+    │   ├── submaps.lua
+    │   └── utils.lua
     └── vars/
         ├── global.lua
         └── variables.lua
@@ -84,6 +87,8 @@ hypr/
 | `submaps/clean.lua` | Minimal submap with a reset binding |
 | `vars/global.lua` | Main modifier and application commands |
 | `vars/variables.lua` | Wayland, cursor, toolkit, and XDG environment variables |
+| `submaps/config-submap.lua` | Configuration submap for controlling Waybar and other configurable components |
+| `submaps/utils.lua` | Shared helper functions for switching between submaps |
 
 ## Requirements
 
@@ -327,6 +332,51 @@ Inside a mode submenu:
 
 - `Esc` returns to capture-type selection.
 - `Shift + Esc` closes all screenshot submaps.
+
+## Config submap
+
+The `config` submap provides a keyboard-driven interface for controlling
+configurable components without adding more global keybindings.
+
+Open the config submap:
+
+```text
+SUPER + Ctrl + Shift + N
+```
+
+Available sections:
+
+| Key | Action |
+|---|---|
+| `W` | Open the Waybar configuration submap |
+| `Esc` | Return to the global keymap |
+
+### Waybar configuration
+
+Inside the Waybar configuration submap:
+
+| Key | Action |
+|---|---|
+| `1` | Toggle the Waybar clock between compact and expanded modes |
+| `Esc` | Return to the main `config` submap |
+| `Shift + Esc` | Return directly to the global keymap |
+
+Current navigation flow:
+
+```text
+SUPER + Ctrl + Shift + N
+        ↓
+      config
+        ↓ W
+  config_waybar
+        ↓ 1
+   toggle clock
+        ↓
+      reset
+```
+
+The submap structure is designed to be extended later with additional
+Waybar and system configuration actions.
 
 ## Submap safety bindings
 
