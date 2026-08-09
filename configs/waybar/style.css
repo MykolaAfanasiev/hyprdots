@@ -1,0 +1,38 @@
+@import "themes/current.css";
+
+
+/* ==========================================
+ * Global
+ * ========================================== */
+
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+
+    min-height: 0;
+    border: none;
+}
+
+window#waybar {
+    background: @bar_bg;
+    color: @module_fg;
+}
+
+
+/* ==========================================
+ * Modules
+ * ========================================== */
+
+#workspaces,
+#submap,
+#tray,
+#language,
+#wireplumber,
+#custom-clock {
+    background: @module_bg;
+
+    margin: 4px 3px;
+    padding: 0 10px;
+
+    border-radius: 8px;
+}
