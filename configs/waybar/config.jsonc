@@ -13,12 +13,11 @@
     "tray",
     "hyprland/language",
     "wireplumber",
-    "clock"
+    "custom/clock",
   ],
-  "clock": {
-    "interval": 1,
-    "format": "{:%H:%M}",
-    "format-alt": "{:%A, %B%e, %Y %H:%M:%S}",
+  "custom/clock": {
+    "exec": "$WAYBAR_CONFIG_DIR/scripts/clock.sh watch",
+    "format": "{}",
     "tooltip": false,
   },
   "wireplumber": {
