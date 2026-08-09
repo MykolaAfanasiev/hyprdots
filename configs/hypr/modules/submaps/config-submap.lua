@@ -3,6 +3,8 @@ local home = assert(
     "HOME environment variable is not set"
 )
 
+local submap = require("modules.submaps.utils")
+
 local clock_cmd =
     home .. "/.hyprdots/configs/waybar/scripts/clock.sh"
 
@@ -12,11 +14,8 @@ local clock_cmd =
 -- ==========================================
 
 hl.bind(
-    "SUPER + CTRL + SHIFT + ALT + C",
-    hl.dsp.submap("config"),
-    {
-        description = "Open configuration menu",
-    }
+    "SUPER + CTRL + SHIFT + ALT + N",
+    submap.switch("config")
 )
 
 

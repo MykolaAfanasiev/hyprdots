@@ -1,5 +1,11 @@
 -- Variables
 local vars = require("modules.vars.global")
+local submap = require("modules.submaps.utils")
+-- ==========================================
+-- Open clean submap
+-- ==========================================
+
+hl.bind(vars.mainMod .. " + CTRL + SHIFT + C", submap.switch_submap("clean"))
 
 -- ============
 -- Clean Submap

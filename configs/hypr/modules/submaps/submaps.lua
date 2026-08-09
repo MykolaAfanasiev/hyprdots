@@ -4,14 +4,7 @@ local vars = require("modules.vars.global")
 -- Submaps
 require("modules.submaps.clean")
 require("modules.submaps.screenshot")
-
--- Functions
-local function switch_submap(name)
-  return function()
-    hl.dispatch(hl.dsp.exec_cmd('notify-send "Submap" "Changed to ' .. name .. '"'))
-    hl.dispatch(hl.dsp.submap(name))
-  end
-end
+require("modules.submaps.config-submap")
 
 -- =========================================================
 -- Return to standard/global mode from any submap
@@ -24,11 +17,6 @@ end, {
   submap_universal = true,
   description = "Return to standard/global mode",
 })
-
--- ==========
--- Other Maps
--- ==========
-hl.bind(vars.mainMod .. " + CTRL + SHIFT + C", switch_submap("clean"))
 
 -- =============
 -- Basic actions

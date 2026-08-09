@@ -7,6 +7,8 @@ local home = assert(
     "HOME environment variable is not set"
 )
 
+local submap = require("modules.submaps.utils")
+
 local screenshot_cmd =
     home .. "/.local/bin/screenshot-tool"
 
@@ -45,10 +47,7 @@ hl.bind(
 
 hl.bind(
     "SUPER + SHIFT + S",
-    hl.dsp.submap("screenshot"),
-    {
-        description = "Open screenshot menu",
-    }
+    submap.switch("screenshot")
 )
 
 
