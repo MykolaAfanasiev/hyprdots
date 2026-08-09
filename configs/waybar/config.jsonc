@@ -9,7 +9,7 @@
     "hyprland/window"
   ],
   "modules-right": [
-    "group/system",
+    // "group/system",
     "tray",
     "hyprland/language",
     "wireplumber",
