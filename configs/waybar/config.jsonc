@@ -5,6 +5,7 @@
     "hyprland/workspaces"
   ],
   "modules-center": [
+    "hyprland/submap",
     "hyprland/window"
   ],
   "modules-right": [
@@ -71,6 +72,10 @@
   "hyprland/window": {
     "format": "{}",
     "max-length": 50,
+    "tooltip": false,
+  },
+  "hyprland/submap": {
+    "format": "󰌌 {}",
     "tooltip": false,
   },
 }
