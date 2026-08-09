@@ -11,7 +11,6 @@ require("modules.submaps.config-submap")
 -- =========================================================
 
 hl.bind(vars.mainMod .. " + CTRL + SHIFT + ALT + escape", function()
-  hl.dispatch(hl.dsp.exec_cmd([[notify-send "Submap" "Changed to reset"]]))
   hl.dispatch(hl.dsp.submap("reset"))
 end, {
   submap_universal = true,

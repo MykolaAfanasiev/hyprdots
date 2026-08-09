@@ -15,7 +15,7 @@ local clock_cmd =
 -- ==========================================
 
 hl.bind(
-    vars.mainMod .. " + CTRL + SHIFT + ALT + N",
+    vars.mainMod .. " + CTRL + SHIFT + N",
     submap.switch("config")
 )
 
@@ -26,16 +26,14 @@ hl.bind(
 
 hl.define_submap("config", function()
 
-    -- Waybar settings
     hl.bind(
         "W",
-        hl.dsp.submap("config_waybar")
+        submap.switch("config_waybar")
     )
 
-    -- Exit configuration mode
     hl.bind(
         "escape",
-        hl.dsp.submap("reset")
+        submap.switch("reset")
     )
 end)
 
@@ -46,7 +44,6 @@ end)
 
 hl.define_submap("config_waybar", function()
 
-    -- Toggle compact / detailed clock
     hl.bind(
         "1",
         function()
@@ -60,15 +57,13 @@ hl.define_submap("config_waybar", function()
         end
     )
 
-    -- Return to main configuration menu
     hl.bind(
         "escape",
-        hl.dsp.submap("config")
+        submap.switch("config")
     )
 
-    -- Completely exit configuration mode
     hl.bind(
         "SHIFT + escape",
-        hl.dsp.submap("reset")
+        submap.switch("reset")
     )
 end)
