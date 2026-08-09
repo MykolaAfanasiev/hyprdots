@@ -4,6 +4,7 @@
   "modules-left": [],
   "modules-center": [],
   "modules-right": [
+    "hyprland/language",
     "wireplumber",
     "clock"
   ],
@@ -11,7 +12,7 @@
     "interval": 1,
     "format": "{:%H:%M}",
     "format-alt": "{:%A, %B%e, %Y %H:%M:%S}",
-    "tooltip": false
+    "tooltip": false,
   },
   "wireplumber": {
     "format": "{icon} {volume}%",
@@ -24,6 +25,12 @@
     "scroll-step": 5,
     "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle",
     "tooltip": true,
-    "tooltip-format": "{node_name}"
-  }
+    "tooltip-format": "{node_name}",
+  },
+  "hyprland/language": {
+    "format": "{}",
+    "format-en": "EN",
+    "format-ru": "RU",
+    "tooltip": false,
+  },
 }
