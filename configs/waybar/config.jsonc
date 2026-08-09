@@ -52,9 +52,14 @@
       "8": "8",
       "9": "9",
       "10": "10",
+      "terminal": "",
+      "monitor": "󰍛",
+      "notes": "󰎚",
       "special:terminal": "",
-      "special:notes": "󰎚",
       "special:monitor": "󰍛",
+      "special:notes": "󰎚",
+      "special": "󱥸",
+      "default": "",
+    },
   },
-},
-} 
+}
