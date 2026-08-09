@@ -1,0 +1,33 @@
+* {
+    font-family: "JetBrainsMono Nerd Font";
+    font-size: 13px;
+
+    min-height: 0;
+    border: none;
+}
+
+#workspaces,
+#submap,
+#tray,
+#language,
+#wireplumber,
+#custom-clock {
+    background: @module_bg;
+
+    margin: 0.3em 0.2em;
+    padding: 0 0.75em;
+
+    border-radius: 0.6em;
+}
+
+#workspaces {
+    padding: 0 0.3em;
+}
+
+#workspaces button {
+    min-width: 1.8em;
+
+    padding: 0 0.5em;
+
+    border-radius: 0.45em;
+}
