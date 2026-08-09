@@ -9,7 +9,6 @@
     "hyprland/window"
   ],
   "modules-right": [
-    // "group/system",
     "tray",
     "hyprland/language",
     "wireplumber",
@@ -77,36 +76,5 @@
   "hyprland/submap": {
     "format": "󰌌 {}",
     "tooltip": false,
-  },
-  "group/system": {
-    "orientation": "inherit",
-    "drawer": {
-      "transition-duration": 300,
-      "transition-left-to-right": false,
-    },
-    "modules": [
-      "custom/system",
-      "network",
-      "bluetooth",
-      "privacy"
-    ],
-  },
-  "custom/system": {
-    "format": "󰍜",
-    "tooltip": false,
-  },
-  "network": {
-    "format-wifi": "",
-    "format-ethernet": "󰈀",
-    "format-disconnected": "󰖪",
-    "tooltip": true,
-  },
-  "bluetooth": {
-    "format": "",
-    "format-disabled": "",
-    "tooltip": true,
-  },
-  "privacy": {
-    "icon-spacing": 4,
   },
 }
