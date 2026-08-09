@@ -24,7 +24,7 @@ hl.bind(
 -- Main config submap
 -- ==========================================
 
-hl.define_submap("config_waybar", function()
+hl.define_submap("config", function()
 
     -- Waybar settings
     hl.bind(
