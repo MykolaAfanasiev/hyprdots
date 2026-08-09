@@ -5,7 +5,7 @@ local submap = require("modules.submaps.utils")
 -- Open clean submap
 -- ==========================================
 
-hl.bind(vars.mainMod .. " + CTRL + SHIFT + C", submap.switch_submap("clean"))
+hl.bind(vars.mainMod .. " + CTRL + SHIFT + C", submap.switch("clean"))
 
 -- ============
 -- Clean Submap
