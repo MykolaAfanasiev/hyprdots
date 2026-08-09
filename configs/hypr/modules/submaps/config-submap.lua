@@ -3,6 +3,7 @@ local home = assert(
     "HOME environment variable is not set"
 )
 
+local vars = require("modules.vars.global")
 local submap = require("modules.submaps.utils")
 
 local clock_cmd =
@@ -14,7 +15,7 @@ local clock_cmd =
 -- ==========================================
 
 hl.bind(
-    "SUPER + CTRL + SHIFT + ALT + N",
+    vars.mainMod .. " + CTRL + SHIFT + ALT + N",
     submap.switch("config")
 )
 
