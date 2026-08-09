@@ -1,7 +1,9 @@
 {
   "layer": "top",
   "position": "top",
-  "modules-left": [],
+  "modules-left": [
+    "hyprland/workspaces"
+  ],
   "modules-center": [],
   "modules-right": [
     "hyprland/language",
@@ -31,6 +33,11 @@
     "format": "{}",
     "format-en": "EN",
     "format-ru": "RU",
+    "tooltip": false,
+  },
+  "hyprland/workspaces": {
+    "format": "{id}",
+    "sort-by": "number",
     "tooltip": false,
   },
 }
