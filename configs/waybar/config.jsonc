@@ -5,8 +5,7 @@
     "hyprland/workspaces"
   ],
   "modules-center": [
-    "hyprland/submap",
-    "hyprland/window"
+    "hyprland/submap"
   ],
   "modules-right": [
     "tray",
@@ -67,11 +66,6 @@
   "tray": {
     "icon-size": 16,
     "spacing": 8,
-  },
-  "hyprland/window": {
-    "format": "{}",
-    "max-length": 50,
-    "tooltip": false,
   },
   "hyprland/submap": {
     "format": "󰌌 {}",
