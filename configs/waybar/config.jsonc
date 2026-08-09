@@ -4,7 +4,9 @@
   "modules-left": [
     "hyprland/workspaces"
   ],
-  "modules-center": [],
+  "modules-center": [
+    "hyprland/window"
+  ],
   "modules-right": [
     "tray",
     "hyprland/language",
@@ -65,5 +67,10 @@
   "tray": {
     "icon-size": 16,
     "spacing": 8,
+  },
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 50,
+    "tooltip": false,
   },
 }
