@@ -4,15 +4,6 @@
 /* ==========================================
  * Global
  * ========================================== */
-
-* {
-    font-family: "JetBrainsMono Nerd Font";
-    font-size: 13px;
-
-    min-height: 0;
-    border: none;
-}
-
 window#waybar {
     background: @bar_bg;
     color: @module_fg;
