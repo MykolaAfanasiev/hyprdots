@@ -29,18 +29,22 @@ window#waybar {
 }
 
 #workspaces {
-    padding: 0 4px;
+    padding: 0.2em;
+    background: @module_bg;
+    border-radius: 999px;
 }
 
 #workspaces button {
-    min-width: 24px;
+    min-width: 1.8em;
+    min-height: 1.8em;
 
-    padding: 0 7px;
+    padding: 0;
+    margin: 0 0.1em;
 
     background: transparent;
     color: @muted;
 
-    border-radius: 6px;
+    border-radius: 999px;
 
     box-shadow: none;
     text-shadow: none;
