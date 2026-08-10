@@ -22,7 +22,7 @@ end, {
 -- =============
 
 hl.bind(vars.mainMod .. " + RETURN", hl.dsp.exec_cmd(vars.terminal))
-hl.bind(vars.mainMod .. " + SPACE", hl.dsp.exec_cmd(vars.wofi))
+hl.bind(vars.mainMod .. " + SPACE", hl.dsp.exec_cmd("rofi -show drun"))
 
 hl.bind("CTRL + SHIFT + X", hl.dsp.window.close())
 
