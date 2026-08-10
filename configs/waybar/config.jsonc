@@ -19,7 +19,7 @@
     "tooltip": false,
   },
   "wireplumber": {
-    "format": "{icon} {volume}%",
+    "format": "<span size='large'>{icon}</span> {volume}%",
     "format-muted": "󰖁",
     "format-icons": [
       "",
