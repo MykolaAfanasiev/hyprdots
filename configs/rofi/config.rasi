@@ -1,15 +1,14 @@
 configuration {
-    modes: [drun];
+    modi: "drun";
 
     show-icons: true;
+    display-drun: "Search";
     drun-display-format: "{name}";
-
-    font: "JetBrainsMono Nerd Font 13";
 
     matching: "fuzzy";
     sorting-method: "fzf";
 
-    display-drun: "Apps";
+    font: "JetBrainsMono Nerd Font 13";
 }
 
-@import "theme.rasi"
+@theme "theme.rasi"
