@@ -18,9 +18,7 @@ configuration {
     sorting-method: "fzf";
 
     drun-display-format: "{name}";
-    window-format: "{c} · {t:20}";    show-icons: true;
-    matching: "fuzzy";
-    sorting-method: "fzf";
+    window-format: "{c} · {t:20}";
 
     font: "JetBrainsMono Nerd Font 13";
 }

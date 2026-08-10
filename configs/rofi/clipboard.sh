@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-ROFI_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+ROFI_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
 selection="$(
     cliphist list |
@@ -8,7 +8,7 @@ selection="$(
             -dmenu \
             -display-columns 2 \
             -config "$ROFI_DIR/config.rasi" \
-            -theme "$ROFI_DIR/rofi/theme.rasi"
+            -theme "$ROFI_DIR/theme.rasi"
 )"
 
 [[ -z "$selection" ]] && exit 0
