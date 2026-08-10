@@ -1,6 +1,6 @@
 local utils = require("modules.submaps.utils")
 
-local module_dir = utils.current_dir()
+local module_dir = utils.real_dir()
 local waybar_launch = module_dir .. "../../waybar/launch.sh"
 
 hl.on("hyprland.start", function ()
