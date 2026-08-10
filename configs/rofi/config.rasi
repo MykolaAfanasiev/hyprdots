@@ -1,8 +1,24 @@
 configuration {
     modes: [ combi ];
-    combi-modes: [ window, drun, run ];
+    combi-modes: [ window, drun ];
+
+    combi-hide-mode-prefix: false;
+    combi-display-format: "{mode} {text}";
+
+    window {
+        display-name: "W";
+    }
+
+    drun {
+        display-name: "D";
+    }
 
     show-icons: true;
+    matching: "fuzzy";
+    sorting-method: "fzf";
+
+    drun-display-format: "{name}";
+    window-format: "{c} · {t:20}";    show-icons: true;
     matching: "fuzzy";
     sorting-method: "fzf";
 
