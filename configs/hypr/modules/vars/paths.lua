@@ -14,4 +14,9 @@ M.waybar = {
     clock = project_root .. "configs/waybar/scripts/clock.sh",
 }
 
+M.rofi = {
+  root = project_root .. "configs/rofi/",
+  launch = project_root .. "configs/rofi/launch.sh"
+}
+
 return M
