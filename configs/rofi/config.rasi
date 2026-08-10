@@ -11,3 +11,5 @@ configuration {
 
     display-drun: "Apps";
 }
+
+@import "catppuccin-mocha.rasi"
