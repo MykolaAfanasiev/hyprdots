@@ -1,0 +1,85 @@
+@import "themes/current.rasi"
+
+* {
+    background:     @base;
+    background-alt: @surface0;
+
+    foreground:     @text;
+    muted:          @overlay1;
+
+    accent:         @mauve;
+    accent-fg:      @crust;
+
+    border-color:   @surface1;
+}
+
+window {
+    width: 35%;
+
+    padding: 12px;
+
+    background-color: @background;
+
+    border: 1px;
+    border-color: @border-color;
+    border-radius: 12px;
+}
+
+mainbox {
+    spacing: 12px;
+    background-color: transparent;
+}
+
+inputbar {
+    padding: 10px 12px;
+    spacing: 8px;
+
+    background-color: @background-alt;
+    text-color: @foreground;
+
+    border-radius: 8px;
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder: "Search applications...";
+    placeholder-color: @muted;
+
+    text-color: @foreground;
+}
+
+listview {
+    lines: 8;
+    columns: 1;
+
+    spacing: 4px;
+
+    background-color: transparent;
+}
+
+element {
+    padding: 8px 10px;
+    spacing: 10px;
+
+    background-color: transparent;
+    text-color: @foreground;
+
+    border-radius: 8px;
+}
+
+element selected {
+    background-color: @accent;
+    text-color: @accent-fg;
+}
+
+element-icon {
+    size: 24px;
+}
+
+element-text {
+    vertical-align: 0.5;
+    text-color: inherit;
+}
