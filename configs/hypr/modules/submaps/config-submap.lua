@@ -2,7 +2,7 @@
 local vars = require("modules.vars.global")
 local submap = require("modules.submaps.utils")
 
-local paths = require("vars.paths")
+local paths = require("modules.vars.paths")
 -- ==========================================
 -- Open config submap
 -- ==========================================

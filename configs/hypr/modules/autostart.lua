@@ -1,4 +1,4 @@
-local paths = require("vars.paths")
+local paths = require("modules.vars.paths")
 
 hl.on("hyprland.start", function ()
   -- Wallpaper
