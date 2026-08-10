@@ -7,7 +7,8 @@ selection="$(
         rofi \
             -dmenu \
             -display-columns 2 \
-            -config "$ROFI_DIR/config.rasi"
+            -config "$ROFI_DIR/config.rasi" \
+            -theme "$ROFI_DIR/rofi/theme.rasi"
 )"
 
 [[ -z "$selection" ]] && exit 0
