@@ -4,7 +4,7 @@
 
 **Модульная конфигурация Hyprland на Lua с управлением преимущественно с клавиатуры.**
 
-[English version](README_Hyprland.md)
+[English version](README_Hyprland.md)  · [Вернутся к hyprdots](../../)
 
 ![Hyprland](https://img.shields.io/badge/Hyprland-Lua-58E1FF?style=flat-square)
 ![Wayland](https://img.shields.io/badge/Wayland-ready-6B6B6B?style=flat-square)
