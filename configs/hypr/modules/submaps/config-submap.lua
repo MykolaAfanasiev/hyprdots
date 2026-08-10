@@ -2,7 +2,7 @@
 local vars = require("modules.vars.global")
 local submap = require("modules.submaps.utils")
 
-local current_dir = submap.current_dir()
+local current_dir = submap.real_dir()
 
 local clock_cmd =
     current_dir .. "../../../waybar/scripts/clock.sh"
