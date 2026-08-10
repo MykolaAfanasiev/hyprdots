@@ -2,17 +2,14 @@
 local vars = require("modules.vars.global")
 local submap = require("modules.submaps.utils")
 
-local current_dir = submap.real_dir()
-
-local clock_cmd =
-    current_dir .. "../../../waybar/scripts/clock.sh"
+local paths = require("vars.paths")
 -- ==========================================
 -- Open config submap
 -- ==========================================
 
 hl.bind(
-    vars.mainMod .. " + CTRL + SHIFT + N",
-    submap.switch("config")
+  vars.mainMod .. " + CTRL + SHIFT + N",
+  submap.switch("config")
 )
 
 
@@ -21,16 +18,15 @@ hl.bind(
 -- ==========================================
 
 hl.define_submap("config", function()
+  hl.bind(
+    "W",
+    submap.switch("config_waybar")
+  )
 
-    hl.bind(
-        "W",
-        submap.switch("config_waybar")
-    )
-
-    hl.bind(
-        "escape",
-        submap.switch("reset")
-    )
+  hl.bind(
+    "escape",
+    submap.switch("reset")
+  )
 end)
 
 
@@ -39,27 +35,41 @@ end)
 -- ==========================================
 
 hl.define_submap("config_waybar", function()
+  hl.bind(
+    "1",
+    function()
+      hl.dispatch(
+        hl.dsp.exec_cmd(paths.waybar.clock .. " toggle")
+      )
 
-    hl.bind(
-        "1",
-        function()
-            hl.dispatch(
-                hl.dsp.exec_cmd(clock_cmd .. " toggle")
-            )
+      hl.dispatch(
+        hl.dsp.submap("reset")
+      )
+    end
+  )
+  hl.bind(
+    "r",
+    function()
+      hl.dispatch(
+        hl.dsp.exec_cmd(
+          'pkill -x waybar; sleep 0.2; "' .. paths.waybar.launch .. '"'
+        )
+      )
 
-            hl.dispatch(
-                hl.dsp.submap("reset")
-            )
-        end
-    )
+      hl.dispatch(
+        hl.dsp.submap("reset")
+      )
+    end
+  )
 
-    hl.bind(
-        "escape",
-        submap.switch("config")
-    )
 
-    hl.bind(
-        "SHIFT + escape",
-        submap.switch("reset")
-    )
+  hl.bind(
+    "escape",
+    submap.switch("config")
+  )
+
+  hl.bind(
+    "SHIFT + escape",
+    submap.switch("reset")
+  )
 end)
