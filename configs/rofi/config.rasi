@@ -2,7 +2,6 @@ configuration {
     modi: "drun";
 
     show-icons: true;
-    display-drun: "Search";
     drun-display-format: "{name}";
 
     matching: "fuzzy";

@@ -31,16 +31,24 @@ mainbox {
 }
 
 inputbar {
-    children: [ prompt, entry ];
+    children: [ entry ];
 
     margin: 0 140px;
     padding: 14px 18px;
-    spacing: 12px;
 
-    background-color: @bg-alt;
-    text-color: @fg;
+    background-color: @surface0;
 
     border-radius: 14px;
+}
+
+entry {
+    placeholder: "Search";
+    placeholder-color: @overlay1;
+
+    background-color: transparent;
+    text-color: @text;
+
+    horizontal-align: 0.5;
 }
 
 prompt {
@@ -52,13 +60,6 @@ textbox-prompt-colon {
     enabled: false;
 }
 
-entry {
-    placeholder: "";
-    text-color: @fg;
-    expand: true;
-}
-
-/* Убираем всё лишнее сверху */
 case-indicator,
 num-filtered-rows,
 num-rows,
