@@ -1,8 +1,8 @@
-local utils = require("..modules.submaps.utils")
+local utils = require("modules.submaps.utils")
 
 local module_dir = utils.real_dir()
 
-local project_root = module_dir .. "../../../"
+local project_root = module_dir .. "../../../../"
 
 local M = {}
 
