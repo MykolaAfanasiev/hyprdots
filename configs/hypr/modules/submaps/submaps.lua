@@ -28,7 +28,7 @@ hl.bind(vars.mainMod .. " + SPACE", hl.dsp.exec_cmd(paths.rofi.launch))
 hl.bind("CTRL + SHIFT + X", hl.dsp.window.close())
 
 -- Optional: if you use clipboard history very often, keep it here
-hl.bind(vars.mainMod .. " + SHIFT + V", hl.dsp.exec_cmd(vars.clipboard))
+hl.bind(vars.mainMod .. " + SHIFT + V", hl.dsp.exec_cmd(paths.rofi.clipboard))
 
 -- Notifications
 hl.bind("ALT + N", hl.dsp.exec_cmd("swaync-client -t"))

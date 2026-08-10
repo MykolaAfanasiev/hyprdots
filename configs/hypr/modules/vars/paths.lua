@@ -16,7 +16,8 @@ M.waybar = {
 
 M.rofi = {
   root = project_root .. "configs/rofi/",
-  launch = project_root .. "configs/rofi/launch.sh"
+  launch = project_root .. "configs/rofi/launch.sh",
+  clipboard = project_root .. "configs/rofi/scripts/clipboard.sh",
 }
 
 return M
