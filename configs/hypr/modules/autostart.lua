@@ -8,7 +8,7 @@ hl.on("hyprland.start", function ()
   hl.exec_cmd(paths.waybar.launch)
 
   -- Notifications
-  hl.exec_cmd("swaync -c $HOME/.config/.dotfiles/configs/hypr/swaync/config.json -s $HOME/.config/.dotfiles/configs/hypr/swaync/style.css")
+  hl.exec_cmd(paths.swaync.launch)
 
   -- Clipboard history
   hl.exec_cmd("wl-paste --type text --watch cliphist store")

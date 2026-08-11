@@ -20,4 +20,10 @@ M.rofi = {
   clipboard = project_root .. "configs/rofi/clipboard.sh",
 }
 
+M.swaync = {
+    root = project_root .. "configs/swaync/",
+    launch = project_root .. "configs/swaync/launch.sh",
+    control = project_root .. "configs/swaync/scripts/control.sh",
+}
+
 return M

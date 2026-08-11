@@ -22,7 +22,10 @@ hl.define_submap("config", function()
     "W",
     submap.switch("config_waybar")
   )
-
+  hl.bind(
+    "S",
+    submap.switch("config_swaync")
+  )
   hl.bind(
     "escape",
     submap.switch("reset")
@@ -72,4 +75,48 @@ hl.define_submap("config_waybar", function()
     "SHIFT + escape",
     submap.switch("reset")
   )
+end)
+
+-- ==========================================
+-- SwayNC configuration submap
+-- ==========================================
+
+hl.define_submap("config_swaync", function()
+    -- Toggle Do Not Disturb
+    hl.bind(
+        "d",
+        function()
+            hl.dispatch(
+                hl.dsp.exec_cmd(paths.swaync.control .. " dnd")
+            )
+
+            hl.dispatch(
+                hl.dsp.submap("reset")
+            )
+        end
+    )
+
+    -- Reload config and CSS
+    hl.bind(
+        "r",
+        function()
+            hl.dispatch(
+                hl.dsp.exec_cmd(paths.swaync.control .. " reload")
+            )
+
+            hl.dispatch(
+                hl.dsp.submap("reset")
+            )
+        end
+    )
+
+    hl.bind(
+        "escape",
+        submap.switch("config")
+    )
+
+    hl.bind(
+        "SHIFT + escape",
+        submap.switch("reset")
+    )
 end)
