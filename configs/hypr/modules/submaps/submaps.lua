@@ -31,7 +31,7 @@ hl.bind("CTRL + SHIFT + X", hl.dsp.window.close())
 hl.bind(vars.mainMod .. " + SHIFT + V", hl.dsp.exec_cmd(paths.rofi.clipboard))
 
 -- Notifications
-hl.bind("ALT + N", hl.dsp.exec_cmd(paths.swaync.control .. "toggle"))
+hl.bind("ALT + N", hl.dsp.exec_cmd(paths.swaync.control .. " toggle"))
 
 -- ==============
 -- Window actions
