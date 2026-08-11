@@ -27,7 +27,7 @@ hl.define_submap("config", function()
     submap.switch("config_swaync")
   )
   hl.bind(
-    "W",
+    "H",
     submap.switch("config_hyprpaper")
   )
   hl.bind(
