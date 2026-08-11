@@ -36,4 +36,9 @@ M.wallpaper_switcher = {
     root = project_root .. "scripts/wallpaper-switcher/",
     launch = project_root .. "scripts/wallpaper-switcher/launch.sh",
 }
+
+M.hyprlock = {
+    root = project_root .. "configs/hyprlock/",
+    launch = project_root .. "configs/hyprlock/launch.sh",
+}
 return M
