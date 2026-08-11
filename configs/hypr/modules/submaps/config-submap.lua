@@ -27,6 +27,10 @@ hl.define_submap("config", function()
     submap.switch("config_swaync")
   )
   hl.bind(
+    "W",
+    submap.switch("config_hyprpaper")
+  )
+  hl.bind(
     "escape",
     submap.switch("reset")
   )
@@ -82,26 +86,55 @@ end)
 -- ==========================================
 
 hl.define_submap("config_swaync", function()
-    -- Toggle Do Not Disturb
-    hl.bind(
-        "d",
-        function()
-            hl.dispatch(
-                hl.dsp.exec_cmd(paths.swaync.control .. " dnd")
-            )
+  -- Toggle Do Not Disturb
+  hl.bind(
+    "d",
+    function()
+      hl.dispatch(
+        hl.dsp.exec_cmd(paths.swaync.control .. " dnd")
+      )
 
-            hl.dispatch(
-                hl.dsp.submap("reset")
-            )
-        end
-    )
+      hl.dispatch(
+        hl.dsp.submap("reset")
+      )
+    end
+  )
 
-    -- Reload config and CSS
+  -- Reload config and CSS
+  hl.bind(
+    "r",
+    function()
+      hl.dispatch(
+        hl.dsp.exec_cmd(paths.swaync.control .. " reload")
+      )
+
+      hl.dispatch(
+        hl.dsp.submap("reset")
+      )
+    end
+  )
+
+  hl.bind(
+    "escape",
+    submap.switch("config")
+  )
+
+  hl.bind(
+    "SHIFT + escape",
+    submap.switch("reset")
+  )
+end)
+
+-- ==========================================
+-- Hyprpaper configuration submap
+-- ==========================================
+
+hl.define_submap("config_hyprpaper", function()
     hl.bind(
         "r",
         function()
             hl.dispatch(
-                hl.dsp.exec_cmd(paths.swaync.control .. " reload")
+                hl.dsp.exec_cmd(paths.hyprpaper.control .. " restart")
             )
 
             hl.dispatch(
@@ -110,13 +143,14 @@ hl.define_submap("config_swaync", function()
         end
     )
 
-    hl.bind(
-        "escape",
-        submap.switch("config")
-    )
+  hl.bind(
+    "escape",
+    submap.switch("config")
+  )
 
-    hl.bind(
-        "SHIFT + escape",
-        submap.switch("reset")
-    )
+  hl.bind(
+    "SHIFT + escape",
+    submap.switch("reset")
+  )
 end)
+
