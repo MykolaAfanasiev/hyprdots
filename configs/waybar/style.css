@@ -19,6 +19,7 @@ window#waybar {
 #tray,
 #language,
 #wireplumber,
+#custom-notification
 #custom-clock {
     background: @module_bg;
 
@@ -80,13 +81,4 @@ window#waybar {
     color: @accent_fg;
 
     font-weight: bold;
-}
-
-#custom-notification {
-    padding: 0 0.75em;
-
-    color: @text;
-    background: @surface0;
-
-    border-radius: 999px;
 }
