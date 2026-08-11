@@ -6,6 +6,7 @@ local paths = require("modules.vars.paths")
 require("modules.submaps.clean")
 require("modules.submaps.screenshot")
 require("modules.submaps.config-submap")
+require("modules.submaps.appearance")
 
 -- =========================================================
 -- Return to standard/global mode from any submap
