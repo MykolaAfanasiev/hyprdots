@@ -15,5 +15,5 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("wl-clip-persist --clipboard regular")
 
   -- Idle daemon
-  hl.exec_cmd("hypridle -c $HOME/.config/.dotfiles/configs/hypr/hyprland_settinigs/hypridle.conf")
+  hl.exec_cmd(paths.hypridle.launch)
 end)

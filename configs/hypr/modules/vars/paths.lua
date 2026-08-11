@@ -41,4 +41,9 @@ M.hyprlock = {
     root = project_root .. "configs/hyprlock/",
     launch = project_root .. "configs/hyprlock/launch.sh",
 }
+
+M.hypridle = {
+    root = project_root .. "configs/hypridle/",
+    launch = project_root .. "configs/hypridle/launch.sh",
+}
 return M
