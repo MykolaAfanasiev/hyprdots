@@ -29,5 +29,6 @@ M.swaync = {
 M.hyprpaper = {
     root = project_root .. "configs/hyprpaper/",
     launch = project_root .. "configs/hyprpaper/launch.sh",
+    control = project_root .. "configs/hyprpaper/scripts/control.sh",
 }
 return M

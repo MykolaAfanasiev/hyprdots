@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 HYPRPAPER_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
-WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+WALLPAPER_DIR="$HOME/.wallpapers/"
 
 hyprpaper --config "$HYPRPAPER_DIR/hyprpaper.conf" &
 
