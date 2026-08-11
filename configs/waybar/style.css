@@ -84,7 +84,5 @@ window#waybar {
 }
 
 #custom-notification {
-    padding: 0 0.75em;
     background: @surface0;
-    border-radius: 999px;
 }
