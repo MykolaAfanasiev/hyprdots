@@ -11,7 +11,8 @@
     "tray",
     "hyprland/language",
     "wireplumber",
-    "custom/clock",
+    "custom/notification",
+    "custom/clock"
   ],
   "custom/clock": {
     "exec": "$WAYBAR_CONFIG_DIR/scripts/clock.sh watch",
@@ -70,5 +71,22 @@
   "hyprland/submap": {
     "format": "󰌌 {}",
     "tooltip": false,
+  },
+  "custom/notification": {
+    "tooltip": false,
+    "format": "{icon} {0}",
+    "format-icons": {
+      "notification": "󰂚",
+      "none": "󰂚",
+      "dnd-notification": "󰂛",
+      "dnd-none": "󰂛",
+      "inhibited-notification": "󰂛",
+      "inhibited-none": "󰂛",
+      "dnd-inhibited-notification": "󰂛",
+      "dnd-inhibited-none": "󰂛",
+    },
+    "return-type": "json",
+    "exec": "swaync-client -swb",
+    "escape": true,
   },
 }
