@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
-WALLPAPER_DIR="$HOME/.wallpapers/"
+WALLPAPER_DIR="$HOME/.wallpapers"
 
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/wallpaper"
 CURRENT_FILE="$CACHE_DIR/current"
 
-mkdir -p "$CACHE_DIR"
+mkdir -p "$CACHE_DIR"mkdir -p "$CACHE_DIR"
 
 notify_ok() {
     hyprctl notify 5 2000 "rgb(a6e3a1)" "$1" \
@@ -45,7 +45,6 @@ show_wallpapers() {
                 "$wallpaper" \
                 "$wallpaper"
         fi
-
     done < <(
         find "$WALLPAPER_DIR" \
             -type f \
@@ -70,14 +69,15 @@ set_wallpaper() {
     fi
 
     if hyprctl hyprpaper wallpaper \
-        ", $wallpaper, cover" >/dev/null 2>&1
+      ", $wallpaper, cover" >/dev/null 2>&1 
     then
-        printf '%s\n' "$wallpaper" > "$CURRENT_FILE"
+      printf '%s\n' "$wallpaper" > "$CURRENT_FILE"
 
-        notify_ok "Wallpaper: $(basename "$wallpaper")"
-        return 0
-    fi
+      ln -sfn "$wallpaper" "$CACHE_DIR/current-wallpaper"
 
+      notify_ok "Wallpaper: $(basename "$wallpaper")"
+      return 0
+    fi    
     notify_error "Failed to set wallpaper"
     return 1
 }
