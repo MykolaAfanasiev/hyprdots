@@ -1,0 +1,146 @@
+@import "current.rasi"
+
+window {
+    location: south;
+    anchor: south;
+
+    width: 76%;
+    y-offset: -24px;
+
+    padding: 16px;
+
+    background-color: @base;
+
+    border: 2px;
+    border-color: @surface1;
+    border-radius: 18px;
+}
+
+mainbox {
+    /*
+     * Wallpapers сверху,
+     * search снизу.
+     */
+    children: [ listview, inputbar ];
+
+    spacing: 14px;
+
+    background-color: transparent;
+}
+
+
+/* ================================
+ * Wallpapers
+ * ================================ */
+
+listview {
+    columns: 5;
+    lines: 1;
+
+    fixed-columns: true;
+    fixed-height: true;
+
+    spacing: 12px;
+    padding: 6px;
+
+    scrollbar: false;
+
+    background-color: transparent;
+}
+
+element {
+    orientation: vertical;
+    children: [ element-icon, element-text ];
+
+    spacing: 7px;
+    padding: 8px;
+
+    background-color: transparent;
+
+    border: 2px;
+    border-color: transparent;
+    border-radius: 12px;
+}
+
+element normal.normal {
+    background-color: transparent;
+}
+
+element selected {
+    background-color: @surface0;
+    border-color: @mauve;
+}
+
+element active {
+    background-color: @surface0;
+    border-color: @blue;
+}
+
+element selected.active {
+    background-color: @surface1;
+    border-color: @mauve;
+}
+
+
+/* Preview */
+
+element-icon {
+    size: 150px;
+
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+
+    background-color: transparent;
+}
+
+
+/* Name */
+
+element-text {
+    text-color: @text;
+
+    background-color: transparent;
+
+    horizontal-align: 0.5;
+    vertical-align: 0.5;
+}
+
+
+/* ================================
+ * Search
+ * ================================ */
+
+inputbar {
+    children: [ entry ];
+
+    margin: 0 30%;
+    padding: 11px 18px;
+
+    background-color: @surface0;
+
+    border-radius: 999px;
+}
+
+entry {
+    placeholder: "Search wallpaper...";
+    placeholder-color: @overlay1;
+
+    text-color: @text;
+    background-color: transparent;
+
+    horizontal-align: 0.5;
+}
+
+
+/* Hide everything unnecessary */
+
+prompt,
+case-indicator,
+num-filtered-rows,
+num-rows,
+textbox-num-sep,
+message,
+textbox-message,
+scrollbar {
+    enabled: false;
+}
