@@ -1,34 +1,41 @@
 {
-    "label": "lock",
-    "action": "action.sh lock",
-    "text": "󰌾  Lock",
-    "keybind": "l"
+    "label" : "lock",
+    "action" : "action.sh lock",
+    "text" : "Lock",
+    "keybind" : "l"
 }
 
 {
-    "label": "suspend",
-    "action": "action.sh suspend",
-    "text": "󰒲  Suspend",
-    "keybind": "s"
+    "label" : "suspend",
+    "action" : "action.sh suspend",
+    "text" : "Suspend",
+    "keybind" : "s"
 }
 
 {
-    "label": "logout",
-    "action": "action.sh logout",
-    "text": "󰍃  Logout",
-    "keybind": "e"
+    "label" : "hibernate",
+    "action" : "action.sh hibernate",
+    "text" : "Hibernate",
+    "keybind" : "h"
 }
 
 {
-    "label": "reboot",
-    "action": "action.sh reboot",
-    "text": "󰜉  Reboot",
-    "keybind": "r"
+    "label" : "logout",
+    "action" : "action.sh logout",
+    "text" : "Logout",
+    "keybind" : "e"
 }
 
 {
-    "label": "shutdown",
-    "action": "action.sh shutdown",
-    "text": "󰐥  Shutdown",
-    "keybind": "p"
+    "label" : "reboot",
+    "action" : "action.sh reboot",
+    "text" : "Reboot",
+    "keybind" : "r"
+}
+
+{
+    "label" : "shutdown",
+    "action" : "action.sh shutdown",
+    "text" : "Shutdown",
+    "keybind" : "p"
 }

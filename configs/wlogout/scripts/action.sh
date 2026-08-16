@@ -22,6 +22,11 @@ case "${1:-}" in
         exec systemctl suspend
         ;;
 
+    hibernate)
+        close_menu
+        exec systemctl hibernate
+        ;;
+
     logout)
         close_menu
         exec hyprshutdown \
@@ -32,18 +37,18 @@ case "${1:-}" in
         close_menu
         exec hyprshutdown \
             --top-label "Restarting..." \
-            --post-cmd "reboot"
+            --post-cmd "systemctl reboot"
         ;;
 
     shutdown)
         close_menu
         exec hyprshutdown \
             --top-label "Shutting down..." \
-            --post-cmd "shutdown -P 0"
+            --post-cmd "systemctl poweroff"
         ;;
 
     *)
-        echo "Usage: $0 {lock|suspend|logout|reboot|shutdown}" >&2
+        echo "Usage: $0 {lock|suspend|hibernate|logout|reboot|shutdown}" >&2
         exit 1
         ;;
 esac
