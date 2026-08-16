@@ -39,6 +39,11 @@ hl.bind(
     hl.dsp.exec_cmd(paths.hyprlock.launch)
 )
 
+hl.bind(
+    vars.mainMod .. " + ALT + P",
+    hl.dsp.exec_cmd(paths.wlogout.launch)
+)
+
 -- ==============
 -- Window actions
 -- ==============

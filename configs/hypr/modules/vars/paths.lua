@@ -46,4 +46,9 @@ M.hypridle = {
     root = project_root .. "configs/hypridle/",
     launch = project_root .. "configs/hypridle/launch.sh",
 }
+
+M.wlogout = {
+    root = project_root .. "configs/wlogout/",
+    launch = project_root .. "configs/wlogout/launch.sh",
+}
 return M
