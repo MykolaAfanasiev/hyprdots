@@ -1,0 +1,34 @@
+{
+    "label": "lock",
+    "action": "action.sh lock",
+    "text": "󰌾  Lock",
+    "keybind": "l"
+}
+
+{
+    "label": "suspend",
+    "action": "action.sh suspend",
+    "text": "󰒲  Suspend",
+    "keybind": "s"
+}
+
+{
+    "label": "logout",
+    "action": "action.sh logout",
+    "text": "󰍃  Logout",
+    "keybind": "e"
+}
+
+{
+    "label": "reboot",
+    "action": "action.sh reboot",
+    "text": "󰜉  Reboot",
+    "keybind": "r"
+}
+
+{
+    "label": "shutdown",
+    "action": "action.sh shutdown",
+    "text": "󰐥  Shutdown",
+    "keybind": "p"
+}
