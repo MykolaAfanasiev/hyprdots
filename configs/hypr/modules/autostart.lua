@@ -16,4 +16,5 @@ hl.on("hyprland.start", function()
 
   -- Idle daemon
   hl.exec_cmd(paths.hypridle.launch)
+  hl.exec_cmd(paths.hyprsunset.launch)
 end)

@@ -51,4 +51,9 @@ M.wlogout = {
     root = project_root .. "configs/wlogout/",
     launch = project_root .. "configs/wlogout/launch.sh",
 }
+
+M.hyprsunset = {
+    root = project_root .. "configs/hyprsunset/",
+    launch = project_root .. "configs/hyprsunset/launch.sh",
+}
 return M
