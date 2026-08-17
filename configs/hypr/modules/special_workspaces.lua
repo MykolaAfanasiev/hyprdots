@@ -11,17 +11,17 @@ local special_workspaces = {
   {
     name = "terminal",
     key = "T",
-    command = "kitty",
+    command = vars.apps.terminal,
   },
   {
     name = "notes",
     key = "N",
-    command = "obsidian",
+    command = vars.apps.notes,
   },
   {
     name = "monitor",
     key = "B",
-    command = "kitty -e btop",
+    command = vars.apps.system_monitor,
   }
 }
 

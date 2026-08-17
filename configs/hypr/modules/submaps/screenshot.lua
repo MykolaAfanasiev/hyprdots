@@ -2,15 +2,8 @@
 -- Screenshot commands
 -- ==========================================
 
-local home = assert(
-    os.getenv("HOME"),
-    "HOME environment variable is not set"
-)
-
 local submap = require("modules.submaps.utils")
-
-local screenshot_cmd =
-    home .. "/.local/bin/screenshot-tool"
+local screenshot_cmd = "screenshot-tool"
 
 
 -- Runs the screenshot command and returns to the global keymap.

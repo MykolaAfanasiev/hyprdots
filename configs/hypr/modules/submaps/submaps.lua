@@ -23,7 +23,7 @@ end, {
 -- Basic actions
 -- =============
 
-hl.bind(vars.mainMod .. " + RETURN", hl.dsp.exec_cmd(vars.terminal))
+hl.bind(vars.mainMod .. " + RETURN", hl.dsp.exec_cmd(vars.apps.terminal))
 hl.bind(vars.mainMod .. " + SPACE", hl.dsp.exec_cmd(paths.rofi.launch))
 
 hl.bind("CTRL + SHIFT + X", hl.dsp.window.close())

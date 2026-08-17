@@ -1,0 +1,14 @@
+return {
+  -- Override only settings that differ on this machine.
+  monitor = {
+    output = "eDP-1",
+    scale = "1.33",
+  },
+
+  -- Application overrides are optional.
+  -- apps = {
+  --   terminal = "kitty",
+  --   notes = "obsidian",
+  --   system_monitor = "kitty -e btop",
+  -- },
+}

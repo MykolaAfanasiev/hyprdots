@@ -1,7 +1,4 @@
+local vars = require("modules.vars.global")
+
 -- Monitor settings
-hl.monitor({
-  output   = "eDP-1",
-  mode     = "preferred",
-  position = "auto",
-  scale    = "1.33",
-})
+hl.monitor(vars.monitor)
