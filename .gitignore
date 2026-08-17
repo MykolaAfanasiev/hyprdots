@@ -1,6 +1,19 @@
-__pycache__
+# Python bytecode / build artifacts
+__pycache__/
 *.py[cod]
+*.egg-info/
 build/
 dist/
 .venv/
-*.egg-info/
+
+# Python tooling caches
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Generic local/editor files
+.DS_Store
+*.swp
+*.swo

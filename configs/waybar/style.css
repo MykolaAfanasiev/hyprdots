@@ -22,17 +22,6 @@ window#waybar {
 #custom-notification,
 #custom-clock {
     background: @module_bg;
-
-    margin: 4px 3px;
-    padding: 0 10px;
-
-    border-radius: 8px;
-}
-
-#workspaces {
-    padding: 0.2em;
-    background: @module_bg;
-    border-radius: 999px;
 }
 
 #workspaces button {

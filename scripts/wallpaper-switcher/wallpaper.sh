@@ -1,11 +1,14 @@
 #!/usr/bin/env bash
 
-WALLPAPER_DIR="$HOME/.wallpapers"
+set -u
+
+WALLPAPER_DIR="${HYPRDOTS_WALLPAPER_DIR:-$HOME/.wallpapers}"
 
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/wallpaper"
 CURRENT_FILE="$CACHE_DIR/current"
+CURRENT_LINK="$CACHE_DIR/current-wallpaper"
 
-mkdir -p "$CACHE_DIR"mkdir -p "$CACHE_DIR"
+mkdir -p "$CACHE_DIR"
 
 notify_ok() {
     hyprctl notify 5 2000 "rgb(a6e3a1)" "$1" \
@@ -17,9 +20,13 @@ notify_error() {
         >/dev/null 2>&1
 }
 
-
 show_wallpapers() {
     local current=""
+
+    if [[ ! -d "$WALLPAPER_DIR" ]]; then
+        notify_error "Wallpaper directory not found"
+        return 1
+    fi
 
     if [[ -f "$CURRENT_FILE" ]]; then
         current="$(<"$CURRENT_FILE")"
@@ -59,7 +66,6 @@ show_wallpapers() {
     )
 }
 
-
 set_wallpaper() {
     local wallpaper="${ROFI_INFO:-}"
 
@@ -69,19 +75,18 @@ set_wallpaper() {
     fi
 
     if hyprctl hyprpaper wallpaper \
-      ", $wallpaper, cover" >/dev/null 2>&1 
+        ", $wallpaper, cover" >/dev/null 2>&1
     then
-      printf '%s\n' "$wallpaper" > "$CURRENT_FILE"
+        printf '%s\n' "$wallpaper" > "$CURRENT_FILE"
+        ln -sfn "$wallpaper" "$CURRENT_LINK"
 
-      ln -sfn "$wallpaper" "$CACHE_DIR/current-wallpaper"
+        notify_ok "Wallpaper: $(basename "$wallpaper")"
+        return 0
+    fi
 
-      notify_ok "Wallpaper: $(basename "$wallpaper")"
-      return 0
-    fi    
     notify_error "Failed to set wallpaper"
     return 1
 }
-
 
 case "${ROFI_RETV:-0}" in
     0)

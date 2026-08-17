@@ -9,7 +9,7 @@ case "${1:-}" in
 
         "$HYPRPAPER_DIR/launch.sh" &
 
-        hyprctl notify 5 2000 "rgb(a6e3a1)" "Hyprpaper restarted"
+        hyprctl notify 5 2000 "rgb(a6e3a1)" "Hyprpaper restarted" >/dev/null 2>&1
         ;;
 
     *)

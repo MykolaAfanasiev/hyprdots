@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from .run_command import run_command
 
 # Notification

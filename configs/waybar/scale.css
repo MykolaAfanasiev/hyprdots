@@ -11,6 +11,7 @@
 #tray,
 #language,
 #wireplumber,
+#custom-notification,
 #custom-clock {
     background: @module_bg;
 
@@ -22,6 +23,7 @@
 
 #workspaces {
     padding: 0 0.3em;
+    border-radius: 999px;
 }
 
 #workspaces button {

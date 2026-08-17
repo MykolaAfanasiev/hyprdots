@@ -18,8 +18,8 @@ window {
 
 mainbox {
     /*
-     * Wallpapers сверху,
-     * search снизу.
+     * Wallpapers on top,
+     * search at the bottom.
      */
     children: [ listview, inputbar ];
 

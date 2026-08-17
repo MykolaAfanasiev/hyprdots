@@ -23,7 +23,7 @@ hl.define_submap("appearance", function()
         hl.dsp.exec_cmd(paths.wallpaper_switcher.launch)
     )
 
-    -- позже
+    -- Theme switcher can be added here later.
     -- hl.bind("T", ... theme switcher ...)
 
     hl.bind(

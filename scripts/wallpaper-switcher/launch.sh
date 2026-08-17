@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 SWITCHER_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SWITCHER_DIR/../.." && pwd)"
 
@@ -12,4 +14,4 @@ exec rofi \
     -theme "$ROFI_DIR/themes/wallpaper.rasi" \
     -show-icons \
     -kb-row-left "Control+Page_Up,Alt+h" \
-    -kb-row-right "Control+Page_Down,Alt+l" \
+    -kb-row-right "Control+Page_Down,Alt+l"

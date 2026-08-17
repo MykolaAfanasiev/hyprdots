@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from pathlib import Path
 from .notify import notify
 from .run_command import run_command
@@ -9,7 +8,6 @@ from cli.option_class import ScreenshotOptions
 class ScreenshotTools:
     def __init__(self) -> None:
         self.title = "Screenshot"
-        self.save_path = make_screenshot_path()
 
     def resolve_output_path(
         self,

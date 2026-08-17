@@ -45,7 +45,7 @@ fi
 
 CURRENT=$(( (CURRENT_RAW * 100 + MAX_RAW / 2) / MAX_RAW ))
 
-# Уже нужная яркость.
+# Already at the requested brightness.
 if (( CURRENT == TARGET )); then
     exit 0
 fi
