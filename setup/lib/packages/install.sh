@@ -38,6 +38,12 @@ print_install_plan() {
 run_package_installation() {
     section "[3/10] Package installation"
 
+    if (( PACKAGE_INSTALLATION_NEEDED == 0 )); then
+        success "All packages are already installed"
+        info "Skipping package installation"
+        return 0
+    fi
+
     local -a arch_packages=()
     local -a aur_packages=()
 

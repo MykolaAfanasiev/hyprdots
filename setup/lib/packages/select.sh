@@ -178,6 +178,21 @@ print_package_selection_summary() {
         SELECTED_AUR_REQUIRED
 }
 
+package_group_installed() {
+    local array_name="$1"
+    local -n packages_ref="$array_name"
+
+    local package
+
+    for package in "${packages_ref[@]}"; do
+        if ! pacman -Qq "$package" >/dev/null 2>&1; then
+            return 1
+        fi
+    done
+
+    return 0
+}
+
 
 run_package_selection() {
     section "[2/10] Package selection"
@@ -206,6 +221,24 @@ run_package_selection() {
     load_package_manifest \
         "$SETUP_DIR/packages/aur-required.txt" \
         aur_required
+
+    if package_group_installed arch_required &&
+       package_group_installed arch_recommended &&
+       package_group_installed arch_default_apps &&
+       package_group_installed aur_required
+    then
+        SELECTED_ARCH_REQUIRED=("${arch_required[@]}")
+        SELECTED_ARCH_RECOMMENDED=("${arch_recommended[@]}")
+        SELECTED_ARCH_DEFAULT_APPS=("${arch_default_apps[@]}")
+        SELECTED_AUR_REQUIRED=("${aur_required[@]}")
+
+        PACKAGE_INSTALLATION_NEEDED=0
+
+        success "All Hyprdots Norexil packages are already installed"
+        info "Skipping package selection"
+
+        return 0
+    fi
 
     select_package_group \
         "Core packages" \
