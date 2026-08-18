@@ -26,6 +26,8 @@ LIB_DIR="$SETUP_DIR/lib"
 
 source "$LIB_DIR/common.sh"
 source "$LIB_DIR/checks.sh"
+source "$LIB_DIR/packages/manifest.sh"
+source "$LIB_DIR/packages/select.sh"
 
 
 # ------------------------------------------------------------
@@ -41,6 +43,11 @@ main() {
 
     printf '\n'
     info "Stage 1 complete."
+
+    run_package_selection
+
+    printf '\n'
+    info "Stage 2 complete."
 }
 
 
