@@ -7,22 +7,6 @@ fi
 readonly HYPRDOTS_CONFIG_LINKS_LOADED=1
 
 
-backup_path() {
-    local path="$1"
-
-    local timestamp
-    timestamp="$(date '+%Y%m%d-%H%M%S')"
-
-    local backup="${path}.backup.${timestamp}"
-
-    mv -- \
-        "$path" \
-        "$backup"
-
-    printf '%s\n' "$backup"
-}
-
-
 symlink_points_to() {
     local link="$1"
     local expected_target="$2"

@@ -25,6 +25,7 @@ LIB_DIR="$SETUP_DIR/lib"
 # ------------------------------------------------------------
 
 source "$LIB_DIR/common.sh"
+source "$LIB_DIR/filesystem.sh"
 source "$LIB_DIR/checks.sh"
 
 source "$LIB_DIR/packages/manifest.sh"
@@ -40,6 +41,8 @@ source "$LIB_DIR/configs/local.sh"
 source "$LIB_DIR/links/config.sh"
 
 source "$LIB_DIR/tools/screenshot.sh"
+
+source "$LIB_DIR/directories/runtime.sh"
 
 # ------------------------------------------------------------
 # Main
@@ -79,6 +82,11 @@ main() {
 
     printf '\n'
     info "Stage 6 complete."
+
+    run_runtime_directory_setup
+
+    printf '\n'
+    info "Stage 7 complete."
 }
 
 
