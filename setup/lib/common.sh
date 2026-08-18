@@ -73,6 +73,36 @@ section() {
         "$COLOR_RESET"
 }
 
+confirm() {
+    local prompt="$1"
+    local default="${2:-no}"
+
+    local answer
+
+    while true; do
+        if [[ "$default" == "yes" ]]; then
+            read -r -p "$prompt [Y/n] " answer
+            answer="${answer:-y}"
+        else
+            read -r -p "$prompt [y/N] " answer
+            answer="${answer:-n}"
+        fi
+
+        case "${answer,,}" in
+            y|yes)
+                return 0
+                ;;
+
+            n|no)
+                return 1
+                ;;
+
+            *)
+                warn "Please answer y or n."
+                ;;
+        esac
+    done
+}
 
 # ------------------------------------------------------------
 # Helpers

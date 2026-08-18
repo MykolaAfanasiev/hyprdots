@@ -15,11 +15,11 @@ declare -ag SELECTED_AUR_REQUIRED=()
 
 print_package_list() {
     local array_name="$1"
-    local -n packages="$array_name"
+    local -n packages_ref="$array_name"
 
     local package
 
-    for package in "${packages[@]}"; do
+    for package in "${packages_ref[@]}"; do
         printf '  - %s\n' "$package"
     done
 }
@@ -30,15 +30,15 @@ select_packages_individually() {
     local destination_name="$2"
     local default_answer="$3"
 
-    local -n source="$source_name"
-    local -n destination="$destination_name"
+    local -n source_ref="$source_name"
+    local -n destination_ref="$destination_name"
 
-    destination=()
+    destination_ref=()
 
     local package
     local answer
 
-    for package in "${source[@]}"; do
+    for package in "${source_ref[@]}"; do
         while true; do
             if [[ "$default_answer" == "yes" ]]; then
                 read -r -p "Install $package? [Y/n] " answer
@@ -50,7 +50,7 @@ select_packages_individually() {
 
             case "${answer,,}" in
                 y|yes)
-                    destination+=("$package")
+                    destination_ref+=("$package")
                     break
                     ;;
 
@@ -74,8 +74,8 @@ select_package_group() {
     local destination_name="$4"
     local default_mode="$5"
 
-    local -n source="$source_name"
-    local -n destination="$destination_name"
+    local -n source_ref="$source_name"
+    local -n destination_ref="$destination_name"
 
     section "$title"
 
@@ -103,9 +103,10 @@ select_package_group() {
 
         case "${answer,,}" in
             a|all)
-                destination=("${source[@]}")
+                destination_ref=("${source_ref[@]}")
                 return 0
                 ;;
+
             c|custom)
                 local individual_default="no"
 
@@ -120,8 +121,9 @@ select_package_group() {
 
                 return 0
                 ;;
+
               n|none)
-                  destination=()
+                  destination_ref=()
                   return 0
                   ;;
 
@@ -137,11 +139,11 @@ print_selected_group() {
     local title="$1"
     local array_name="$2"
 
-    local -n packages="$array_name"
+    local -n packages_ref="$array_name"
 
     printf '%s\n' "$title"
 
-    if (( ${#packages[@]} == 0 )); then
+    if (( ${#packages_ref[@]} == 0 )); then
         printf '  (none)\n'
         return 0
     fi

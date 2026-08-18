@@ -26,9 +26,14 @@ LIB_DIR="$SETUP_DIR/lib"
 
 source "$LIB_DIR/common.sh"
 source "$LIB_DIR/checks.sh"
+
 source "$LIB_DIR/packages/manifest.sh"
 source "$LIB_DIR/packages/select.sh"
 
+source "$LIB_DIR/packages/plan.sh"
+source "$LIB_DIR/packages/arch.sh"
+source "$LIB_DIR/packages/aur.sh"
+source "$LIB_DIR/packages/install.sh"
 
 # ------------------------------------------------------------
 # Main
@@ -48,6 +53,11 @@ main() {
 
     printf '\n'
     info "Stage 2 complete."
+
+    run_package_installation
+
+    printf '\n'
+    info "Stage 3 complete."
 }
 
 
