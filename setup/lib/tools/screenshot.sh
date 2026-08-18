@@ -29,14 +29,6 @@ PY
 }
 
 
-pipx_package_installed() {
-    local package="$1"
-
-    pipx list --short 2>/dev/null |
-        grep -Fxq -- "$package"
-}
-
-
 verify_screenshot_tool() {
     local executable="$1"
 
@@ -71,46 +63,61 @@ run_screenshot_tool_setup() {
         return 0
     fi
 
-    local package_name
+    #
+    # The command is already available.
+    #
+    if command_exists "$command_name"; then
+        local executable
+        executable="$(command -v "$command_name")"
 
-    if ! package_name="$(read_python_project_name "$pyproject")"; then
-        die "Unable to read the Python package name from: $pyproject"
+        if verify_screenshot_tool "$executable"; then
+            success "$command_name is already available: $executable"
+            return 0
+        fi
+
+        die "$command_name exists but could not be executed correctly."
     fi
 
-    info "Python package: $package_name"
-
-    if pipx_package_installed "$package_name"; then
-        success "$package_name is already installed with pipx"
-    else
-        info "Installing $package_name with pipx..."
-
-        pipx install \
-            --editable \
-            "$tool_dir"
-
-        success "$package_name installed"
-    fi
-
+    #
+    # The command is not in PATH.
+    #
     local pipx_bin_dir
     pipx_bin_dir="$(pipx environment --value PIPX_BIN_DIR)"
 
-    local executable="$pipx_bin_dir/$command_name"
+    local expected_executable="$pipx_bin_dir/$command_name"
 
+    if [[ -x "$expected_executable" ]]; then
+        warn "$command_name is installed but is not available in PATH."
+        warn "pipx binary directory: $pipx_bin_dir"
+        return 0
+    fi
+
+    #
+    # Not installed: install it.
+    #
+    info "Installing $command_name with pipx..."
+
+    pipx install \
+        --editable \
+        "$tool_dir"
+
+    #
+    # Verify installation.
+    #
     if command_exists "$command_name"; then
+        local executable
         executable="$(command -v "$command_name")"
-    elif [[ -x "$executable" ]]; then
-        warn "$command_name is installed, but $pipx_bin_dir is not in PATH."
-        warn "Restart the shell after adding the pipx binary directory to PATH."
-    else
-        die "$command_name executable was not found after installation."
+
+        if verify_screenshot_tool "$executable"; then
+            success "$command_name installed: $executable"
+            return 0
+        fi
     fi
 
-    if ! verify_screenshot_tool "$executable"; then
-        die "$command_name was found but could not be executed."
+    if [[ -x "$expected_executable" ]]; then
+        warn "$command_name was installed but $pipx_bin_dir is not in PATH."
+        return 0
     fi
 
-    success "$command_name is working: $executable"
-
-    printf '\n'
-    success "Screenshot tool setup complete"
+    die "$command_name was not found after pipx installation."
 }
