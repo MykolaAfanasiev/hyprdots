@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+
+# ------------------------------------------------------------
+# Paths
+# ------------------------------------------------------------
+
+SETUP_DIR="$(
+    cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &&
+    pwd
+)"
+
+PROJECT_ROOT="$(
+    cd -- "$SETUP_DIR/.." &&
+    pwd
+)"
+
+LIB_DIR="$SETUP_DIR/lib"
+
+
+# ------------------------------------------------------------
+# Modules
+# ------------------------------------------------------------
+
+source "$LIB_DIR/common.sh"
+source "$LIB_DIR/checks.sh"
+
+
+# ------------------------------------------------------------
+# Main
+# ------------------------------------------------------------
+
+main() {
+    section "Hyprdots Norexil Installer"
+
+    printf 'Project: %s\n' "$PROJECT_ROOT"
+
+    run_system_checks
+
+    printf '\n'
+    info "Stage 1 complete."
+}
+
+
+main "$@"
