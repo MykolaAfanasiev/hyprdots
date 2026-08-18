@@ -37,6 +37,8 @@ source "$LIB_DIR/packages/install.sh"
 
 source "$LIB_DIR/configs/local.sh"
 
+source "$LIB_DIR/links/config.sh"
+
 # ------------------------------------------------------------
 # Main
 # ------------------------------------------------------------
@@ -65,6 +67,11 @@ main() {
 
     printf '\n'
     info "Stage 4 complete."
+
+    run_config_link_setup
+
+    printf '\n'
+    info "Stage 5 complete."
 }
 
 
