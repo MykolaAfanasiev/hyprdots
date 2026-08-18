@@ -35,6 +35,8 @@ source "$LIB_DIR/packages/arch.sh"
 source "$LIB_DIR/packages/aur.sh"
 source "$LIB_DIR/packages/install.sh"
 
+source "$LIB_DIR/configs/local.sh"
+
 # ------------------------------------------------------------
 # Main
 # ------------------------------------------------------------
@@ -58,6 +60,11 @@ main() {
 
     printf '\n'
     info "Stage 3 complete."
+
+    run_local_config_setup
+
+    printf '\n'
+    info "Stage 4 complete."
 }
 
 
