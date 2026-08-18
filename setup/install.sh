@@ -39,6 +39,8 @@ source "$LIB_DIR/configs/local.sh"
 
 source "$LIB_DIR/links/config.sh"
 
+source "$LIB_DIR/tools/screenshot.sh"
+
 # ------------------------------------------------------------
 # Main
 # ------------------------------------------------------------
@@ -72,6 +74,11 @@ main() {
 
     printf '\n'
     info "Stage 5 complete."
+
+    run_screenshot_tool_setup
+
+    printf '\n'
+    info "Stage 6 complete."
 }
 
 
