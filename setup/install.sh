@@ -44,6 +44,8 @@ source "$LIB_DIR/tools/screenshot.sh"
 
 source "$LIB_DIR/directories/runtime.sh"
 
+source "$LIB_DIR/permissions/runtime.sh"
+
 # ------------------------------------------------------------
 # Main
 # ------------------------------------------------------------
@@ -87,6 +89,11 @@ main() {
 
     printf '\n'
     info "Stage 7 complete."
+
+    run_permission_setup
+
+    printf '\n'
+    info "Stage 8 complete."
 }
 
 
