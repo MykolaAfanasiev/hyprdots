@@ -1,0 +1,8 @@
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
+xdg-desktop-portal-gtk
+qt5-wayland
+qt6-wayland
+hyprpolkitagent
+noto-fonts
+pipewire-alsa
