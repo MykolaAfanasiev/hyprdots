@@ -46,6 +46,12 @@ source "$LIB_DIR/directories/runtime.sh"
 
 source "$LIB_DIR/permissions/runtime.sh"
 
+source "$LIB_DIR/verify/report.sh"
+source "$LIB_DIR/verify/packages.sh"
+source "$LIB_DIR/verify/configs.sh"
+source "$LIB_DIR/verify/runtime.sh"
+source "$LIB_DIR/verify/install.sh"
+
 # ------------------------------------------------------------
 # Main
 # ------------------------------------------------------------
@@ -94,6 +100,11 @@ main() {
 
     printf '\n'
     info "Stage 8 complete."
+
+    run_post_install_verification
+
+    printf '\n'
+    info "Stage 9 complete."
 }
 
 
