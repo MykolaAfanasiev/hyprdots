@@ -1,11 +1,11 @@
 return {
-  -- Override only settings that differ on this machine.
-  monitor = {
-    output = "eDP-1",
-    scale = "1.33",
-  },
+  -- Add only settings that differ on this machine.
 
-  -- Application overrides are optional.
+  -- monitor = {
+  --   output = "eDP-1",
+  --   scale = "1.25",
+  -- },
+
   -- apps = {
   --   terminal = "kitty",
   --   notes = "obsidian",
