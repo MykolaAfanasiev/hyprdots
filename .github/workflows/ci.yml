@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  static:
+    name: Static checks
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Install ShellCheck
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes shellcheck
+
+      - name: Run static checks
+        run: ./tests/static/check.sh
