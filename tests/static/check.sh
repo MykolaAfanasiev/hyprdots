@@ -29,7 +29,7 @@ printf '\n==> ShellCheck\n\n'
 while IFS= read -r -d '' file; do
     printf 'Checking: %s\n' "${file#"$PROJECT_ROOT/"}"
 
-    shellcheck "$file"
+    shellcheck -x "$file"
 done < <(
     find "$PROJECT_ROOT" \
         -type f \
