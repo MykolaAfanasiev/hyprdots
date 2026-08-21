@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# This module exports installer state through global variables to other
+# modules loaded with source. ShellCheck analyzes this file in isolation.
+# shellcheck disable=SC2034
+
 if [[ -n "${HYPRDOTS_PACKAGE_SELECT_LOADED:-}" ]]; then
     return 0
 fi
@@ -31,6 +35,8 @@ select_packages_individually() {
     local default_answer="$3"
 
     local -n source_ref="$source_name"
+    # destination_ref is a nameref to an array supplied by the caller.
+    # shellcheck disable=SC2178
     local -n destination_ref="$destination_name"
 
     destination_ref=()
@@ -75,6 +81,8 @@ select_package_group() {
     local default_mode="$5"
 
     local -n source_ref="$source_name"
+    # destination_ref is a nameref to an array supplied by the caller.
+    # shellcheck disable=SC2178
     local -n destination_ref="$destination_name"
 
     section "$title"

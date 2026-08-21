@@ -47,7 +47,7 @@ check_arch_linux() {
     local ID_LIKE=""
     local PRETTY_NAME=""
 
-    # shellcheck disable=SC1091
+    # shellcheck source=/etc/os-release
     source "$os_release"
 
     if [[ "${ID:-}" == "arch" ]]; then

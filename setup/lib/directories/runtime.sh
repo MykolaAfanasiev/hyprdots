@@ -10,6 +10,8 @@ readonly HYPRDOTS_RUNTIME_DIRECTORIES_LOADED=1
 expand_home_path() {
     local path="$1"
 
+    # Match a literal '~' entered by the user.
+    # shellcheck disable=SC2088
     case "$path" in
         "~")
             printf '%s\n' "$HOME"

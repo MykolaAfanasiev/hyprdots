@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Dynamic library paths are resolved at runtime via $LIB_DIR.
+# shellcheck disable=SC1091
+
 set -euo pipefail
 
 

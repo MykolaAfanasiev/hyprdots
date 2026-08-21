@@ -8,24 +8,25 @@ readonly HYPRDOTS_PACKAGE_PLAN_LOADED=1
 
 
 deduplicate_packages() {
-    local source_name="$1"
-    local destination_name="$2"
+    local destination_name="$1"
+    shift
 
-    local -n source="$source_name"
-    local -n destination="$destination_name"
+    # destination_ref is a nameref to an array supplied by the caller.
+    # shellcheck disable=SC2178
+    local -n destination_ref="$destination_name"
 
     local -A seen=()
     local package
 
-    destination=()
+    destination_ref=()
 
-    for package in "${source[@]}"; do
+    for package in "$@"; do
         if [[ -n "${seen[$package]+x}" ]]; then
             continue
         fi
 
         seen["$package"]=1
-        destination+=("$package")
+        destination_ref+=("$package")
     done
 }
 
@@ -34,21 +35,13 @@ build_package_plan() {
     local arch_destination_name="$1"
     local aur_destination_name="$2"
 
-    local -a arch_candidates=(
-        "${SELECTED_ARCH_REQUIRED[@]}"
-        "${SELECTED_ARCH_RECOMMENDED[@]}"
+    deduplicate_packages \
+        "$arch_destination_name" \
+        "${SELECTED_ARCH_REQUIRED[@]}" \
+        "${SELECTED_ARCH_RECOMMENDED[@]}" \
         "${SELECTED_ARCH_DEFAULT_APPS[@]}"
-    )
 
-    local -a aur_candidates=(
+    deduplicate_packages \
+        "$aur_destination_name" \
         "${SELECTED_AUR_REQUIRED[@]}"
-    )
-
-    deduplicate_packages \
-        arch_candidates \
-        "$arch_destination_name"
-
-    deduplicate_packages \
-        aur_candidates \
-        "$aur_destination_name"
 }

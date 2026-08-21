@@ -9,11 +9,11 @@ readonly HYPRDOTS_VERIFY_PACKAGES_LOADED=1
 
 verify_package_group() {
     local label="$1"
-    local array_name="$2"
+    shift
 
-    local -n packages_ref="$array_name"
+    local -a packages=("$@")
 
-    if (( ${#packages_ref[@]} == 0 )); then
+    if (( ${#packages[@]} == 0 )); then
         verify_pass "$label: nothing selected"
         return 0
     fi
@@ -21,7 +21,7 @@ verify_package_group() {
     local -a missing_packages=()
     local package
 
-    for package in "${packages_ref[@]}"; do
+    for package in "${packages[@]}"; do
         if ! pacman -Qq "$package" >/dev/null 2>&1; then
             missing_packages+=("$package")
         fi
@@ -29,7 +29,7 @@ verify_package_group() {
 
     if (( ${#missing_packages[@]} == 0 )); then
         verify_pass \
-            "$label: all ${#packages_ref[@]} selected package(s) are installed"
+            "$label: all ${#packages[@]} selected package(s) are installed"
 
         return 0
     fi
@@ -53,9 +53,9 @@ verify_selected_packages() {
 
     verify_package_group \
         "Official Arch packages" \
-        arch_packages
+        "${arch_packages[@]}"
 
     verify_package_group \
         "AUR packages" \
-        aur_packages
+        "${aur_packages[@]}"
 }

@@ -73,7 +73,7 @@ install_aur_package() {
     fi
 
     (
-        cd -- "$repo_dir"
+        cd -- "$repo_dir" || exit | exit 1
 
         makepkg \
             -si \
