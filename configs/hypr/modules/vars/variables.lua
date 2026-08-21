@@ -17,3 +17,11 @@ hl.env("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 hl.env("QT_QPA_PLATFORM", "wayland;xcb")
 hl.env("QT_WAYLAND_DISABLE_WINDOWDECORATION", "1")
 hl.env("QT_QPA_PLATFORMTHEME", "qt5ct")
+
+-- $PATH
+local home = os.getenv("HOME")
+local path = os.getenv("PATH") or ""
+
+if home then
+  hl.env("PATH", home .. "/.local/bin:" .. path)
+end
