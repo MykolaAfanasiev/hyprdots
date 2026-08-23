@@ -30,6 +30,7 @@ source "$PROJECT_ROOT/setup/lib/tools/screenshot.sh"
 create_test_sandbox
 trap destroy_test_sandbox EXIT
 
+create_fake_command python 0
 create_fake_command screenshot-tool 0
 create_fake_command pipx 0
 
