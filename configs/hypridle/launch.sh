@@ -11,6 +11,8 @@ BRIGHTNESS_SCRIPT="$HYPRIDLE_DIR/scripts/brightness.sh"
 
 export PATH="$HYPRIDLE_DIR/scripts:$PATH"
 
+hypridle_pid=""
+
 
 check_previous_session() {
     if ! "$BRIGHTNESS_SCRIPT" pending; then
@@ -38,9 +40,27 @@ restore_brightness() {
 }
 
 
+stop_hypridle() {
+    if [[ -n "$hypridle_pid" ]] && kill -0 "$hypridle_pid" 2>/dev/null; then
+        kill "$hypridle_pid"
+    fi
+}
+
+
+handle_signal() {
+    stop_hypridle
+    exit 0
+}
+
+
 check_previous_session
 
 trap restore_brightness EXIT
+trap handle_signal INT TERM HUP
 
 hypridle \
-    --config "$HYPRIDLE_DIR/hypridle.conf"
+    --config "$HYPRIDLE_DIR/hypridle.conf" &
+
+hypridle_pid=$!
+
+wait "$hypridle_pid"
