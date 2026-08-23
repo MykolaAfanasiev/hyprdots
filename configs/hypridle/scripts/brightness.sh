@@ -1,84 +1,126 @@
 #!/usr/bin/env bash
 
-set -u
+set -euo pipefail
 
-TARGET="${1:-}"
-DURATION_MS="${2:-500}"
+STATE_DIR="${XDG_RUNTIME_DIR:-/tmp/hyprdots-$UID}/hyprdots"
+STATE_FILE="$STATE_DIR/brightness-before-idle"
+LOCK_FILE="$STATE_DIR/brightness.lock"
 
-BRIGHTNESS_ARGS=(-c backlight)
+mkdir -p -- "$STATE_DIR"
 
-if [[ -n "${BRIGHTNESS_DEVICE:-}" ]]; then
-    BRIGHTNESS_ARGS=(-d "$BRIGHTNESS_DEVICE")
-fi
 
-case "$TARGET" in
-    max)
-        TARGET=100
-        ;;
-    ''|*[!0-9]*)
-        echo "Usage: $0 {0..100|max} [duration_ms]" >&2
-        exit 1
-        ;;
-esac
+get_brightness() {
+    brightnessctl get
+}
 
-if (( TARGET < 1 || TARGET > 100 )); then
-    echo "Brightness must be between 1 and 100" >&2
-    exit 1
-fi
 
-LOCK_FILE="${XDG_RUNTIME_DIR:-/tmp}/hyprdots-brightness.lock"
+get_max_brightness() {
+    brightnessctl max
+}
 
-exec 9>"$LOCK_FILE"
-flock 9
 
-CURRENT_RAW="$(
-    brightnessctl "${BRIGHTNESS_ARGS[@]}" get 2>/dev/null
-)" || exit 1
-
-MAX_RAW="$(
-    brightnessctl "${BRIGHTNESS_ARGS[@]}" max 2>/dev/null
-)" || exit 1
-
-if (( MAX_RAW <= 0 )); then
-    exit 1
-fi
-
-CURRENT=$(( (CURRENT_RAW * 100 + MAX_RAW / 2) / MAX_RAW ))
-
-# Already at the requested brightness.
-if (( CURRENT == TARGET )); then
-    exit 0
-fi
-
-DELTA=$(( TARGET - CURRENT ))
-
-if (( DELTA < 0 )); then
-    ABS_DELTA=$(( -DELTA ))
-else
-    ABS_DELTA=$DELTA
-fi
-
-STEPS=20
-
-if (( ABS_DELTA < STEPS )); then
-    STEPS=$ABS_DELTA
-fi
-
-DELAY_MS=$(( DURATION_MS / STEPS ))
-
-printf -v DELAY "%d.%03d" \
-    $(( DELAY_MS / 1000 )) \
-    $(( DELAY_MS % 1000 ))
-
-for (( i = 1; i <= STEPS; i++ )); do
-    VALUE=$(( CURRENT + DELTA * i / STEPS ))
-
-    brightnessctl \
-        -q \
-        "${BRIGHTNESS_ARGS[@]}" \
-        set "${VALUE}%"
-
-    if (( i < STEPS )); then
-        sleep "$DELAY"
+save_brightness_once() {
+    if [[ -s "$STATE_FILE" ]]; then
+        return 0
     fi
-done
+
+    local current
+    current="$(get_brightness)"
+
+    printf '%s\n' "$current" > "$STATE_FILE"
+}
+
+
+smooth_set_raw() {
+    local target="$1"
+
+    local current
+    current="$(get_brightness)"
+
+    local steps=20
+    local step
+    local value
+
+    for (( step = 1; step <= steps; step++ )); do
+        value=$(( current + (target - current) * step / steps ))
+
+        brightnessctl set "$value" >/dev/null
+        sleep 0.02
+    done
+
+    brightnessctl set "$target" >/dev/null
+}
+
+set_percent() {
+    local percent="$1"
+
+    save_brightness_once
+
+    local maximum
+    maximum="$(get_max_brightness)"
+
+    local target=$(( maximum * percent / 100 ))
+
+    if (( target < 1 )); then
+        target=1
+    fi
+
+    smooth_set_raw "$target"
+}
+
+
+restore_brightness() {
+    if [[ ! -s "$STATE_FILE" ]]; then
+        return 0
+    fi
+
+    local target
+    target="$(<"$STATE_FILE")"
+
+    if [[ ! "$target" =~ ^[0-9]+$ ]]; then
+        rm -f -- "$STATE_FILE"
+        return 1
+    fi
+
+    local maximum
+    maximum="$(get_max_brightness)"
+
+    if (( target > maximum )); then
+        target="$maximum"
+    fi
+
+    smooth_set_raw "$target"
+
+    rm -f -- "$STATE_FILE"
+}
+
+
+main() {
+    local action="${1:-}"
+
+    (
+        flock -x 9
+
+        case "$action" in
+            restore)
+                restore_brightness
+                ;;
+
+            ''|*[!0-9]*)
+                printf 'Usage: %s <0-100|restore>\n' "$0" >&2
+                return 1
+                ;;
+
+            *)
+                if (( action < 0 || action > 100 )); then
+                    printf 'Brightness percentage must be between 0 and 100.\n' >&2
+                    return 1
+                fi
+
+                set_percent "$action"
+                ;;
+        esac
+    ) 9>"$LOCK_FILE"
+}
+
+main "$@"
