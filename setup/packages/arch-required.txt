@@ -26,3 +26,4 @@ pipewire-pulse
 pipewire-jack
 wireplumber
 qt5ct
+stow
