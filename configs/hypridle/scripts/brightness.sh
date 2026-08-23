@@ -106,8 +106,12 @@ main() {
                 restore_brightness
                 ;;
 
+            pending)
+                [[ -s "$STATE_FILE" ]]
+                ;;
+
             ''|*[!0-9]*)
-                printf 'Usage: %s <0-100|restore>\n' "$0" >&2
+                printf 'Usage: %s <0-100|restore|pending>\n' "$0" >&2
                 return 1
                 ;;
 
@@ -122,5 +126,3 @@ main() {
         esac
     ) 9>"$LOCK_FILE"
 }
-
-main "$@"
