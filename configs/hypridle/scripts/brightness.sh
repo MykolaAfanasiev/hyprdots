@@ -126,3 +126,5 @@ main() {
         esac
     ) 9>"$LOCK_FILE"
 }
+
+main "$@"
