@@ -9,6 +9,7 @@ fi
 
 readonly HYPRDOTS_TEST_E2E_LOADED=1
 
+
 HYPRDOTS_E2E_REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." &&
     pwd
@@ -20,6 +21,10 @@ source "$HYPRDOTS_E2E_REPO_ROOT/tests/lib/sandbox.sh"
 # shellcheck source=tests/lib/assertions.sh
 source "$HYPRDOTS_E2E_REPO_ROOT/tests/lib/assertions.sh"
 
+
+# ============================================================
+# Dependencies
+# ============================================================
 
 require_e2e_command() {
     local command_name="$1"
@@ -35,6 +40,10 @@ require_e2e_command() {
 }
 
 
+# ============================================================
+# Sandbox
+# ============================================================
+
 setup_e2e_test() {
     create_test_sandbox
 
@@ -46,7 +55,8 @@ setup_e2e_test() {
 
     E2E_PROJECT="$TEST_ROOT/project"
 
-    mkdir -p "$E2E_PROJECT"
+    mkdir -p -- \
+        "$E2E_PROJECT"
 
     cp -a -- \
         "$HYPRDOTS_E2E_REPO_ROOT/install.sh" \
@@ -64,7 +74,8 @@ setup_e2e_test() {
         "$HYPRDOTS_E2E_REPO_ROOT/scripts" \
         "$E2E_PROJECT/"
 
-    # Local machine state must never leak into the E2E environment.
+    # Local machine-specific configuration must never leak
+    # into the isolated E2E environment.
     rm -f -- \
         "$E2E_PROJECT/configs/hypr/modules/vars/local.lua" \
         "$E2E_PROJECT/configs/hyprsunset/location.conf"
@@ -79,8 +90,12 @@ setup_e2e_test() {
 }
 
 
+# ============================================================
+# Fake external commands
+# ============================================================
+
 create_e2e_pacman_all_installed() {
-    cat > "$TEST_BIN/pacman" <<EOF_PACMAN
+    cat > "$TEST_BIN/pacman" <<EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/pacman.log"
@@ -95,29 +110,31 @@ if [[ "\${1:-}" == "-Qq" ]]; then
 fi
 
 exit 0
-EOF_PACMAN
+EOF
 
-    chmod +x -- "$TEST_BIN/pacman"
+    chmod +x -- \
+        "$TEST_BIN/pacman"
 }
 
 
 create_e2e_sudo() {
     local status="$1"
 
-    cat > "$TEST_BIN/sudo" <<EOF_SUDO
+    cat > "$TEST_BIN/sudo" <<EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/sudo.log"
 
 exit $status
-EOF_SUDO
+EOF
 
-    chmod +x -- "$TEST_BIN/sudo"
+    chmod +x -- \
+        "$TEST_BIN/sudo"
 }
 
 
 create_e2e_stow() {
-    cat > "$TEST_BIN/stow" <<EOF_STOW
+    cat > "$TEST_BIN/stow" <<EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/stow.log"
@@ -133,24 +150,30 @@ ln -s -- \
     "$TEST_HOME/.config/hypr/hyprland.lua"
 
 exit 0
-EOF_STOW
+EOF
 
-    chmod +x -- "$TEST_BIN/stow"
+    chmod +x -- \
+        "$TEST_BIN/stow"
 }
 
 
 create_e2e_screenshot_tool() {
-    cat > "$TEST_BIN/screenshot-tool" <<EOF_SCREENSHOT
+    cat > "$TEST_BIN/screenshot-tool" <<EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/screenshot-tool.log"
 
 exit 0
-EOF_SCREENSHOT
+EOF
 
-    chmod +x -- "$TEST_BIN/screenshot-tool"
+    chmod +x -- \
+        "$TEST_BIN/screenshot-tool"
 }
 
+
+# ============================================================
+# Complete fake environment
+# ============================================================
 
 prepare_e2e_environment() {
     local sudo_status="$1"
@@ -159,10 +182,10 @@ prepare_e2e_environment() {
         "$E2E_PROJECT/configs/hyprsunset"
 
     cat > \
-        "$E2E_PROJECT/configs/hyprsunset/location.conf" <<'EOF_LOCATION'
+        "$E2E_PROJECT/configs/hyprsunset/location.conf" <<'EOF'
 LATITUDE=48.7
 LONGITUDE=11.4
-EOF_LOCATION
+EOF
 
     chmod 600 -- \
         "$E2E_PROJECT/configs/hyprsunset/location.conf"
@@ -173,6 +196,10 @@ EOF_LOCATION
     create_e2e_screenshot_tool
 }
 
+
+# ============================================================
+# Installer execution
+# ============================================================
 
 run_e2e_installer() {
     local input="$1"
@@ -187,9 +214,15 @@ run_e2e_installer() {
     set +e
 
     if (( EUID == 0 )); then
-        # The real installer correctly rejects root. CI containers normally
-        # run as root, so execute only the installer subprocess as a normal
-        # unprivileged UID inside its isolated sandbox.
+        # GitHub Actions runs the Arch container as root.
+        #
+        # The real installer intentionally rejects root, so only the
+        # installer subprocess is executed under an unprivileged UID.
+        #
+        # UID/GID 65534 normally belongs to nobody. Its login shell can
+        # be nologin, therefore SHELL is explicitly set to /bin/bash
+        # before util-linux "script" creates the pseudo-terminal.
+
         chown -R \
             65534:65534 \
             "$TEST_ROOT"
@@ -202,6 +235,8 @@ run_e2e_installer() {
                 env \
                     "HOME=$HOME" \
                     "USER=e2e" \
+                    "LOGNAME=e2e" \
+                    "SHELL=/bin/bash" \
                     "PATH=$PATH" \
                     "TMPDIR=$TMPDIR" \
                     "XDG_CONFIG_HOME=$XDG_CONFIG_HOME" \
@@ -215,17 +250,36 @@ run_e2e_installer() {
 
         E2E_STATUS="${PIPESTATUS[1]}"
     else
+        # Explicit SHELL keeps local execution identical to CI instead
+        # of depending on the user's interactive shell (zsh, bash, etc.).
+
         printf '%b' "$input" |
+            env \
+                "HOME=$HOME" \
+                "USER=e2e" \
+                "LOGNAME=e2e" \
+                "SHELL=/bin/bash" \
+                "PATH=$PATH" \
+                "TMPDIR=$TMPDIR" \
+                "XDG_CONFIG_HOME=$XDG_CONFIG_HOME" \
+                "XDG_CACHE_HOME=$XDG_CACHE_HOME" \
+                "XDG_DATA_HOME=$XDG_DATA_HOME" \
+                "XDG_STATE_HOME=$XDG_STATE_HOME" \
             script \
                 -qec "$command" \
                 /dev/null \
-                > "$output_file" 2>&1
+            > "$output_file" 2>&1
 
         E2E_STATUS="${PIPESTATUS[1]}"
     fi
 
     set -e
 }
+
+
+# ============================================================
+# E2E assertions
+# ============================================================
 
 assert_e2e_output_contains() {
     local output_file="$1"
@@ -241,6 +295,7 @@ assert_e2e_output_contains() {
     return 1
 }
 
+
 assert_e2e_output_not_contains() {
     local output_file="$1"
     local unexpected="$2"
@@ -253,4 +308,21 @@ assert_e2e_output_not_contains() {
     printf '  unexpected: %s\n' "$unexpected" >&2
 
     return 1
+}
+
+
+print_e2e_output() {
+    local output_file="$1"
+
+    printf '\n--- E2E installer output ---\n' >&2
+
+    if [[ -f "$output_file" ]]; then
+        cat -- "$output_file" >&2
+    else
+        printf 'Output file does not exist: %s\n' \
+            "$output_file" >&2
+    fi
+
+    printf '%s\n' \
+        '----------------------------' >&2
 }
