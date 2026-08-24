@@ -68,3 +68,16 @@ jobs:
 
       - name: Run installer tests
         run: ./tests/installer/run.sh
+      - name: Debug E2E tests
+        run: |
+          echo "UID=$(id -u)"
+          echo "USER=$(id -un)"
+
+          command -v script || true
+          command -v setpriv || true
+
+          script --version || true
+          setpriv --version || true
+
+          bash -x tests/installer/e2e/full-install.sh
+          bash -x tests/installer/e2e/preflight-failure.sh
