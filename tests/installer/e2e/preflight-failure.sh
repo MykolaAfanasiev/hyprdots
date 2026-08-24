@@ -25,6 +25,10 @@ run_e2e_installer \
     $'\n\n\n' \
     "$TEST_STATE/output.log"
 
+printf '\n--- E2E installer output ---\n' >&2
+cat -- "$TEST_STATE/output.log" >&2
+printf '%s\n' '----------------------------' >&2
+
 
 # Assert
 
