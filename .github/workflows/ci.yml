@@ -37,8 +37,8 @@ jobs:
             /usr/local/bin/shellcheck
 
           shellcheck --version
-            - name: Run static checks
-              run: ./tests/static/check.sh
+      - name: Run static checks
+        run: ./tests/static/check.sh
   installer:
     name: Installer tests
     runs-on: ubuntu-latest
