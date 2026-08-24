@@ -34,9 +34,7 @@ run_e2e_installer \
 
 
 if (( E2E_STATUS != 0 )); then
-    printf '\n--- E2E installer output ---\n' >&2
     cat -- "$TEST_STATE/output.log" >&2
-    printf '%s\n' '----------------------------' >&2
 fi
 
 # Assert
