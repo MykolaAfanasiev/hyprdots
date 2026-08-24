@@ -3,7 +3,7 @@
 
 # This file provides test helpers and dynamically overrides functions from
 # setup/lib/checks.sh. The overridden functions and shared test state are
-# shellcheck disable=SC2034,SC2317
+# shellcheck disable=SC2034,SC2329
 
 if [[ -n "${HYPRDOTS_TEST_SYSTEM_CHECKS_LOADED:-}" ]]; then
     return 0
