@@ -124,16 +124,26 @@ for index in "${!TESTS[@]}"; do
     status="$(<"$status_file")"
 
     if (( status != 0 )); then
-        printf 'FAIL: test exited with status %s\n' "$status"
-        failed=1
-    fi
+      printf 'FAIL: test exited with status %s\n' "$status"
 
-    printf '\n'
-done
+      FAILED_TESTS+=(
+          "${test#"$PROJECT_ROOT/"}"
+      )
+
+      failed=1
+    fi
+      printf '\n'
+    done
 
 
 if (( failed != 0 )); then
-    printf 'Installer tests failed.\n' >&2
+    printf '\nFailed tests:\n' >&2
+
+    for test in "${FAILED_TESTS[@]}"; do
+        printf '  - %s\n' "$test" >&2
+    done
+
+    printf '\nInstaller tests failed.\n' >&2
     exit 1
 fi
 
