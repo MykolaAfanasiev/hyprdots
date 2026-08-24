@@ -72,15 +72,18 @@ install_aur_package() {
         die "AUR package installation cancelled: $package"
     fi
 
-    (
-        cd -- "$repo_dir" || exit | exit 1
+    if ! (
+    cd -- "$repo_dir" || exit 1
 
-        makepkg \
-            -si \
-            --needed
-    )
+    makepkg \
+        -si \
+        --needed
+    ); then
+        rm -rf -- "$build_dir"
+        die "Failed to build or install AUR package: $package"
+    fi
 
-    rm -rf "$build_dir"
+    rm -rf -- "$build_dir"
 
     success "$package installed"
 }
