@@ -8,6 +8,8 @@ PROJECT_ROOT="$(
     pwd
 )"
 
+printf '\n==> ShellCheck version\n\n'
+shellcheck --version
 
 printf '\n==> Bash syntax\n\n'
 
