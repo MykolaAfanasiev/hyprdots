@@ -49,6 +49,11 @@ create_directory_link() {
     local destination="$2"
     local label="$3"
 
+    if symlink_points_to "$destination" "$target"; then
+        success "$label is already linked to: $target"
+        return 0
+    fi
+
     if [[ -e "$destination" || -L "$destination" ]]; then
         warn "$label default path already exists:"
         printf '  %s\n' "$destination"
