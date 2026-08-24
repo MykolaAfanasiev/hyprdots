@@ -53,10 +53,11 @@ jobs:
     steps:
       - name: Install test dependencies
         run: |
+      - name: Install test dependencies
+        run: |
           pacman -Syu --noconfirm \
             bash \
-            git
-
+            git      
       - name: Checkout repository
         uses: actions/checkout@v7
 
