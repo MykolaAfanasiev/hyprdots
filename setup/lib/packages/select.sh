@@ -15,7 +15,12 @@ declare -ag SELECTED_ARCH_REQUIRED=()
 declare -ag SELECTED_ARCH_RECOMMENDED=()
 declare -ag SELECTED_ARCH_DEFAULT_APPS=()
 declare -ag SELECTED_AUR_REQUIRED=()
+declare -gi PACKAGE_INSTALLATION_NEEDED=1
 
+
+stdin_is_terminal() {
+    [[ -t 0 ]]
+}
 
 print_package_list() {
     local array_name="$1"
@@ -205,7 +210,9 @@ package_group_installed() {
 run_package_selection() {
     section "[2/10] Package selection"
 
-    if [[ ! -t 0 ]]; then
+    PACKAGE_INSTALLATION_NEEDED=1
+
+    if ! stdin_is_terminal; then
         die "Interactive package selection requires a terminal."
     fi
 
