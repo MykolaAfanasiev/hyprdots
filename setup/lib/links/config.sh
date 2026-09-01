@@ -6,6 +6,8 @@ fi
 
 readonly HYPRDOTS_CONFIG_LINKS_LOADED=1
 
+declare -g CONFIG_DEPLOYMENT_MODE="unknown"
+
 
 stow_configs() {
     if ! command_exists stow; then
@@ -22,7 +24,15 @@ stow_configs() {
         --target="$HOME/.config" \
         configs
 
-    success "Configurations deployed with GNU Stow"
+    stow \
+        --restow \
+        --dir="$PROJECT_ROOT" \
+        --target="$HOME" \
+        home
+
+    CONFIG_DEPLOYMENT_MODE="automatic"
+
+    success "Configurations and home files deployed with GNU Stow"
 }
 
 
@@ -44,8 +54,14 @@ show_manual_stow_instructions() {
         "$PROJECT_ROOT" \
         "$HOME/.config"
 
+    printf '  stow --restow --dir="%s" --target="%s" home\n' \
+        "$PROJECT_ROOT" \
+        "$HOME"
+
     printf '\n'
     printf 'No configuration links were changed by the installer.\n'
+
+    CONFIG_DEPLOYMENT_MODE="manual"
 }
 
 

@@ -46,6 +46,50 @@ compatibility layer, and the PipeWire JACK provider.
 
 ## AUR
 
-`wlogout` is currently installed from the AUR. `base-devel` and `git` are kept
-in `arch-required.txt` so a clean installation has the tools needed to build an
-AUR package even when no AUR helper is already installed.
+The required AUR group currently contains:
+
+- `wlogout` for the graphical power menu;
+- `tmux-plugin-manager` for reproducible tmux plugin installation;
+- `xdg-desktop-portal-termfilechooser-hunkyburrito-git` for using Yazi as the
+  portal file chooser.
+
+`base-devel` and `git` are kept in `arch-required.txt` so a clean installation
+has the tools needed to build an AUR package even when no AUR helper is already
+installed.
+
+## Terminal workflow
+
+The required package list also covers the complete keyboard-oriented terminal
+stack stored in this repository:
+
+- Ghostty as the local terminal;
+- Zsh, Sheldon, Starship, fzf, zoxide, eza and bat for the interactive shell;
+- Zellij for local terminal multiplexing;
+- tmux and TPM for remote/server sessions;
+- Neovim for editing and terminal scrollback;
+- Yazi for terminal file management and portal file selection.
+
+## Yazi previews
+
+Yazi itself is required. Its optional preview/search tools are kept in the
+recommended list: `7zip`, `chafa`, `fd`, `ffmpeg`, `imagemagick`, `jq`,
+`poppler`, `resvg` and `ripgrep`. Selecting the recommended group enables the
+full preview experience without making those tools mandatory for a minimal
+installation.
+
+## GNU Stow layout
+
+The installer deploys two Stow packages with different targets:
+
+```text
+configs -> ~/.config
+home    -> ~
+```
+
+The `configs` package contains application configuration. The `home` package
+contains files whose destination is relative to the home directory, currently
+`.zshenv` and `.local/share/applications/yazi.desktop`.
+
+The installer never uses `stow --adopt`; an existing unmanaged destination is
+therefore reported as a conflict instead of being silently moved into the
+repository.

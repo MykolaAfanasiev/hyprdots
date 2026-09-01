@@ -1,1 +1,3 @@
 wlogout
+tmux-plugin-manager
+xdg-desktop-portal-termfilechooser-hunkyburrito-git

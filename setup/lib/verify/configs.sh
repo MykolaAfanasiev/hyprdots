@@ -57,11 +57,11 @@ verify_hyprland_link() {
     local resolved_source
     resolved_source="$(readlink -f -- "$source")"
 
-    if symlink_points_to \
+    if managed_path_resolves_to \
         "$destination" \
         "$resolved_source"
     then
-        verify_pass "Hyprland configuration symlink is correct"
+        verify_pass "Hyprland configuration resolves to the repository"
         return 0
     fi
 
@@ -79,10 +79,73 @@ verify_hyprland_link() {
 }
 
 
+managed_path_resolves_to() {
+    local destination="$1"
+    local source="$2"
+
+    [[ -e "$destination" || -L "$destination" ]] || return 1
+    [[ -e "$source" || -L "$source" ]] || return 1
+
+    local resolved_destination
+    local resolved_source
+
+    resolved_destination="$(readlink -f -- "$destination")" || return 1
+    resolved_source="$(readlink -f -- "$source")" || return 1
+
+    [[ "$resolved_destination" == "$resolved_source" ]]
+}
+
+
+verify_managed_configuration_links() {
+    local -a mappings=(
+        "Ghostty|$PROJECT_ROOT/configs/ghostty/config.ghostty|$HOME/.config/ghostty/config.ghostty"
+        "Starship|$PROJECT_ROOT/configs/starship/starship.toml|$HOME/.config/starship/starship.toml"
+        "tmux|$PROJECT_ROOT/configs/tmux/tmux.conf|$HOME/.config/tmux/tmux.conf"
+        "Zellij|$PROJECT_ROOT/configs/zellij/config.kdl|$HOME/.config/zellij/config.kdl"
+        "Yazi|$PROJECT_ROOT/configs/yazi/yazi.toml|$HOME/.config/yazi/yazi.toml"
+        "Zsh|$PROJECT_ROOT/configs/zsh/.zshrc|$HOME/.config/zsh/.zshrc"
+        "XDG portal|$PROJECT_ROOT/configs/xdg-desktop-portal/hyprland-portals.conf|$HOME/.config/xdg-desktop-portal/hyprland-portals.conf"
+        "Terminal file chooser|$PROJECT_ROOT/configs/xdg-desktop-portal-termfilechooser/config|$HOME/.config/xdg-desktop-portal-termfilechooser/config"
+        "Zsh environment|$PROJECT_ROOT/home/.zshenv|$HOME/.zshenv"
+        "Yazi desktop entry|$PROJECT_ROOT/home/.local/share/applications/yazi.desktop|$HOME/.local/share/applications/yazi.desktop"
+    )
+
+    local -a unresolved=()
+    local mapping
+    local label
+    local source
+    local destination
+
+    for mapping in "${mappings[@]}"; do
+        IFS='|' read -r label source destination <<< "$mapping"
+
+        if ! managed_path_resolves_to "$destination" "$source"; then
+            unresolved+=("$label: $destination")
+        fi
+    done
+
+    if (( ${#unresolved[@]} == 0 )); then
+        verify_pass \
+            "All ${#mappings[@]} managed shell and desktop paths resolve to the repository"
+        return 0
+    fi
+
+    verify_warn \
+        "${#unresolved[@]} managed shell or desktop path(s) are not deployed"
+
+    local item
+
+    for item in "${unresolved[@]}"; do
+        printf '  - %s\n' "$item"
+    done
+}
+
+
 verify_configuration() {
     section "Configuration"
 
     verify_hyprland_local_config
     verify_hyprsunset_location
     verify_hyprland_link
+    verify_managed_configuration_links
 }

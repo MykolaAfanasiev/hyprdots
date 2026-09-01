@@ -135,6 +135,7 @@ check_sudo() {
 check_repository() {
     local required_paths=(
         "$PROJECT_ROOT/configs"
+        "$PROJECT_ROOT/home"
         "$PROJECT_ROOT/scripts"
         "$SETUP_DIR/packages"
     )

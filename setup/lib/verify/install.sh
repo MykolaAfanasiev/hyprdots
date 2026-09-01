@@ -8,7 +8,7 @@ readonly HYPRDOTS_VERIFY_INSTALL_LOADED=1
 
 
 run_post_install_verification() {
-    section "[9/10] Post-install verification"
+    section "[10/10] Post-install verification"
 
     reset_verification_report
 
