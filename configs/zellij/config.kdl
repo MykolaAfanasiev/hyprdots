@@ -1,0 +1,51 @@
+// Local terminal multiplexer for Ghostty
+
+default_shell "/usr/bin/zsh"
+
+theme "catppuccin-mocha"
+default_layout "compact"
+default_mode "locked"
+
+simplified_ui false
+pane_frames true
+rounded_corners true
+mouse_mode true
+
+scroll_buffer_size 50000
+
+// Wayland clipboard
+copy_command "wl-copy"
+copy_clipboard "system"
+copy_on_select false
+
+// Ctrl+S, then E opens scrollback in Neovim
+scrollback_editor "/usr/bin/nvim"
+
+// Session restoration
+session_serialization true
+pane_viewport_serialization true
+scrollback_lines_to_serialize 10000
+serialization_interval 60
+
+auto_layout true
+stacked_resize true
+
+show_startup_tips false
+show_release_notes false
+
+keybinds {
+    scroll {
+        // Copy the selected command/output
+        bind "y" {
+            Copy
+            SwitchToMode "Normal"
+        }
+    }
+
+    search {
+        bind "y" {
+            Copy
+            SwitchToMode "Normal"
+        }
+    }
+}
