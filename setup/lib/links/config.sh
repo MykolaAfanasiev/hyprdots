@@ -6,8 +6,8 @@ fi
 
 readonly HYPRDOTS_CONFIG_LINKS_LOADED=1
 
-declare -g CONFIG_DEPLOYMENT_MODE="unknown"
-
+# Read by setup/lib/integrations/desktop.sh.
+declare -gx CONFIG_DEPLOYMENT_MODE="unknown"
 
 stow_configs() {
     if ! command_exists stow; then
