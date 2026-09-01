@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Yazi
+GenericName=File Manager
+Comment=Terminal file manager
+Icon=system-file-manager
+
+TryExec=/usr/bin/yazi
+Exec=/usr/bin/ghostty -e /usr/bin/yazi %f
+Terminal=false
+StartupNotify=true
+
+MimeType=inode/directory;
+Categories=System;FileTools;FileManager;
+Keywords=files;folders;terminal;

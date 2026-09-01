@@ -17,3 +17,7 @@ htmlcov/
 .DS_Store
 *.swp
 *.swo
+
+# Yazi downloaded packages
+configs/yazi/plugins/
+configs/yazi/flavors/
