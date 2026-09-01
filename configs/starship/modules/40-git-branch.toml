@@ -1,0 +1,4 @@
+[git_branch]
+symbol = " "
+style = "bold fg:mauve"
+format = "[$symbol$branch]($style)"

@@ -1,0 +1,8 @@
+[directory]
+truncation_length = 2
+truncate_to_repo = true
+style = "bg:blue fg:crust"
+format = "[$path]($style)[](bg:surface0 fg:blue)"
+
+[directory.substitutions]
+"~" = " "

@@ -1,0 +1,3 @@
+[character]
+success_symbol = "[ ✔](bg:surface0 fg:green bold)[](fg:surface0)"
+error_symbol = "[ ✗](bg:surface0 fg:red bold)[](fg:surface0)"

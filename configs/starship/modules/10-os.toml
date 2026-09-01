@@ -1,0 +1,7 @@
+[os]
+disabled = false
+style = "bg:mauve fg:crust"
+format = "[$symbol]($style)[ ](bg:blue fg:mauve)"
+
+[os.symbols]
+Arch = " "

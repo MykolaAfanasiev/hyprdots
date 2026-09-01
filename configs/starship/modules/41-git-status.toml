@@ -1,0 +1,4 @@
+[git_status]
+style = "fg:red"
+format = " [$all_status$ahead_behind]($style)"
+untracked = "?${count}"
