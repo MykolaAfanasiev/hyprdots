@@ -1,0 +1,13 @@
+# ==================
+# Theme
+# ==================
+
+config-file = themes/current.conf
+config-file = keybindings.conf
+
+# ==================
+# Font
+# ==================
+
+font-family = JetBrainsMono Nerd Font
+font-size = 12
