@@ -20,7 +20,7 @@ export VISUAL="${VISUAL:-$EDITOR}"
 export SUDO_EDITOR="${SUDO_EDITOR:-$EDITOR}"
 export PAGER="${PAGER:-less}"
 export STARSHIP_CONFIG="${STARSHIP_CONFIG:-$XDG_CONFIG_HOME/starship/starship.toml}"
-export YAZI_CONFIG_HOME="$HOME/.config/yazi"
+export YAZI_CONFIG_HOME="$XDG_CONFIG_HOME/yazi"
 
 # Sheldon uses configs/zsh/plugins.toml
 export SHELDON_CONFIG_DIR="$ZSH_CONFIG_DIR"
