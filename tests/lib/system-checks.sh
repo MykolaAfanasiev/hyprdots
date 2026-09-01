@@ -54,6 +54,7 @@ setup_system_checks_test() {
 create_valid_repository() {
     mkdir -p -- \
         "$PROJECT_ROOT/configs" \
+        "$PROJECT_ROOT/home" \
         "$PROJECT_ROOT/scripts" \
         "$SETUP_DIR/packages"
 }

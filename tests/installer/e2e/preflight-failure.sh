@@ -16,6 +16,11 @@ source "$REPO_ROOT/tests/lib/e2e.sh"
 setup_e2e_test
 trap destroy_test_sandbox EXIT
 
+if ! e2e_can_switch_to_unprivileged_user; then
+    printf 'SKIP: filesystem does not allow root to prepare an unprivileged E2E sandbox\n'
+    exit 0
+fi
+
 prepare_e2e_environment 1
 
 

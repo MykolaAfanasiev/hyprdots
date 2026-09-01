@@ -32,7 +32,7 @@ run_post_install_verification \
 
 # Assert
 
-assert_equals "12" "$VERIFY_PASS_COUNT" "fully valid installation should produce 12 passes"
+assert_equals "13" "$VERIFY_PASS_COUNT" "fully valid installation should produce 13 passes"
 assert_equals "0" "$VERIFY_WARN_COUNT" "fully valid installation should have no warnings"
 assert_equals "0" "$VERIFY_FAIL_COUNT" "fully valid installation should have no failures"
 

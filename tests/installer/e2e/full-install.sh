@@ -16,9 +16,14 @@ source "$REPO_ROOT/tests/lib/e2e.sh"
 setup_e2e_test
 trap destroy_test_sandbox EXIT
 
+if ! e2e_can_switch_to_unprivileged_user; then
+    printf 'SKIP: filesystem does not allow root to prepare an unprivileged E2E sandbox\n'
+    exit 0
+fi
+
 prepare_e2e_environment 0
 
-# Stage 8 should repair this before Stage 9 verifies it.
+# Stage 8 should repair this before Stage 10 verifies it.
 chmod -x -- \
     "$E2E_PROJECT/configs/hypridle/launch.sh"
 
@@ -44,7 +49,7 @@ assert_equals \
     "$E2E_STATUS" \
     "full installer should exit successfully"
 
-for stage in {1..9}; do
+for stage in {1..10}; do
     assert_e2e_output_contains \
         "$TEST_STATE/output.log" \
         "[$stage/10]"
@@ -66,6 +71,14 @@ assert_symlink_to \
     "$HOME/.config/hypr/hyprland.lua" \
     "$E2E_PROJECT/configs/hypr/hyprland.lua"
 
+assert_symlink_to \
+    "$HOME/.zshenv" \
+    "$E2E_PROJECT/home/.zshenv"
+
+assert_symlink_to \
+    "$HOME/.local/share/applications/yazi.desktop" \
+    "$E2E_PROJECT/home/.local/share/applications/yazi.desktop"
+
 location_permissions="$(
     stat -c '%a' -- \
         "$E2E_PROJECT/configs/hyprsunset/location.conf"
@@ -79,6 +92,10 @@ assert_equals \
 assert_e2e_output_contains \
     "$TEST_STATE/stow.log" \
     "--restow"
+
+assert_e2e_output_contains \
+    "$TEST_STATE/stow.log" \
+    "--target=$HOME home"
 
 assert_e2e_output_contains \
     "$TEST_STATE/output.log" \

@@ -48,4 +48,4 @@ assert_verify_output_contains \
     "$TEST_STATE/output.log" \
     "Post-install verification failed."
 
-printf 'PASS: failed verification causes Stage 9 to fail\n'
+printf 'PASS: failed verification causes Stage 10 to fail\n'

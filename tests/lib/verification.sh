@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Test state and dynamically overridden functions are consumed indirectly
-# by Stage 9 scenario tests.
+# by Stage 10 scenario tests.
 # shellcheck disable=SC2034,SC2317,SC2329
 
 if [[ -n "${HYPRDOTS_TEST_VERIFICATION_LOADED:-}" ]]; then
@@ -122,11 +122,29 @@ EOF_PACMAN
 
 create_valid_verification_environment() {
     mkdir -p \
+        "$PROJECT_ROOT/configs/ghostty" \
         "$PROJECT_ROOT/configs/hypr/modules/vars" \
         "$PROJECT_ROOT/configs/hyprsunset" \
+        "$PROJECT_ROOT/configs/starship" \
+        "$PROJECT_ROOT/configs/tmux" \
+        "$PROJECT_ROOT/configs/xdg-desktop-portal" \
+        "$PROJECT_ROOT/configs/xdg-desktop-portal-termfilechooser" \
+        "$PROJECT_ROOT/configs/yazi" \
+        "$PROJECT_ROOT/configs/zellij" \
+        "$PROJECT_ROOT/configs/zsh" \
         "$PROJECT_ROOT/configs/example" \
+        "$PROJECT_ROOT/home/.local/share/applications" \
         "$PROJECT_ROOT/scripts/example" \
+        "$HOME/.config/ghostty" \
         "$HOME/.config/hypr" \
+        "$HOME/.config/starship" \
+        "$HOME/.config/tmux" \
+        "$HOME/.config/xdg-desktop-portal" \
+        "$HOME/.config/xdg-desktop-portal-termfilechooser" \
+        "$HOME/.config/yazi" \
+        "$HOME/.config/zellij" \
+        "$HOME/.config/zsh" \
+        "$HOME/.local/share/applications" \
         "$HOME/.wallpapers" \
         "$HOME/Screenshots" \
         "$SETUP_DIR"
@@ -148,6 +166,29 @@ EOF_LOCATION
     ln -s \
         "$PROJECT_ROOT/configs/hypr/hyprland.lua" \
         "$HOME/.config/hypr/hyprland.lua"
+
+    local -a managed_pairs=(
+        "$PROJECT_ROOT/configs/ghostty/config.ghostty|$HOME/.config/ghostty/config.ghostty"
+        "$PROJECT_ROOT/configs/starship/starship.toml|$HOME/.config/starship/starship.toml"
+        "$PROJECT_ROOT/configs/tmux/tmux.conf|$HOME/.config/tmux/tmux.conf"
+        "$PROJECT_ROOT/configs/xdg-desktop-portal/hyprland-portals.conf|$HOME/.config/xdg-desktop-portal/hyprland-portals.conf"
+        "$PROJECT_ROOT/configs/xdg-desktop-portal-termfilechooser/config|$HOME/.config/xdg-desktop-portal-termfilechooser/config"
+        "$PROJECT_ROOT/configs/yazi/yazi.toml|$HOME/.config/yazi/yazi.toml"
+        "$PROJECT_ROOT/configs/zellij/config.kdl|$HOME/.config/zellij/config.kdl"
+        "$PROJECT_ROOT/configs/zsh/.zshrc|$HOME/.config/zsh/.zshrc"
+        "$PROJECT_ROOT/home/.zshenv|$HOME/.zshenv"
+        "$PROJECT_ROOT/home/.local/share/applications/yazi.desktop|$HOME/.local/share/applications/yazi.desktop"
+    )
+
+    local pair
+    local source
+    local destination
+
+    for pair in "${managed_pairs[@]}"; do
+        IFS='|' read -r source destination <<< "$pair"
+        printf '%s\n' 'managed test file' > "$source"
+        ln -s "$source" "$destination"
+    done
 
     printf '#!/usr/bin/env bash\n' \
         > "$PROJECT_ROOT/install.sh"

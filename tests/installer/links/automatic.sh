@@ -46,7 +46,9 @@ assert_directory_exists \
 assert_file_exists \
     "$TEST_STATE/stow.log"
 
-expected_args="--restow --dir=$PROJECT_ROOT --target=$HOME/.config configs"
+expected_args="$(printf '%s\n%s' \
+    "--restow --dir=$PROJECT_ROOT --target=$HOME/.config configs" \
+    "--restow --dir=$PROJECT_ROOT --target=$HOME home")"
 
 actual_args="$(cat "$TEST_STATE/stow.log")"
 
@@ -56,4 +58,4 @@ assert_equals \
     "GNU Stow should be called with the expected arguments"
 
 
-printf 'PASS: automatic configuration deployment calls GNU Stow correctly\n'
+printf 'PASS: automatic deployment stows config and home packages correctly\n'

@@ -44,7 +44,9 @@ run_config_link_setup <<< $'invalid\na' \
 assert_file_exists \
     "$TEST_STATE/stow.log"
 
-expected_args="--restow --dir=$PROJECT_ROOT --target=$HOME/.config configs"
+expected_args="$(printf '%s\n%s' \
+    "--restow --dir=$PROJECT_ROOT --target=$HOME/.config configs" \
+    "--restow --dir=$PROJECT_ROOT --target=$HOME home")"
 actual_args="$(cat "$TEST_STATE/stow.log")"
 
 assert_equals \

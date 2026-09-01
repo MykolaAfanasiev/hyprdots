@@ -21,9 +21,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v7
 
-      - name: Install ShellCheck
+      - name: Install shell tooling
         run: |
           SHELLCHECK_VERSION="0.11.0"
+
+          sudo apt-get update
+          sudo apt-get install --yes zsh
 
           curl -fsSL \
             "https://github.com/koalaman/shellcheck/releases/download/v${SHELLCHECK_VERSION}/shellcheck-v${SHELLCHECK_VERSION}.linux.x86_64.tar.xz" \

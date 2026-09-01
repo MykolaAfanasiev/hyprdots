@@ -49,6 +49,7 @@ assert_file_not_exists \
 
 
 expected_command="stow --restow --dir=\"$PROJECT_ROOT\" --target=\"$HOME/.config\" configs"
+expected_home_command="stow --restow --dir=\"$PROJECT_ROOT\" --target=\"$HOME\" home"
 
 if ! grep -Fq -- \
     "$expected_command" \
@@ -56,6 +57,15 @@ if ! grep -Fq -- \
 then
     printf 'FAIL: manual Stow command was not shown correctly\n' >&2
     printf '  expected: %s\n' "$expected_command" >&2
+    exit 1
+fi
+
+if ! grep -Fq -- \
+    "$expected_home_command" \
+    "$TEST_STATE/output.log"
+then
+    printf 'FAIL: manual home Stow command was not shown correctly\n' >&2
+    printf '  expected: %s\n' "$expected_home_command" >&2
     exit 1
 fi
 

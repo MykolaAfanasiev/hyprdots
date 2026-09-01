@@ -40,6 +40,25 @@ require_e2e_command() {
 }
 
 
+e2e_can_switch_to_unprivileged_user() {
+    if (( EUID != 0 )); then
+        return 0
+    fi
+
+    local probe="$TEST_ROOT/chown-probe"
+
+    : > "$probe"
+
+    if chown 65534:65534 "$probe" 2>/dev/null; then
+        rm -f -- "$probe"
+        return 0
+    fi
+
+    rm -f -- "$probe"
+    return 1
+}
+
+
 # ============================================================
 # Sandbox
 # ============================================================
@@ -68,6 +87,10 @@ setup_e2e_test() {
 
     cp -a -- \
         "$HYPRDOTS_E2E_REPO_ROOT/configs" \
+        "$E2E_PROJECT/"
+
+    cp -a -- \
+        "$HYPRDOTS_E2E_REPO_ROOT/home" \
         "$E2E_PROJECT/"
 
     cp -a -- \
@@ -139,15 +162,51 @@ create_e2e_stow() {
 
 printf '%s\n' "\$*" >> "$TEST_STATE/stow.log"
 
-mkdir -p -- \
-    "$TEST_HOME/.config/hypr"
+package="\${*: -1}"
 
-rm -f -- \
-    "$TEST_HOME/.config/hypr/hyprland.lua"
+case "\$package" in
+    configs)
+        mkdir -p -- \
+            "$TEST_HOME/.config/ghostty" \
+            "$TEST_HOME/.config/hypr" \
+            "$TEST_HOME/.config/starship" \
+            "$TEST_HOME/.config/tmux" \
+            "$TEST_HOME/.config/xdg-desktop-portal" \
+            "$TEST_HOME/.config/xdg-desktop-portal-termfilechooser" \
+            "$TEST_HOME/.config/yazi" \
+            "$TEST_HOME/.config/zellij" \
+            "$TEST_HOME/.config/zsh"
 
-ln -s -- \
-    "$E2E_PROJECT/configs/hypr/hyprland.lua" \
-    "$TEST_HOME/.config/hypr/hyprland.lua"
+        ln -sf -- "$E2E_PROJECT/configs/ghostty/config.ghostty" \
+            "$TEST_HOME/.config/ghostty/config.ghostty"
+        ln -sf -- "$E2E_PROJECT/configs/hypr/hyprland.lua" \
+            "$TEST_HOME/.config/hypr/hyprland.lua"
+        ln -sf -- "$E2E_PROJECT/configs/starship/starship.toml" \
+            "$TEST_HOME/.config/starship/starship.toml"
+        ln -sf -- "$E2E_PROJECT/configs/tmux/tmux.conf" \
+            "$TEST_HOME/.config/tmux/tmux.conf"
+        ln -sf -- "$E2E_PROJECT/configs/xdg-desktop-portal/hyprland-portals.conf" \
+            "$TEST_HOME/.config/xdg-desktop-portal/hyprland-portals.conf"
+        ln -sf -- "$E2E_PROJECT/configs/xdg-desktop-portal-termfilechooser/config" \
+            "$TEST_HOME/.config/xdg-desktop-portal-termfilechooser/config"
+        ln -sf -- "$E2E_PROJECT/configs/yazi/yazi.toml" \
+            "$TEST_HOME/.config/yazi/yazi.toml"
+        ln -sf -- "$E2E_PROJECT/configs/zellij/config.kdl" \
+            "$TEST_HOME/.config/zellij/config.kdl"
+        ln -sf -- "$E2E_PROJECT/configs/zsh/.zshrc" \
+            "$TEST_HOME/.config/zsh/.zshrc"
+        ;;
+
+    home)
+        mkdir -p -- \
+            "$TEST_HOME/.local/share/applications"
+
+        ln -sf -- "$E2E_PROJECT/home/.zshenv" \
+            "$TEST_HOME/.zshenv"
+        ln -sf -- "$E2E_PROJECT/home/.local/share/applications/yazi.desktop" \
+            "$TEST_HOME/.local/share/applications/yazi.desktop"
+        ;;
+esac
 
 exit 0
 EOF
