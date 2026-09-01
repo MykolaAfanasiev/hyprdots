@@ -103,7 +103,7 @@ hypr/
 
 | Назначение | Команды |
 |---|---|
-| Терминал | `kitty` |
+| Терминал | `ghostty` |
 | Меню приложений | `wofi` |
 | Панель | `waybar` |
 | Уведомления | `swaync`, `swaync-client`, `notify-send` |
@@ -120,7 +120,7 @@ hypr/
 Проверить наличие команды:
 
 ```bash
-command -v kitty
+command -v ghostty
 ```
 
 ## Установка
@@ -207,7 +207,7 @@ modules/vars/global.lua
 
 ```lua
 M.mainMod = "SUPER"
-M.terminal = "kitty"
+M.terminal = "ghostty"
 M.fileManager = "dolphin"
 ```
 
@@ -281,9 +281,9 @@ $HOME/.config/.dotfiles/configs/hypr
 
 | Пространство | Показать или скрыть | Переместить активное окно | Приложение |
 |---|---|---|---|
-| Терминал | `SUPER + T` | `SUPER + Shift + T` | `kitty` |
+| Терминал | `SUPER + T` | `SUPER + Shift + T` | `ghostty` |
 | Заметки | `SUPER + N` | `SUPER + Shift + N` | `obsidian` |
-| Мониторинг | `SUPER + B` | `SUPER + Shift + B` | `kitty -e btop` |
+| Мониторинг | `SUPER + B` | `SUPER + Shift + B` | `ghostty -e btop` |
 
 ### Мультимедийные клавиши
 

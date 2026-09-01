@@ -2,9 +2,9 @@ local M = {
   mainMod = "SUPER",
 
   apps = {
-    terminal = "kitty",
+    terminal = "ghostty",
     notes = "obsidian",
-    system_monitor = "kitty -e btop",
+    system_monitor = "ghostty -e btop",
   },
 
   monitor = {

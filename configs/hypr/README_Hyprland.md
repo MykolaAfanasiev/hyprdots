@@ -103,7 +103,7 @@ The configuration calls the following programs. Install only the components you 
 
 | Purpose | Commands |
 |---|---|
-| Terminal | `kitty` |
+| Terminal | `ghostty` |
 | Application launcher | `wofi` |
 | Status bar | `waybar` |
 | Notifications | `swaync`, `swaync-client`, `notify-send` |
@@ -120,7 +120,7 @@ The configuration calls the following programs. Install only the components you 
 Check a command with:
 
 ```bash
-command -v kitty
+command -v ghostty
 ```
 
 ## Installation
@@ -207,7 +207,7 @@ Current defaults:
 
 ```lua
 M.mainMod = "SUPER"
-M.terminal = "kitty"
+M.terminal = "ghostty"
 M.fileManager = "dolphin"
 ```
 
@@ -281,9 +281,9 @@ Each special workspace launches its application when created empty.
 
 | Workspace | Toggle | Move active window | Application |
 |---|---|---|---|
-| Terminal | `SUPER + T` | `SUPER + Shift + T` | `kitty` |
+| Terminal | `SUPER + T` | `SUPER + Shift + T` | `ghostty` |
 | Notes | `SUPER + N` | `SUPER + Shift + N` | `obsidian` |
-| Monitor | `SUPER + B` | `SUPER + Shift + B` | `kitty -e btop` |
+| Monitor | `SUPER + B` | `SUPER + Shift + B` | `ghostty -e btop` |
 
 ### Media controls
 
