@@ -181,7 +181,7 @@ The launcher uses a centered search field and a two-column result list:
 │                                                    │
 │  D Firefox                    D Obsidian            │
 │  W firefox · ChatGPT          D Kitty               │
-│  D Visual Studio Code         W kitty · nvim        │
+│  D Visual Studio Code         W ghostty · nvim      │
 ╰────────────────────────────────────────────────────╯
 ```
 

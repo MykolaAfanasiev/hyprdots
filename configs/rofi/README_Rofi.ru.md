@@ -181,7 +181,7 @@ Launcher использует расположенное по центру по�
 │                                                    │
 │  D Firefox                    D Obsidian            │
 │  W firefox · ChatGPT          D Kitty               │
-│  D Visual Studio Code         W kitty · nvim        │
+│  D Visual Studio Code         W ghostty · nvim      │
 ╰────────────────────────────────────────────────────╯
 ```
 
