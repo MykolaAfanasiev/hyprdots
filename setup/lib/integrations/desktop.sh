@@ -277,6 +277,7 @@ run_desktop_integration_setup() {
         configure_yazi_file_manager
         configure_zen_file_picker
         configure_obsidian
+        configure_anki
         restart_desktop_portals
     else
         info "Automatic deployment was not selected; desktop activation skipped"
@@ -312,4 +313,33 @@ configure_obsidian() {
     fi
 
     success "Obsidian configuration is ready"
+}
+
+configure_anki() {
+    local configurator="$PROJECT_ROOT/setup/lib/integrations/anki.py"
+
+    if [[ ! -d "$HOME/.local/share/Anki2" ]] &&
+       [[ ! -d "$HOME/.var/app/net.ankiweb.Anki" ]]; then
+        info "Anki data directory was not found; configuration skipped"
+        return 0
+    fi
+
+    if ! command_exists python; then
+        warn "Python is unavailable; Anki configuration skipped"
+        return 0
+    fi
+
+    if [[ ! -r "$configurator" ]]; then
+        warn "Anki configurator is missing: $configurator"
+        return 0
+    fi
+
+    info "Configuring Anki..."
+
+    if ! command python "$configurator"; then
+        warn "Anki configuration failed"
+        return 0
+    fi
+
+    success "Anki Catppuccin Mocha configuration is ready"
 }
