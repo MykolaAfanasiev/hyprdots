@@ -43,3 +43,18 @@ hl.window_rule({
   move  = "20 monitor_h-120",
   float = true,
 })
+
+-- File chosser rule
+hl.window_rule({
+  name  = "yazi-file-chooser",
+  match = {
+    initial_title = "^yazi-file-chooser$",
+  },
+
+  float  = true,
+  center = true,
+  size   = {
+    "(monitor_w * 0.65)",
+    "(monitor_h * 0.70)",
+  },
+})

@@ -1,7 +1,7 @@
 hl.config({
   input = {
     kb_layout    = "us, ru",
-    kb_variant   = "intl,",
+    kb_variant   = "altgr-intl,",
     kb_model     = "",
     kb_options   = "grp:alt_shift_toggle",
     kb_rules     = "",
