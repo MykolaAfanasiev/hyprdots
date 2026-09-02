@@ -1,51 +1,206 @@
-// Local terminal multiplexer for Ghostty
+// ─────────────────────────────────────────────
+// Hyprdots Norexil — Zellij
+// ─────────────────────────────────────────────
 
 default_shell "/usr/bin/zsh"
 
 theme "catppuccin-mocha"
+
 default_layout "compact"
 default_mode "locked"
 
+// ─────────────────────────────────────────────
+// UI
+// ─────────────────────────────────────────────
+
 simplified_ui false
 pane_frames true
-rounded_corners true
+
+ui {
+    pane_frames {
+        rounded_corners true
+        hide_session_name false
+    }
+}
+
 mouse_mode true
 
-scroll_buffer_size 50000
+// ─────────────────────────────────────────────
+// Scrollback
+// ─────────────────────────────────────────────
 
-// Wayland clipboard
+scroll_buffer_size 50000
+scrollback_editor "/usr/bin/nvim"
+
+// ─────────────────────────────────────────────
+// Clipboard
+// ─────────────────────────────────────────────
+
 copy_command "wl-copy"
 copy_clipboard "system"
 copy_on_select false
 
-// Ctrl+S, then E opens scrollback in Neovim
-scrollback_editor "/usr/bin/nvim"
+// ─────────────────────────────────────────────
+// Sessions
+// ─────────────────────────────────────────────
 
-// Session restoration
 session_serialization true
 pane_viewport_serialization true
 scrollback_lines_to_serialize 10000
 serialization_interval 60
 
+on_force_close "detach"
+
+// ─────────────────────────────────────────────
+// Layout
+// ─────────────────────────────────────────────
+
 auto_layout true
 stacked_resize true
+
+// ─────────────────────────────────────────────
+// Misc
+// ─────────────────────────────────────────────
 
 show_startup_tips false
 show_release_notes false
 
+// ─────────────────────────────────────────────
+// Keybindings
+// ─────────────────────────────────────────────
+
 keybinds {
-    scroll {
-        // Copy the selected command/output
-        bind "y" {
-            Copy
-            SwitchToMode "Normal"
+    locked {
+        bind "Ctrl g" {
+            SwitchToMode "normal"
         }
     }
 
-    search {
+    normal {
+        bind "Ctrl g" {
+            SwitchToMode "locked"
+        }
+
+        bind "p" { SwitchToMode "pane"; }
+        bind "t" { SwitchToMode "tab"; }
+        bind "r" { SwitchToMode "resize"; }
+        bind "s" { SwitchToMode "scroll"; }
+        bind "m" { SwitchToMode "move"; }
+        bind "o" { SwitchToMode "session"; }
+
+        bind "Esc" {
+            SwitchToMode "locked"
+        }
+    }
+
+    pane {
+        bind "h" "Left"  { MoveFocus "Left"; }
+        bind "j" "Down"  { MoveFocus "Down"; }
+        bind "k" "Up"    { MoveFocus "Up"; }
+        bind "l" "Right" { MoveFocus "Right"; }
+
+        bind "n" { NewPane; }
+        bind "d" { NewPane "Down"; }
+        bind "r" { NewPane "Right"; }
+        bind "s" { NewPane "stacked"; }
+
+        bind "x" { CloseFocus; }
+        bind "f" { ToggleFocusFullscreen; }
+        bind "w" { ToggleFloatingPanes; }
+
+        bind "Esc" {
+            SwitchToMode "locked"
+        }
+    }
+
+    resize {
+        bind "h" "Left"  { Resize "Left"; }
+        bind "j" "Down"  { Resize "Down"; }
+        bind "k" "Up"    { Resize "Up"; }
+        bind "l" "Right" { Resize "Right"; }
+
+        bind "+" "=" { Resize "Increase"; }
+        bind "-"     { Resize "Decrease"; }
+
+        bind "Esc" {
+            SwitchToMode "locked"
+        }
+    }
+
+    tab {
+        bind "h" "Left" {
+            GoToPreviousTab
+        }
+
+        bind "l" "Right" {
+            GoToNextTab
+        }
+
+        bind "n" {
+            NewTab
+        }
+
+        bind "x" {
+            CloseTab
+        }
+
+        bind "1" { GoToTab 1; }
+        bind "2" { GoToTab 2; }
+        bind "3" { GoToTab 3; }
+        bind "4" { GoToTab 4; }
+        bind "5" { GoToTab 5; }
+        bind "6" { GoToTab 6; }
+        bind "7" { GoToTab 7; }
+        bind "8" { GoToTab 8; }
+        bind "9" { GoToTab 9; }
+
+        bind "Esc" {
+            SwitchToMode "locked"
+        }
+    }
+
+    session {
+        bind "d" {
+            Detach
+        }
+
+        bind "w" {
+            LaunchOrFocusPlugin "zellij:session-manager" {
+                floating true
+                move_to_focused_tab true
+            }
+        }
+
+        bind "Esc" {
+            SwitchToMode "locked"
+        }
+    }
+
+    scroll {
+        bind "j" "Down" {
+            ScrollDown
+        }
+
+        bind "k" "Up" {
+            ScrollUp
+        }
+
+        bind "Ctrl d" {
+            HalfPageScrollDown
+        }
+
+        bind "Ctrl u" {
+            HalfPageScrollUp
+        }
+
         bind "y" {
             Copy
-            SwitchToMode "Normal"
+            SwitchToMode "locked"
+        }
+
+        bind "Esc" {
+            ScrollToBottom
+            SwitchToMode "locked"
         }
     }
 }
