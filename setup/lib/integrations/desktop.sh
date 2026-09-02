@@ -276,6 +276,7 @@ run_desktop_integration_setup() {
     if [[ "${CONFIG_DEPLOYMENT_MODE:-unknown}" == "automatic" ]]; then
         configure_yazi_file_manager
         configure_zen_file_picker
+        configure_obsidian
         restart_desktop_portals
     else
         info "Automatic deployment was not selected; desktop activation skipped"
@@ -283,4 +284,32 @@ run_desktop_integration_setup() {
 
     printf '\n'
     success "Shell and desktop integrations complete"
+}
+
+configure_obsidian() {
+    local configurator="$PROJECT_ROOT/setup/lib/integrations/obsidian.py"
+
+    if ! command_exists obsidian; then
+        info "Obsidian is not installed; configuration skipped"
+        return 0
+    fi
+
+    if ! command_exists python; then
+        warn "Python is unavailable; Obsidian configuration skipped"
+        return 0
+    fi
+
+    if [[ ! -r "$configurator" ]]; then
+        warn "Obsidian configurator is missing: $configurator"
+        return 0
+    fi
+
+    info "Configuring Obsidian..."
+
+    if ! command python "$configurator"; then
+        warn "Obsidian configuration failed"
+        return 0
+    fi
+
+    success "Obsidian configuration is ready"
 }
