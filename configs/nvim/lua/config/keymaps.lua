@@ -28,8 +28,13 @@ map("v", "K", ":m '<-2<cr>gv=gv", { desc = "Move selection up" })
 -- Diagnostics
 map("n", "<leader>dd", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 map("n", "[d", function()
-  vim.diagnostic.jump({ count = -1, float = true })
+	vim.diagnostic.jump({ count = -1, float = true })
 end, { desc = "Previous diagnostic" })
 map("n", "]d", function()
-  vim.diagnostic.jump({ count = 1, float = true })
+	vim.diagnostic.jump({ count = 1, float = true })
 end, { desc = "Next diagnostic" })
+
+-- Terminal
+vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], {
+	desc = "Exit terminal mode",
+})
