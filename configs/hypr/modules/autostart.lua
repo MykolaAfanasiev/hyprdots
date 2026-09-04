@@ -1,6 +1,9 @@
 local paths = require("modules.vars.paths")
 
 hl.on("hyprland.start", function()
+  -- Polkit authentication agent
+  hl.exec_cmd("systemctl --user start hyprpolkitagent.service")
+
   -- Wallpaper
   hl.exec_cmd(paths.hyprpaper.launch)
   -- Bar
