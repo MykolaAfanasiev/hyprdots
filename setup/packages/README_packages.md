@@ -104,3 +104,11 @@ contains files whose destination is relative to the home directory, currently
 The installer never uses `stow --adopt`; an existing unmanaged destination is
 therefore reported as a conflict instead of being silently moved into the
 repository.
+
+## Repository formatting
+
+`shfmt` is included in the recommended Arch packages because the repository
+uses it both in Neovim format-on-save and in the development/CI formatting
+gate. The formatting rules live in the repository-level `.editorconfig`, so
+Neovim, `scripts/dev/format.sh`, the Git pre-commit hook and CI all use the
+same two-space shell indentation.

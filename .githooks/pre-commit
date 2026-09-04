@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+
+if "$PROJECT_ROOT/scripts/dev/check-format.sh"; then
+  exit 0
+fi
+
+printf '\nFormatting shell files before commit...\n' >&2
+"$PROJECT_ROOT/scripts/dev/format.sh"
+
+cat >&2 <<'EOF_MESSAGE'
+
+The formatter changed files, so this commit was stopped to avoid staging
+changes you have not reviewed. Check the diff, stage the formatted files,
+and run the commit again.
+EOF_MESSAGE
+
+exit 1

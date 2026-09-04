@@ -12,3 +12,4 @@ jq
 poppler
 resvg
 ripgrep
+shfmt

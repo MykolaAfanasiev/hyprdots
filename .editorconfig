@@ -1,0 +1,42 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+
+[*.sh]
+indent_style = space
+indent_size = 2
+binary_next_line = false
+switch_case_indent = false
+space_redirects = false
+function_next_line = false
+simplify = false
+
+[*.zsh]
+indent_style = space
+indent_size = 2
+binary_next_line = false
+switch_case_indent = false
+space_redirects = false
+function_next_line = false
+simplify = false
+
+[.zshrc]
+indent_style = space
+indent_size = 2
+binary_next_line = false
+switch_case_indent = false
+space_redirects = false
+function_next_line = false
+simplify = false
+
+[.zshenv]
+indent_style = space
+indent_size = 2
+binary_next_line = false
+switch_case_indent = false
+space_redirects = false
+function_next_line = false
+simplify = false

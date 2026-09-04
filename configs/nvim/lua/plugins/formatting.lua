@@ -25,6 +25,8 @@ return {
       formatters_by_ft = {
         lua = { "stylua" },
         python = { "isort", "black" },
+        -- shfmt reads the repository .editorconfig, so format-on-save and
+        -- scripts/dev/format.sh use exactly the same indentation rules.
         sh = { "shfmt" },
         bash = { "shfmt" },
         zsh = { "shfmt" },

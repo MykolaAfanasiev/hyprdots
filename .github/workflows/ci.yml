@@ -24,6 +24,8 @@ jobs:
       - name: Install shell tooling
         run: |
           SHELLCHECK_VERSION="0.11.0"
+          SHFMT_VERSION="3.13.1"
+          SHFMT_SHA256="fb096c5d1ac6beabbdbaa2874d025badb03ee07929f0c9ff67563ce8c75398b1"
 
           sudo apt-get update
           sudo apt-get install --yes zsh
@@ -39,7 +41,15 @@ jobs:
             "/tmp/shellcheck-v${SHELLCHECK_VERSION}/shellcheck" \
             /usr/local/bin/shellcheck
 
+          curl -fsSL \
+            "https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/shfmt_v${SHFMT_VERSION}_linux_amd64" \
+            -o /tmp/shfmt
+
+          printf '%s  %s\n' "$SHFMT_SHA256" /tmp/shfmt | sha256sum --check --status
+          sudo install -m 0755 /tmp/shfmt /usr/local/bin/shfmt
+
           shellcheck --version
+          shfmt --version
       - name: Run static checks
         run: ./tests/static/check.sh
   installer:

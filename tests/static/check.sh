@@ -73,6 +73,15 @@ printf '\n==> ShellCheck version\n\n'
 
 shellcheck --version
 
+printf '\n==> Shell formatting\n\n'
+
+if ! command -v shfmt > /dev/null 2>&1; then
+  printf 'shfmt is required for shell formatting checks.\n' >&2
+  exit 1
+fi
+
+"$PROJECT_ROOT/scripts/dev/check-format.sh"
+
 printf '\n==> Bash syntax (%s parallel jobs)\n\n' "$JOBS"
 
 for file in "${SHELL_FILES[@]}"; do
