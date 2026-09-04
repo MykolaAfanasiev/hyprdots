@@ -49,6 +49,6 @@ load_shell_format_files() {
 
   local index
   for index in "${!SHELL_FORMAT_FILES[@]}"; do
-    SHELL_FORMAT_FILES[$index]="$FORMAT_PROJECT_ROOT/${SHELL_FORMAT_FILES[$index]}"
+    SHELL_FORMAT_FILES[index]="$FORMAT_PROJECT_ROOT/${SHELL_FORMAT_FILES[index]}"
   done
 }
