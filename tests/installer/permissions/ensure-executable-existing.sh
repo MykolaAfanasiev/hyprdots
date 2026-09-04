@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -30,7 +30,7 @@ file="$PROJECT_ROOT/test.sh"
 
 mkdir -p -- "$PROJECT_ROOT"
 
-printf '#!/usr/bin/env bash\n' > "$file"
+printf '#!/usr/bin/env bash\n' >"$file"
 
 chmod 0751 -- "$file"
 
@@ -43,13 +43,13 @@ ensure_executable "$file"
 # Assert
 
 assert_executable \
-    "$file"
+  "$file"
 
 after_mode="$(stat -c '%a' -- "$file")"
 
 assert_equals \
-    "$before_mode" \
-    "$after_mode" \
-    "existing executable permissions should remain unchanged"
+  "$before_mode" \
+  "$after_mode" \
+  "existing executable permissions should remain unchanged"
 
 printf 'PASS: already executable file keeps its existing permissions\n'

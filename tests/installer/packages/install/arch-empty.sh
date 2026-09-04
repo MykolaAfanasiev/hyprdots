@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -22,15 +22,15 @@ trap destroy_test_sandbox EXIT
 # Act
 
 install_arch_packages \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "No official Arch packages selected"
+  "$TEST_STATE/output.log" \
+  "No official Arch packages selected"
 
 assert_file_not_exists \
-    "$TEST_STATE/sudo.log"
+  "$TEST_STATE/sudo.log"
 
 printf 'PASS: empty Arch package list skips installation\n'

@@ -24,7 +24,7 @@ prepend_mason_bin() {
 require_shfmt() {
   prepend_mason_bin
 
-  if command -v shfmt > /dev/null 2>&1; then
+  if command -v shfmt >/dev/null 2>&1; then
     return 0
   fi
 

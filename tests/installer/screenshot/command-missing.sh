@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -29,7 +29,7 @@ trap destroy_test_sandbox EXIT
 
 create_fake_command python 0
 
-cat > "$TEST_BIN/pipx" << 'EOF'
+cat >"$TEST_BIN/pipx" <<'EOF'
 #!/usr/bin/env bash
 
 printf '%s\n' "$*" >> "$TEST_STATE/pipx.log"
@@ -68,33 +68,33 @@ run_screenshot_tool_setup
 # Assert
 
 assert_file_exists \
-    "$TEST_STATE/pipx.log"
+  "$TEST_STATE/pipx.log"
 
 assert_file_exists \
-    "$TEST_BIN/screenshot-tool"
+  "$TEST_BIN/screenshot-tool"
 
 assert_executable \
-    "$TEST_BIN/screenshot-tool"
+  "$TEST_BIN/screenshot-tool"
 
 assert_file_exists \
-    "$TEST_STATE/screenshot-tool.log"
+  "$TEST_STATE/screenshot-tool.log"
 
 assert_equals \
-    "--help" \
-    "$(cat "$TEST_STATE/screenshot-tool.log")" \
-    "installed screenshot-tool should be verified with --help"
+  "--help" \
+  "$(cat "$TEST_STATE/screenshot-tool.log")" \
+  "installed screenshot-tool should be verified with --help"
 
 expected_pipx_log="$(
-    printf '%s\n%s\n' \
-        "environment --value PIPX_BIN_DIR" \
-        "install --editable $PROJECT_ROOT/scripts/screenshot"
+  printf '%s\n%s\n' \
+    "environment --value PIPX_BIN_DIR" \
+    "install --editable $PROJECT_ROOT/scripts/screenshot"
 )"
 
 actual_pipx_log="$(cat "$TEST_STATE/pipx.log")"
 
 assert_equals \
-    "$expected_pipx_log" \
-    "$actual_pipx_log" \
-    "pipx should query its bin directory and install screenshot-tool in editable mode"
+  "$expected_pipx_log" \
+  "$actual_pipx_log" \
+  "pipx should query its bin directory and install screenshot-tool in editable mode"
 
 printf 'PASS: missing screenshot-tool is installed with pipx\n'

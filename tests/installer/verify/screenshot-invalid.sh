@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -19,8 +19,8 @@ setup_verification_test
 trap destroy_test_sandbox EXIT
 
 create_fake_command \
-    screenshot-tool \
-    0
+  screenshot-tool \
+  0
 
 mock_screenshot_tool_status 1
 

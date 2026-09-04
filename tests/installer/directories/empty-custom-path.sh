@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -35,22 +35,22 @@ mkdir -p -- "$custom_path"
 # Act
 
 configure_runtime_directory \
-    "Wallpapers" \
-    "$default_path" \
-    <<< $'c\n\n'"$custom_path" \
-    > "$TEST_STATE/output.log" 2>&1
+  "Wallpapers" \
+  "$default_path" \
+  <<<$'c\n\n'"$custom_path" \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_symlink_to \
-    "$default_path" \
-    "$custom_path"
+  "$default_path" \
+  "$custom_path"
 
 if ! grep -Fq -- \
-    "Directory path cannot be empty." \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: empty directory path warning was not shown\n' >&2
-    exit 1
+  "Directory path cannot be empty." \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: empty directory path warning was not shown\n' >&2
+  exit 1
 fi
 
 printf 'PASS: empty custom directory path is rejected and retried\n'

@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -21,22 +21,22 @@ trap destroy_test_sandbox EXIT
 manifest="$TEST_STATE/packages.txt"
 
 printf '  hyprland  \n\n# comment\n\twaybar\t\nkitty' \
-    > "$manifest"
+  >"$manifest"
 
 packages=(old-value)
 
 # Act
 
 load_package_manifest \
-    "$manifest" \
-    packages
+  "$manifest" \
+  packages
 
 # Assert
 
 assert_array_equals \
-    packages \
-    hyprland \
-    waybar \
-    kitty
+  packages \
+  hyprland \
+  waybar \
+  kitty
 
 printf 'PASS: package manifest is trimmed and loaded correctly\n'

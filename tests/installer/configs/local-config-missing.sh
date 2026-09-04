@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -32,29 +32,29 @@ destination="$PROJECT_ROOT/configs/hypr/modules/vars/local.lua"
 mkdir -p "$(dirname -- "$template")"
 
 printf '%s\n' \
-    'return {' \
-    '    test = true,' \
-    '}' \
-    > "$template"
+  'return {' \
+  '    test = true,' \
+  '}' \
+  >"$template"
 
 # Act
 
 create_local_config \
-    "$template" \
-    "$destination" \
-    "Hyprland local config"
+  "$template" \
+  "$destination" \
+  "Hyprland local config"
 
 # Assert
 
 assert_file_exists \
-    "$destination"
+  "$destination"
 
 expected_content="$(cat "$template")"
 actual_content="$(cat "$destination")"
 
 assert_equals \
-    "$expected_content" \
-    "$actual_content" \
-    "local.lua should be copied from the example template"
+  "$expected_content" \
+  "$actual_content" \
+  "local.lua should be copied from the example template"
 
 printf 'PASS: missing Hyprland local config is created from template\n'

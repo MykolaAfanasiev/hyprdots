@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -32,21 +32,21 @@ default_path="$HOME/.wallpapers"
 # Act
 
 configure_runtime_directory \
-    "Wallpapers" \
-    "$default_path" \
-    <<< $'invalid\nd' \
-    > "$TEST_STATE/output.log" 2>&1
+  "Wallpapers" \
+  "$default_path" \
+  <<<$'invalid\nd' \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_directory_exists \
-    "$default_path"
+  "$default_path"
 
 if ! grep -Fq -- \
-    "Choose D or C." \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: invalid directory selection warning was not shown\n' >&2
-    exit 1
+  "Choose D or C." \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: invalid directory selection warning was not shown\n' >&2
+  exit 1
 fi
 
 printf 'PASS: invalid runtime directory selection is rejected and retried\n'

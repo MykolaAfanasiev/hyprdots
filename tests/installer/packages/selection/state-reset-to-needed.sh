@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -27,14 +27,14 @@ PACKAGE_INSTALLATION_NEEDED=0
 # Act
 
 run_package_selection \
-    <<< $'\n\n\n\n' \
-    > "$TEST_STATE/output.log" 2>&1
+  <<<$'\n\n\n\n' \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_equals \
-    "1" \
-    "$PACKAGE_INSTALLATION_NEEDED" \
-    "package selection should reset installation state when packages are missing"
+  "1" \
+  "$PACKAGE_INSTALLATION_NEEDED" \
+  "package selection should reset installation state when packages are missing"
 
 printf 'PASS: package installation state resets to needed on a later run\n'

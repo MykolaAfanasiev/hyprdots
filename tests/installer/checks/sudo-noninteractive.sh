@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -20,19 +20,19 @@ create_fake_sudo 0 1
 # Act
 
 check_sudo \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "sudo access available"
+  "$TEST_STATE/output.log" \
+  "sudo access available"
 
 actual_log="$(cat "$TEST_STATE/sudo.log")"
 
 assert_equals \
-    "-n true" \
-    "$actual_log" \
-    "sudo -v should not run when non-interactive access works"
+  "-n true" \
+  "$actual_log" \
+  "sudo -v should not run when non-interactive access works"
 
 printf 'PASS: existing non-interactive sudo access is accepted\n'

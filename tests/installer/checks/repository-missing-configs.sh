@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -22,17 +22,17 @@ rm -rf -- "$PROJECT_ROOT/configs"
 # Act
 
 run_captured \
-    "$TEST_STATE/output.log" \
-    check_repository
+  "$TEST_STATE/output.log" \
+  check_repository
 
 # Assert
 
 assert_failure \
-    "$LAST_STATUS" \
-    "missing configs directory should be rejected"
+  "$LAST_STATUS" \
+  "missing configs directory should be rejected"
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Required repository path is missing: $PROJECT_ROOT/configs"
+  "$TEST_STATE/output.log" \
+  "Required repository path is missing: $PROJECT_ROOT/configs"
 
 printf 'PASS: missing configs directory is rejected\n'

@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -21,7 +21,7 @@ trap destroy_test_sandbox EXIT
 packages=(hyprland missing-package waybar)
 
 create_fake_pacman_with_missing \
-    missing-package
+  missing-package
 
 # Act
 
@@ -33,7 +33,7 @@ set -e
 # Assert
 
 assert_failure \
-    "$status" \
-    "package group with a missing package should fail"
+  "$status" \
+  "package group with a missing package should fail"
 
 printf 'PASS: package group fails when a package is missing\n'

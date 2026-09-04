@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -26,35 +26,35 @@ SELECTED_AUR_REQUIRED=(wlogout)
 # Act
 
 print_package_selection_summary \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_package_output_contains \
-    "$TEST_STATE/output.log" \
-    "Required Arch packages:"
+  "$TEST_STATE/output.log" \
+  "Required Arch packages:"
 
 assert_package_output_contains \
-    "$TEST_STATE/output.log" \
-    "Recommended Arch packages:"
+  "$TEST_STATE/output.log" \
+  "Recommended Arch packages:"
 
 assert_package_output_contains \
-    "$TEST_STATE/output.log" \
-    "Default applications:"
+  "$TEST_STATE/output.log" \
+  "Default applications:"
 
 assert_package_output_contains \
-    "$TEST_STATE/output.log" \
-    "AUR packages:"
+  "$TEST_STATE/output.log" \
+  "AUR packages:"
 
 for package in \
-    hyprland \
-    waybar \
-    wireplumber \
-    kitty \
-    wlogout; do
-    assert_package_output_contains \
-        "$TEST_STATE/output.log" \
-        "  - $package"
+  hyprland \
+  waybar \
+  wireplumber \
+  kitty \
+  wlogout; do
+  assert_package_output_contains \
+    "$TEST_STATE/output.log" \
+    "  - $package"
 done
 
 printf 'PASS: package selection summary displays selected packages\n'

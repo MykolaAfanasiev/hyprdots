@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -20,22 +20,22 @@ setup_package_installation_test
 trap destroy_test_sandbox EXIT
 
 create_fake_pacman \
-    0 \
-    wlogout
+  0 \
+  wlogout
 
 # Act
 
 install_aur_package \
-    wlogout \
-    > "$TEST_STATE/output.log" 2>&1
+  wlogout \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "wlogout is already installed"
+  "$TEST_STATE/output.log" \
+  "wlogout is already installed"
 
 assert_file_not_exists \
-    "$TEST_STATE/git.log"
+  "$TEST_STATE/git.log"
 
 printf 'PASS: installed AUR package is not rebuilt\n'

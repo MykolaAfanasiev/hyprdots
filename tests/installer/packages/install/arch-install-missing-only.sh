@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -20,27 +20,27 @@ setup_package_installation_test
 trap destroy_test_sandbox EXIT
 
 create_fake_pacman \
-    0 \
-    hyprland
+  0 \
+  hyprland
 
 create_fake_sudo_passthrough
 
 # Act
 
 install_arch_packages \
-    hyprland \
-    waybar \
-    kitty \
-    > "$TEST_STATE/output.log" 2>&1
+  hyprland \
+  waybar \
+  kitty \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_log_contains \
-    "$TEST_STATE/sudo.log" \
-    "pacman -S --needed waybar kitty"
+  "$TEST_STATE/sudo.log" \
+  "pacman -S --needed waybar kitty"
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "Official Arch packages installed"
+  "$TEST_STATE/output.log" \
+  "Official Arch packages installed"
 
 printf 'PASS: only missing Arch packages are installed\n'

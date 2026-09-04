@@ -1,59 +1,59 @@
 #!/usr/bin/env bash
 
 if [[ -n "${HYPRDOTS_VERIFY_PACKAGES_LOADED:-}" ]]; then
-    return 0
+  return 0
 fi
 
 readonly HYPRDOTS_VERIFY_PACKAGES_LOADED=1
 
 verify_package_group() {
-    local label="$1"
-    shift
+  local label="$1"
+  shift
 
-    local -a packages=("$@")
+  local -a packages=("$@")
 
-    if ((${#packages[@]} == 0)); then
-        verify_pass "$label: nothing selected"
-        return 0
+  if ((${#packages[@]} == 0)); then
+    verify_pass "$label: nothing selected"
+    return 0
+  fi
+
+  local -a missing_packages=()
+  local package
+
+  for package in "${packages[@]}"; do
+    if ! pacman -Qq "$package" >/dev/null 2>&1; then
+      missing_packages+=("$package")
     fi
+  done
 
-    local -a missing_packages=()
-    local package
+  if ((${#missing_packages[@]} == 0)); then
+    verify_pass \
+      "$label: all ${#packages[@]} selected package(s) are installed"
 
-    for package in "${packages[@]}"; do
-        if ! pacman -Qq "$package" > /dev/null 2>&1; then
-            missing_packages+=("$package")
-        fi
-    done
+    return 0
+  fi
 
-    if ((${#missing_packages[@]} == 0)); then
-        verify_pass \
-            "$label: all ${#packages[@]} selected package(s) are installed"
+  verify_fail \
+    "$label: ${#missing_packages[@]} package(s) are missing"
 
-        return 0
-    fi
-
-    verify_fail \
-        "$label: ${#missing_packages[@]} package(s) are missing"
-
-    print_package_list missing_packages
+  print_package_list missing_packages
 }
 
 verify_selected_packages() {
-    section "Packages"
+  section "Packages"
 
-    local -a arch_packages=()
-    local -a aur_packages=()
+  local -a arch_packages=()
+  local -a aur_packages=()
 
-    build_package_plan \
-        arch_packages \
-        aur_packages
+  build_package_plan \
+    arch_packages \
+    aur_packages
 
-    verify_package_group \
-        "Official Arch packages" \
-        "${arch_packages[@]}"
+  verify_package_group \
+    "Official Arch packages" \
+    "${arch_packages[@]}"
 
-    verify_package_group \
-        "AUR packages" \
-        "${aur_packages[@]}"
+  verify_package_group \
+    "AUR packages" \
+    "${aur_packages[@]}"
 }

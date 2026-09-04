@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -31,9 +31,9 @@ location_file="$PROJECT_ROOT/configs/hyprsunset/location.conf"
 mkdir -p -- "$(dirname -- "$location_file")"
 
 printf '%s\n' \
-    'LATITUDE=48.765' \
-    'LONGITUDE=11.424' \
-    > "$location_file"
+  'LATITUDE=48.765' \
+  'LONGITUDE=11.424' \
+  >"$location_file"
 
 chmod 0644 -- "$location_file"
 
@@ -46,8 +46,8 @@ secure_hyprsunset_location
 actual_mode="$(stat -c '%a' -- "$location_file")"
 
 assert_equals \
-    "600" \
-    "$actual_mode" \
-    "Hyprsunset location.conf should be restricted to mode 600"
+  "600" \
+  "$actual_mode" \
+  "Hyprsunset location.conf should be restricted to mode 600"
 
 printf 'PASS: Hyprsunset location file is secured to mode 600\n'

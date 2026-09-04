@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,20 +25,20 @@ create_fake_git_clone 1
 # Act
 
 run_install_test_captured \
-    "$TEST_STATE/output.log" \
-    install_aur_package \
-    wlogout
+  "$TEST_STATE/output.log" \
+  install_aur_package \
+  wlogout
 
 # Assert
 
 assert_failure \
-    "$INSTALL_TEST_STATUS" \
-    "failed AUR clone should fail installation"
+  "$INSTALL_TEST_STATUS" \
+  "failed AUR clone should fail installation"
 
 assert_no_aur_build_dirs
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "Failed to clone AUR package: wlogout"
+  "$TEST_STATE/output.log" \
+  "Failed to clone AUR package: wlogout"
 
 printf 'PASS: failed AUR clone removes its temporary build directory\n'

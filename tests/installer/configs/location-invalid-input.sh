@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -33,41 +33,41 @@ mkdir -p "$(dirname -- "$destination")"
 # Act
 
 configure_hyprsunset_location \
-    <<< $'y\nabc\n48.765\nhello\n11.424' \
-    > "$TEST_STATE/output.log" 2>&1
+  <<<$'y\nabc\n48.765\nhello\n11.424' \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_file_exists \
-    "$destination"
+  "$destination"
 
 expected_content=$'LATITUDE=48.765\nLONGITUDE=11.424'
 actual_content="$(cat "$destination")"
 
 assert_equals \
-    "$expected_content" \
-    "$actual_content" \
-    "valid coordinates should be accepted after invalid input"
+  "$expected_content" \
+  "$actual_content" \
+  "valid coordinates should be accepted after invalid input"
 
 if ! grep -Fq -- \
-    "Latitude must be a number" \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: invalid latitude warning was not shown\n' >&2
-    exit 1
+  "Latitude must be a number" \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: invalid latitude warning was not shown\n' >&2
+  exit 1
 fi
 
 if ! grep -Fq -- \
-    "Longitude must be a number" \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: invalid longitude warning was not shown\n' >&2
-    exit 1
+  "Longitude must be a number" \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: invalid longitude warning was not shown\n' >&2
+  exit 1
 fi
 
 actual_mode="$(stat -c '%a' -- "$destination")"
 
 assert_equals \
-    "600" \
-    "$actual_mode" \
-    "Hyprsunset location config should have mode 600"
+  "600" \
+  "$actual_mode" \
+  "Hyprsunset location config should have mode 600"
 
 printf 'PASS: invalid coordinates are rejected and retried\n'

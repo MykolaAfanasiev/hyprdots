@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -19,16 +19,16 @@ setup_verification_test
 trap destroy_test_sandbox EXIT
 
 mkdir -p \
-    "$PROJECT_ROOT/configs/hyprsunset"
+  "$PROJECT_ROOT/configs/hyprsunset"
 
 target="$TEST_STATE/location.conf"
 
 printf '%s\n' 'LATITUDE=48.7' \
-    > "$target"
+  >"$target"
 
 ln -s \
-    "$target" \
-    "$PROJECT_ROOT/configs/hyprsunset/location.conf"
+  "$target" \
+  "$PROJECT_ROOT/configs/hyprsunset/location.conf"
 
 # Act
 

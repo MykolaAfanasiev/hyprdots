@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -31,9 +31,9 @@ destination="$PROJECT_ROOT/configs/hyprsunset/location.conf"
 mkdir -p "$(dirname -- "$destination")"
 
 printf '%s\n' \
-    'LATITUDE=10.123' \
-    'LONGITUDE=20.456' \
-    > "$destination"
+  'LATITUDE=10.123' \
+  'LONGITUDE=20.456' \
+  >"$destination"
 
 before_content="$(cat "$destination")"
 before_inode="$(stat -c '%i' -- "$destination")"
@@ -48,13 +48,13 @@ after_content="$(cat "$destination")"
 after_inode="$(stat -c '%i' -- "$destination")"
 
 assert_equals \
-    "$before_content" \
-    "$after_content" \
-    "existing Hyprsunset location should not be overwritten"
+  "$before_content" \
+  "$after_content" \
+  "existing Hyprsunset location should not be overwritten"
 
 assert_equals \
-    "$before_inode" \
-    "$after_inode" \
-    "existing Hyprsunset location should not be recreated"
+  "$before_inode" \
+  "$after_inode" \
+  "existing Hyprsunset location should not be recreated"
 
 printf 'PASS: existing Hyprsunset location config is left unchanged\n'

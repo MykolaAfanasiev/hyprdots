@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -20,12 +20,12 @@ create_fake_command pacman 0
 # Act
 
 check_pacman \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "pacman found: $TEST_BIN/pacman"
+  "$TEST_STATE/output.log" \
+  "pacman found: $TEST_BIN/pacman"
 
 printf 'PASS: pacman is detected\n'

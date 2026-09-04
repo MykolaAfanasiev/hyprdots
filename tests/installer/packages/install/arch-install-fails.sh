@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,18 +25,18 @@ create_fake_sudo_passthrough
 # Act
 
 run_install_test_captured \
-    "$TEST_STATE/output.log" \
-    install_arch_packages \
-    hyprland
+  "$TEST_STATE/output.log" \
+  install_arch_packages \
+  hyprland
 
 # Assert
 
 assert_failure \
-    "$INSTALL_TEST_STATUS" \
-    "failed pacman installation should propagate"
+  "$INSTALL_TEST_STATUS" \
+  "failed pacman installation should propagate"
 
 assert_log_contains \
-    "$TEST_STATE/sudo.log" \
-    "pacman -S --needed hyprland"
+  "$TEST_STATE/sudo.log" \
+  "pacman -S --needed hyprland"
 
 printf 'PASS: pacman installation failure propagates\n'

@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -36,13 +36,13 @@ mkdir -p "$(dirname -- "$destination")"
 set +e
 
 (
-    set -e
+  set -e
 
-    create_local_config \
-        "$template" \
-        "$destination" \
-        "Hyprland local config"
-) > "$TEST_STATE/output.log" 2>&1
+  create_local_config \
+    "$template" \
+    "$destination" \
+    "Hyprland local config"
+) >"$TEST_STATE/output.log" 2>&1
 
 status=$?
 
@@ -51,17 +51,17 @@ set -e
 # Assert
 
 assert_failure \
-    "$status" \
-    "missing local config template should cause failure"
+  "$status" \
+  "missing local config template should cause failure"
 
 assert_file_not_exists \
-    "$destination"
+  "$destination"
 
 if ! grep -Fq -- \
-    "Local config template is not readable:" \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: missing template error was not shown\n' >&2
-    exit 1
+  "Local config template is not readable:" \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: missing template error was not shown\n' >&2
+  exit 1
 fi
 
 printf 'PASS: missing local config template causes failure\n'

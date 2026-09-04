@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -20,9 +20,9 @@ setup_package_installation_test
 trap destroy_test_sandbox EXIT
 
 create_fake_pacman \
-    0 \
-    hyprland \
-    kitty
+  0 \
+  hyprland \
+  kitty
 
 source_packages=(hyprland waybar kitty)
 installed_packages=()
@@ -31,19 +31,19 @@ missing_packages=()
 # Act
 
 split_arch_packages \
-    source_packages \
-    installed_packages \
-    missing_packages
+  source_packages \
+  installed_packages \
+  missing_packages
 
 # Assert
 
 assert_array_equals \
-    installed_packages \
-    hyprland \
-    kitty
+  installed_packages \
+  hyprland \
+  kitty
 
 assert_array_equals \
-    missing_packages \
-    waybar
+  missing_packages \
+  waybar
 
 printf 'PASS: Arch packages are split into installed and missing groups\n'

@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -32,18 +32,18 @@ default_path="$HOME/.wallpapers"
 # Act
 
 configure_runtime_directory \
-    "Wallpapers" \
-    "$default_path" \
-    <<< ""
+  "Wallpapers" \
+  "$default_path" \
+  <<<""
 
 # Assert
 
 assert_directory_exists \
-    "$default_path"
+  "$default_path"
 
 if [[ -L "$default_path" ]]; then
-    printf 'FAIL: default runtime directory should not be a symlink\n' >&2
-    exit 1
+  printf 'FAIL: default runtime directory should not be a symlink\n' >&2
+  exit 1
 fi
 
 printf 'PASS: default runtime directory is created normally\n'

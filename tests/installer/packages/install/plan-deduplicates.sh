@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -30,20 +30,20 @@ aur_packages=()
 # Act
 
 build_package_plan \
-    arch_packages \
-    aur_packages
+  arch_packages \
+  aur_packages
 
 # Assert
 
 assert_array_equals \
-    arch_packages \
-    hyprland \
-    waybar \
-    wireplumber \
-    kitty
+  arch_packages \
+  hyprland \
+  waybar \
+  wireplumber \
+  kitty
 
 assert_array_equals \
-    aur_packages \
-    wlogout
+  aur_packages \
+  wlogout
 
 printf 'PASS: installation plan removes duplicate packages\n'

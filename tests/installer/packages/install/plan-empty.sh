@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,8 +25,8 @@ aur_packages=(old)
 # Act
 
 build_package_plan \
-    arch_packages \
-    aur_packages
+  arch_packages \
+  aur_packages
 
 # Assert
 

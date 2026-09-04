@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -28,23 +28,23 @@ mock_confirm_yes
 # Act
 
 install_aur_package \
-    wlogout \
-    > "$TEST_STATE/output.log" 2>&1
+  wlogout \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_log_contains \
-    "$TEST_STATE/git.log" \
-    "https://aur.archlinux.org/wlogout.git"
+  "$TEST_STATE/git.log" \
+  "https://aur.archlinux.org/wlogout.git"
 
 assert_log_contains \
-    "$TEST_STATE/makepkg.log" \
-    "-si --needed"
+  "$TEST_STATE/makepkg.log" \
+  "-si --needed"
 
 assert_no_aur_build_dirs
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "wlogout installed"
+  "$TEST_STATE/output.log" \
+  "wlogout installed"
 
 printf 'PASS: successful AUR installation cleans its temporary build directory\n'

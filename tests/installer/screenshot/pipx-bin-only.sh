@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -32,7 +32,7 @@ create_fake_command python 0
 PIPX_BIN_DIR="$TEST_ROOT/pipx-bin"
 mkdir -p "$PIPX_BIN_DIR"
 
-cat > "$PIPX_BIN_DIR/screenshot-tool" << 'EOF'
+cat >"$PIPX_BIN_DIR/screenshot-tool" <<'EOF'
 #!/usr/bin/env bash
 
 exit 0
@@ -40,7 +40,7 @@ EOF
 
 chmod +x -- "$PIPX_BIN_DIR/screenshot-tool"
 
-cat > "$TEST_BIN/pipx" << EOF
+cat >"$TEST_BIN/pipx" <<EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/pipx.log"
@@ -62,17 +62,17 @@ run_screenshot_tool_setup
 # Assert
 
 assert_file_exists \
-    "$PIPX_BIN_DIR/screenshot-tool"
+  "$PIPX_BIN_DIR/screenshot-tool"
 
 assert_executable \
-    "$PIPX_BIN_DIR/screenshot-tool"
+  "$PIPX_BIN_DIR/screenshot-tool"
 
 assert_file_exists \
-    "$TEST_STATE/pipx.log"
+  "$TEST_STATE/pipx.log"
 
 assert_equals \
-    "environment --value PIPX_BIN_DIR" \
-    "$(cat "$TEST_STATE/pipx.log")" \
-    "pipx install should not run when screenshot-tool already exists in PIPX_BIN_DIR"
+  "environment --value PIPX_BIN_DIR" \
+  "$(cat "$TEST_STATE/pipx.log")" \
+  "pipx install should not run when screenshot-tool already exists in PIPX_BIN_DIR"
 
 printf 'PASS: screenshot-tool in PIPX_BIN_DIR skips reinstall\n'

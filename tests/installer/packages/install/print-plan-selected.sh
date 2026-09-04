@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,27 +25,27 @@ aur_packages=(wlogout)
 # Act
 
 print_install_plan \
-    arch_packages \
-    aur_packages \
-    > "$TEST_STATE/output.log" 2>&1
+  arch_packages \
+  aur_packages \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "Official Arch packages:"
+  "$TEST_STATE/output.log" \
+  "Official Arch packages:"
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "AUR packages:"
+  "$TEST_STATE/output.log" \
+  "AUR packages:"
 
 for package in \
-    hyprland \
-    waybar \
-    wlogout; do
-    assert_install_output_contains \
-        "$TEST_STATE/output.log" \
-        "  - $package"
+  hyprland \
+  waybar \
+  wlogout; do
+  assert_install_output_contains \
+    "$TEST_STATE/output.log" \
+    "  - $package"
 done
 
 printf 'PASS: installation plan displays selected packages\n'

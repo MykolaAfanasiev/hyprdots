@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -24,12 +24,12 @@ create_valid_verification_environment
 create_fake_pacman_installed
 
 rm \
-    "$PROJECT_ROOT/configs/hyprsunset/location.conf"
+  "$PROJECT_ROOT/configs/hyprsunset/location.conf"
 
 # Act
 
 run_post_install_verification \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
@@ -37,7 +37,7 @@ assert_equals "1" "$VERIFY_WARN_COUNT" "optional missing location should produce
 assert_equals "0" "$VERIFY_FAIL_COUNT" "warning-only installation should not fail"
 
 assert_verify_output_contains \
-    "$TEST_STATE/output.log" \
-    "Installation completed with warnings."
+  "$TEST_STATE/output.log" \
+  "Installation completed with warnings."
 
 printf 'PASS: warning-only verification completes successfully with warning status\n'

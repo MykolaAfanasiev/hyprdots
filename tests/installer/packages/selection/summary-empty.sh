@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -21,17 +21,17 @@ trap destroy_test_sandbox EXIT
 # Act
 
 print_package_selection_summary \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 none_count="$(
-    grep -Fc -- "  (none)" "$TEST_STATE/output.log"
+  grep -Fc -- "  (none)" "$TEST_STATE/output.log"
 )"
 
 assert_equals \
-    "4" \
-    "$none_count" \
-    "every empty package group should be displayed as none"
+  "4" \
+  "$none_count" \
+  "every empty package group should be displayed as none"
 
 printf 'PASS: empty package selection summary shows all groups as none\n'

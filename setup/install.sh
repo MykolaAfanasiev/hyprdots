@@ -10,13 +10,13 @@ set -euo pipefail
 # ------------------------------------------------------------
 
 SETUP_DIR="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &&
+    pwd
 )"
 
 PROJECT_ROOT="$(
-    cd -- "$SETUP_DIR/.." &&
-        pwd
+  cd -- "$SETUP_DIR/.." &&
+    pwd
 )"
 
 LIB_DIR="$SETUP_DIR/lib"
@@ -62,64 +62,64 @@ source "$LIB_DIR/verify/install.sh"
 # ------------------------------------------------------------
 
 main() {
-    section "Hyprdots Norexil Installer"
+  section "Hyprdots Norexil Installer"
 
-    printf 'Project: %s\n' "$PROJECT_ROOT"
+  printf 'Project: %s\n' "$PROJECT_ROOT"
 
-    run_system_checks
+  run_system_checks
 
-    printf '\n'
-    info "Stage 1 complete."
+  printf '\n'
+  info "Stage 1 complete."
 
-    run_package_selection
+  run_package_selection
 
-    printf '\n'
-    info "Stage 2 complete."
+  printf '\n'
+  info "Stage 2 complete."
 
-    run_package_installation
+  run_package_installation
 
-    printf '\n'
-    info "Stage 3 complete."
+  printf '\n'
+  info "Stage 3 complete."
 
-    run_local_config_setup
+  run_local_config_setup
 
-    printf '\n'
-    info "Stage 4 complete."
+  printf '\n'
+  info "Stage 4 complete."
 
-    run_config_link_setup
+  run_config_link_setup
 
-    printf '\n'
-    info "Stage 5 complete."
+  printf '\n'
+  info "Stage 5 complete."
 
-    run_screenshot_tool_setup
+  run_screenshot_tool_setup
 
-    printf '\n'
-    info "Stage 6 complete."
+  printf '\n'
+  info "Stage 6 complete."
 
-    run_runtime_directory_setup
+  run_runtime_directory_setup
 
-    printf '\n'
-    info "Stage 7 complete."
+  printf '\n'
+  info "Stage 7 complete."
 
-    run_permission_setup
+  run_permission_setup
 
-    printf '\n'
-    info "Stage 8 complete."
+  printf '\n'
+  info "Stage 8 complete."
 
-    run_desktop_integration_setup
+  run_desktop_integration_setup
 
-    printf '\n'
-    info "Stage 9 complete."
+  printf '\n'
+  info "Stage 9 complete."
 
-    run_user_service_setup
+  run_user_service_setup
 
-    printf '\n'
-    info "Stage 10 complete."
+  printf '\n'
+  info "Stage 10 complete."
 
-    run_post_install_verification
+  run_post_install_verification
 
-    printf '\n'
-    info "Stage 11 complete."
+  printf '\n'
+  info "Stage 11 complete."
 }
 
 main "$@"

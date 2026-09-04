@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -20,15 +20,15 @@ trap destroy_test_sandbox EXIT
 
 manifest="$TEST_STATE/packages.txt"
 
-printf '\n# comment\n   \n\t\n' > "$manifest"
+printf '\n# comment\n   \n\t\n' >"$manifest"
 
 packages=(old-value)
 
 # Act
 
 load_package_manifest \
-    "$manifest" \
-    packages
+  "$manifest" \
+  packages
 
 # Assert
 

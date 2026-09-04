@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -27,13 +27,13 @@ SELECTED_ARCH_DEFAULT_APPS=(kitty)
 SELECTED_AUR_REQUIRED=(wlogout)
 
 mock_available_commands \
-    git \
-    makepkg
+  git \
+  makepkg
 
 create_fake_pacman \
-    0 \
-    base-devel \
-    hyprland
+  0 \
+  base-devel \
+  hyprland
 
 create_fake_sudo_passthrough
 create_fake_git_clone 0
@@ -44,26 +44,26 @@ mock_confirm_yes
 # Act
 
 run_package_installation \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_log_contains \
-    "$TEST_STATE/sudo.log" \
-    "pacman -S --needed waybar kitty"
+  "$TEST_STATE/sudo.log" \
+  "pacman -S --needed waybar kitty"
 
 assert_log_contains \
-    "$TEST_STATE/git.log" \
-    "https://aur.archlinux.org/wlogout.git"
+  "$TEST_STATE/git.log" \
+  "https://aur.archlinux.org/wlogout.git"
 
 assert_log_contains \
-    "$TEST_STATE/makepkg.log" \
-    "-si --needed"
+  "$TEST_STATE/makepkg.log" \
+  "-si --needed"
 
 assert_no_aur_build_dirs
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "Package installation complete"
+  "$TEST_STATE/output.log" \
+  "Package installation complete"
 
 printf 'PASS: full package installation stage installs Arch and AUR packages\n'

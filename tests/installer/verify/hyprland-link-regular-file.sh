@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -19,14 +19,14 @@ setup_verification_test
 trap destroy_test_sandbox EXIT
 
 mkdir -p \
-    "$PROJECT_ROOT/configs/hypr" \
-    "$HOME/.config/hypr"
+  "$PROJECT_ROOT/configs/hypr" \
+  "$HOME/.config/hypr"
 
 printf '%s\n' '-- source' \
-    > "$PROJECT_ROOT/configs/hypr/hyprland.lua"
+  >"$PROJECT_ROOT/configs/hypr/hyprland.lua"
 
 printf '%s\n' '-- local unmanaged config' \
-    > "$HOME/.config/hypr/hyprland.lua"
+  >"$HOME/.config/hypr/hyprland.lua"
 
 # Act
 

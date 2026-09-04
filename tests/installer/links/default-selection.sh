@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -31,24 +31,24 @@ create_fake_command stow 0
 
 # Act
 
-run_config_link_setup <<< ""
+run_config_link_setup <<<""
 
 # Assert
 
 assert_directory_exists \
-    "$HOME/.config"
+  "$HOME/.config"
 
 assert_file_exists \
-    "$TEST_STATE/stow.log"
+  "$TEST_STATE/stow.log"
 
 expected_args="$(printf '%s\n%s' \
-    "--restow --dir=$PROJECT_ROOT --target=$HOME/.config configs" \
-    "--restow --dir=$PROJECT_ROOT --target=$HOME home")"
+  "--restow --dir=$PROJECT_ROOT --target=$HOME/.config configs" \
+  "--restow --dir=$PROJECT_ROOT --target=$HOME home")"
 actual_args="$(cat "$TEST_STATE/stow.log")"
 
 assert_equals \
-    "$expected_args" \
-    "$actual_args" \
-    "empty selection should use automatic configuration deployment"
+  "$expected_args" \
+  "$actual_args" \
+  "empty selection should use automatic configuration deployment"
 
 printf 'PASS: empty selection defaults to automatic deployment\n'

@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -31,38 +31,38 @@ default_path="$HOME/.wallpapers"
 custom_path="$TEST_ROOT/custom-wallpapers"
 
 mkdir -p \
-    "$default_path" \
-    "$custom_path"
+  "$default_path" \
+  "$custom_path"
 
-printf 'keep me\n' > "$default_path/original.txt"
+printf 'keep me\n' >"$default_path/original.txt"
 
 before_inode="$(stat -c '%i' -- "$default_path")"
 
 # Act
 
 configure_runtime_directory \
-    "Wallpapers" \
-    "$default_path" \
-    <<< $'c\n'"$custom_path"$'\nn'
+  "Wallpapers" \
+  "$default_path" \
+  <<<$'c\n'"$custom_path"$'\nn'
 
 # Assert
 
 assert_directory_exists \
-    "$default_path"
+  "$default_path"
 
 assert_file_exists \
-    "$default_path/original.txt"
+  "$default_path/original.txt"
 
 after_inode="$(stat -c '%i' -- "$default_path")"
 
 assert_equals \
-    "$before_inode" \
-    "$after_inode" \
-    "declined replacement should leave default directory unchanged"
+  "$before_inode" \
+  "$after_inode" \
+  "declined replacement should leave default directory unchanged"
 
 if [[ -L "$default_path" ]]; then
-    printf 'FAIL: declined replacement should not create a symlink\n' >&2
-    exit 1
+  printf 'FAIL: declined replacement should not create a symlink\n' >&2
+  exit 1
 fi
 
 printf 'PASS: existing default directory is preserved when replacement is declined\n'

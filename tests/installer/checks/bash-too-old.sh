@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -20,17 +20,17 @@ mock_bash_major_version 3
 # Act
 
 run_captured \
-    "$TEST_STATE/output.log" \
-    check_bash
+  "$TEST_STATE/output.log" \
+  check_bash
 
 # Assert
 
 assert_failure \
-    "$LAST_STATUS" \
-    "Bash older than 4 should be rejected"
+  "$LAST_STATUS" \
+  "Bash older than 4 should be rejected"
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Bash 4 or newer is required."
+  "$TEST_STATE/output.log" \
+  "Bash 4 or newer is required."
 
 printf 'PASS: unsupported Bash version is rejected\n'

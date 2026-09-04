@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -21,13 +21,13 @@ trap destroy_test_sandbox EXIT
 directory="$TEST_ROOT/wallpapers"
 
 mkdir -p \
-    "$directory"
+  "$directory"
 
 # Act
 
 verify_runtime_directory \
-    "Wallpapers" \
-    "$directory"
+  "Wallpapers" \
+  "$directory"
 
 # Assert
 

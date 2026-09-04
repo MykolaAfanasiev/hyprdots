@@ -9,116 +9,116 @@ LOCK_FILE="$STATE_DIR/brightness.lock"
 mkdir -p -- "$STATE_DIR"
 
 get_brightness() {
-    brightnessctl get
+  brightnessctl get
 }
 
 get_max_brightness() {
-    brightnessctl max
+  brightnessctl max
 }
 
 save_brightness_once() {
-    if [[ -s "$STATE_FILE" ]]; then
-        return 0
-    fi
+  if [[ -s "$STATE_FILE" ]]; then
+    return 0
+  fi
 
-    local current
-    current="$(get_brightness)"
+  local current
+  current="$(get_brightness)"
 
-    printf '%s\n' "$current" > "$STATE_FILE"
+  printf '%s\n' "$current" >"$STATE_FILE"
 }
 
 smooth_set_raw() {
-    local target="$1"
+  local target="$1"
 
-    local current
-    current="$(get_brightness)"
+  local current
+  current="$(get_brightness)"
 
-    local steps=20
-    local step
-    local value
+  local steps=20
+  local step
+  local value
 
-    for ((step = 1; step <= steps; step++)); do
-        value=$((current + (target - current) * step / steps))
+  for ((step = 1; step <= steps; step++)); do
+    value=$((current + (target - current) * step / steps))
 
-        brightnessctl set "$value" > /dev/null
-        sleep 0.02
-    done
+    brightnessctl set "$value" >/dev/null
+    sleep 0.02
+  done
 
-    brightnessctl set "$target" > /dev/null
+  brightnessctl set "$target" >/dev/null
 }
 
 set_percent() {
-    local percent="$1"
+  local percent="$1"
 
-    save_brightness_once
+  save_brightness_once
 
-    local maximum
-    maximum="$(get_max_brightness)"
+  local maximum
+  maximum="$(get_max_brightness)"
 
-    local target=$((maximum * percent / 100))
+  local target=$((maximum * percent / 100))
 
-    if ((target < 1)); then
-        target=1
-    fi
+  if ((target < 1)); then
+    target=1
+  fi
 
-    smooth_set_raw "$target"
+  smooth_set_raw "$target"
 }
 
 restore_brightness() {
-    if [[ ! -s "$STATE_FILE" ]]; then
-        return 0
-    fi
+  if [[ ! -s "$STATE_FILE" ]]; then
+    return 0
+  fi
 
-    local target
-    target="$(< "$STATE_FILE")"
+  local target
+  target="$(<"$STATE_FILE")"
 
-    if [[ ! "$target" =~ ^[0-9]+$ ]]; then
-        rm -f -- "$STATE_FILE"
-        return 1
-    fi
-
-    local maximum
-    maximum="$(get_max_brightness)"
-
-    if ((target > maximum)); then
-        target="$maximum"
-    fi
-
-    smooth_set_raw "$target"
-
+  if [[ ! "$target" =~ ^[0-9]+$ ]]; then
     rm -f -- "$STATE_FILE"
+    return 1
+  fi
+
+  local maximum
+  maximum="$(get_max_brightness)"
+
+  if ((target > maximum)); then
+    target="$maximum"
+  fi
+
+  smooth_set_raw "$target"
+
+  rm -f -- "$STATE_FILE"
 }
 
 main() {
-    local action="${1:-}"
+  local action="${1:-}"
 
-    (
-        flock -x 9
+  (
+    flock -x 9
 
-        case "$action" in
-            restore)
-                restore_brightness
-                ;;
+    case "$action" in
+    restore)
+      restore_brightness
+      ;;
 
-            pending)
-                [[ -s "$STATE_FILE" ]]
-                ;;
+    pending)
+      [[ -s "$STATE_FILE" ]]
+      ;;
 
-            '' | *[!0-9]*)
-                printf 'Usage: %s <0-100|restore|pending>\n' "$0" >&2
-                return 1
-                ;;
+    '' | *[!0-9]*)
+      printf 'Usage: %s <0-100|restore|pending>\n' "$0" >&2
+      return 1
+      ;;
 
-            *)
-                if ((action < 0 || action > 100)); then
-                    printf 'Brightness percentage must be between 0 and 100.\n' >&2
-                    return 1
-                fi
+    *)
+      if ((action < 0 || action > 100)); then
+        printf 'Brightness percentage must be between 0 and 100.\n' >&2
+        return 1
+      fi
 
-                set_percent "$action"
-                ;;
-        esac
-    ) 9> "$LOCK_FILE"
+      set_percent "$action"
+      ;;
+    esac
+  ) 9>"$LOCK_FILE"
 }
 
 main "$@"

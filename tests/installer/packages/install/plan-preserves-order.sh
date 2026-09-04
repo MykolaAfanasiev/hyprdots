@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -24,21 +24,21 @@ packages=()
 # Act
 
 deduplicate_packages \
-    packages \
-    zeta \
-    alpha \
-    zeta \
-    beta \
-    alpha \
-    gamma
+  packages \
+  zeta \
+  alpha \
+  zeta \
+  beta \
+  alpha \
+  gamma
 
 # Assert
 
 assert_array_equals \
-    packages \
-    zeta \
-    alpha \
-    beta \
-    gamma
+  packages \
+  zeta \
+  alpha \
+  beta \
+  gamma
 
 printf 'PASS: package deduplication preserves first-seen order\n'

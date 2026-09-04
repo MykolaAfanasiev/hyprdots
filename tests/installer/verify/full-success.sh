@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -26,7 +26,7 @@ create_fake_pacman_installed
 # Act
 
 run_post_install_verification \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
@@ -35,7 +35,7 @@ assert_equals "0" "$VERIFY_WARN_COUNT" "fully valid installation should have no 
 assert_equals "0" "$VERIFY_FAIL_COUNT" "fully valid installation should have no failures"
 
 assert_verify_output_contains \
-    "$TEST_STATE/output.log" \
-    "Post-install verification passed"
+  "$TEST_STATE/output.log" \
+  "Post-install verification passed"
 
 printf 'PASS: fully valid installation passes post-install verification\n'

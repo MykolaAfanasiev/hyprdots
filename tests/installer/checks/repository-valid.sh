@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -20,12 +20,12 @@ create_valid_repository
 # Act
 
 check_repository \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Repository structure looks valid"
+  "$TEST_STATE/output.log" \
+  "Repository structure looks valid"
 
 printf 'PASS: valid repository structure passes\n'

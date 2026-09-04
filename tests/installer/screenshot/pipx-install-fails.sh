@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -29,7 +29,7 @@ trap destroy_test_sandbox EXIT
 
 create_fake_command python 0
 
-cat > "$TEST_BIN/pipx" << 'EOF'
+cat >"$TEST_BIN/pipx" <<'EOF'
 #!/usr/bin/env bash
 
 printf '%s\n' "$*" >> "$TEST_STATE/pipx.log"
@@ -53,9 +53,9 @@ chmod +x -- "$TEST_BIN/pipx"
 set +e
 
 (
-    set -e
-    run_screenshot_tool_setup
-) > "$TEST_STATE/output.log" 2>&1
+  set -e
+  run_screenshot_tool_setup
+) >"$TEST_STATE/output.log" 2>&1
 
 status=$?
 
@@ -64,13 +64,13 @@ set -e
 # Assert
 
 assert_failure \
-    "$status" \
-    "screenshot setup should fail when pipx installation fails"
+  "$status" \
+  "screenshot setup should fail when pipx installation fails"
 
 assert_file_exists \
-    "$TEST_STATE/pipx.log"
+  "$TEST_STATE/pipx.log"
 
 assert_file_not_exists \
-    "$TEST_BIN/screenshot-tool"
+  "$TEST_BIN/screenshot-tool"
 
 printf 'PASS: pipx installation failure propagates correctly\n'

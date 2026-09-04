@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,19 +25,19 @@ aur_packages=()
 # Act
 
 print_install_plan \
-    arch_packages \
-    aur_packages \
-    > "$TEST_STATE/output.log" 2>&1
+  arch_packages \
+  aur_packages \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 none_count="$(
-    grep -Fc -- "  (none)" "$TEST_STATE/output.log"
+  grep -Fc -- "  (none)" "$TEST_STATE/output.log"
 )"
 
 assert_equals \
-    "2" \
-    "$none_count" \
-    "both empty installation groups should be displayed as none"
+  "2" \
+  "$none_count" \
+  "both empty installation groups should be displayed as none"
 
 printf 'PASS: empty installation plan displays both groups as none\n'

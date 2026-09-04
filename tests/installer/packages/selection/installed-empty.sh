@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -27,6 +27,6 @@ package_group_installed packages
 # Assert
 
 assert_file_not_exists \
-    "$TEST_STATE/pacman.log"
+  "$TEST_STATE/pacman.log"
 
 printf 'PASS: empty package group is already satisfied without pacman calls\n'

@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -31,34 +31,34 @@ create_fake_command stow 0
 
 # Act
 
-run_config_link_setup <<< "m" \
-    > "$TEST_STATE/output.log" 2>&1
+run_config_link_setup <<<"m" \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_file_not_exists \
-    "$TEST_STATE/stow.log"
+  "$TEST_STATE/stow.log"
 
 assert_file_not_exists \
-    "$HOME/.config/hypr"
+  "$HOME/.config/hypr"
 
 expected_command="stow --restow --dir=\"$PROJECT_ROOT\" --target=\"$HOME/.config\" configs"
 expected_home_command="stow --restow --dir=\"$PROJECT_ROOT\" --target=\"$HOME\" home"
 
 if ! grep -Fq -- \
-    "$expected_command" \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: manual Stow command was not shown correctly\n' >&2
-    printf '  expected: %s\n' "$expected_command" >&2
-    exit 1
+  "$expected_command" \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: manual Stow command was not shown correctly\n' >&2
+  printf '  expected: %s\n' "$expected_command" >&2
+  exit 1
 fi
 
 if ! grep -Fq -- \
-    "$expected_home_command" \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: manual home Stow command was not shown correctly\n' >&2
-    printf '  expected: %s\n' "$expected_home_command" >&2
-    exit 1
+  "$expected_home_command" \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: manual home Stow command was not shown correctly\n' >&2
+  printf '  expected: %s\n' "$expected_home_command" >&2
+  exit 1
 fi
 
 printf 'PASS: manual deployment leaves configs unchanged and shows Stow command\n'

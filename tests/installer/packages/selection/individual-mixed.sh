@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -24,16 +24,16 @@ selected_packages=()
 # Act
 
 select_packages_individually \
-    source_packages \
-    selected_packages \
-    no \
-    <<< $'yes\nno\ny\n'
+  source_packages \
+  selected_packages \
+  no \
+  <<<$'yes\nno\ny\n'
 
 # Assert
 
 assert_array_equals \
-    selected_packages \
-    hyprland \
-    kitty
+  selected_packages \
+  hyprland \
+  kitty
 
 printf 'PASS: individual package selection handles mixed answers\n'

@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -38,14 +38,14 @@ run_screenshot_tool_setup
 # Assert
 
 assert_file_exists \
-    "$TEST_STATE/screenshot-tool.log"
+  "$TEST_STATE/screenshot-tool.log"
 
 assert_equals \
-    "--help" \
-    "$(cat "$TEST_STATE/screenshot-tool.log")" \
-    "screenshot-tool should be verified with --help"
+  "--help" \
+  "$(cat "$TEST_STATE/screenshot-tool.log")" \
+  "screenshot-tool should be verified with --help"
 
 assert_file_not_exists \
-    "$TEST_STATE/pipx.log"
+  "$TEST_STATE/pipx.log"
 
 printf 'PASS: existing screenshot-tool skips pipx installation\n'

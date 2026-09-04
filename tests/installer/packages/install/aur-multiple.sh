@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -20,12 +20,12 @@ setup_package_installation_test
 trap destroy_test_sandbox EXIT
 
 mock_available_commands \
-    git \
-    makepkg
+  git \
+  makepkg
 
 create_fake_pacman \
-    0 \
-    base-devel
+  0 \
+  base-devel
 
 create_fake_git_clone 0
 create_fake_makepkg 0
@@ -35,20 +35,20 @@ mock_confirm_yes
 # Act
 
 install_aur_packages \
-    wlogout \
-    example-aur \
-    > "$TEST_STATE/output.log" 2>&1
+  wlogout \
+  example-aur \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 makepkg_calls="$(
-    awk 'END { print NR }' "$TEST_STATE/makepkg.log"
+  awk 'END { print NR }' "$TEST_STATE/makepkg.log"
 )"
 
 assert_equals \
-    "2" \
-    "$makepkg_calls" \
-    "makepkg should run once for each missing AUR package"
+  "2" \
+  "$makepkg_calls" \
+  "makepkg should run once for each missing AUR package"
 
 assert_no_aur_build_dirs
 

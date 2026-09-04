@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -20,12 +20,12 @@ setup_package_installation_test
 trap destroy_test_sandbox EXIT
 
 mock_available_commands \
-    git \
-    makepkg
+  git \
+  makepkg
 
 create_fake_pacman \
-    0 \
-    base-devel
+  0 \
+  base-devel
 
 # Act
 
@@ -34,7 +34,7 @@ check_aur_requirements
 # Assert
 
 assert_log_contains \
-    "$TEST_STATE/pacman.log" \
-    "-Qq base-devel"
+  "$TEST_STATE/pacman.log" \
+  "-Qq base-devel"
 
 printf 'PASS: valid AUR build requirements are accepted\n'

@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -35,17 +35,17 @@ mkdir -p "$custom_path"
 # Act
 
 configure_runtime_directory \
-    "Wallpapers" \
-    "$default_path" \
-    <<< $'c\n'"$custom_path"
+  "Wallpapers" \
+  "$default_path" \
+  <<<$'c\n'"$custom_path"
 
 # Assert
 
 assert_directory_exists \
-    "$custom_path"
+  "$custom_path"
 
 assert_symlink_to \
-    "$default_path" \
-    "$custom_path"
+  "$default_path" \
+  "$custom_path"
 
 printf 'PASS: existing custom runtime directory is linked correctly\n'

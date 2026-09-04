@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -16,25 +16,25 @@ setup_system_checks_test
 trap destroy_test_sandbox EXIT
 
 write_test_os_release \
-    endeavouros \
-    "arch" \
-    "EndeavourOS"
+  endeavouros \
+  "arch" \
+  "EndeavourOS"
 
 use_test_os_release
 
 # Act
 
 check_arch_linux \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Arch-based distribution detected: EndeavourOS"
+  "$TEST_STATE/output.log" \
+  "Arch-based distribution detected: EndeavourOS"
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "The installer is primarily tested on Arch Linux."
+  "$TEST_STATE/output.log" \
+  "The installer is primarily tested on Arch Linux."
 
 printf 'PASS: Arch-based distribution is accepted with warning\n'

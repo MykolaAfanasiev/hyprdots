@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -19,15 +19,15 @@ setup_verification_test
 trap destroy_test_sandbox EXIT
 
 create_fake_pacman_installed \
-    hyprland \
-    waybar
+  hyprland \
+  waybar
 
 # Act
 
 verify_package_group \
-    "Official Arch packages" \
-    hyprland \
-    waybar
+  "Official Arch packages" \
+  hyprland \
+  waybar
 
 # Assert
 

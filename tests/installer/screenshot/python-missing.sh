@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -30,13 +30,13 @@ trap destroy_test_sandbox EXIT
 create_fake_command pipx 0
 
 command_exists() {
-    local command_name="$1"
+  local command_name="$1"
 
-    if [[ "$command_name" == "python" ]]; then
-        return 1
-    fi
+  if [[ "$command_name" == "python" ]]; then
+    return 1
+  fi
 
-    command -v "$command_name" > /dev/null 2>&1
+  command -v "$command_name" >/dev/null 2>&1
 }
 
 # Act
@@ -46,9 +46,9 @@ run_screenshot_tool_setup
 # Assert
 
 assert_file_not_exists \
-    "$TEST_STATE/pipx.log"
+  "$TEST_STATE/pipx.log"
 
 assert_file_not_exists \
-    "$TEST_BIN/screenshot-tool"
+  "$TEST_BIN/screenshot-tool"
 
 printf 'PASS: missing Python skips screenshot-tool installation\n'

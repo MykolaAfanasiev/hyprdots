@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -27,33 +27,33 @@ SELECTED_AUR_REQUIRED=(wlogout)
 mock_confirm_no
 
 install_arch_packages() {
-    touch "$TEST_STATE/arch-install-called"
+  touch "$TEST_STATE/arch-install-called"
 }
 
 install_aur_packages() {
-    touch "$TEST_STATE/aur-install-called"
+  touch "$TEST_STATE/aur-install-called"
 }
 
 # Act
 
 run_install_test_captured \
-    "$TEST_STATE/output.log" \
-    run_package_installation
+  "$TEST_STATE/output.log" \
+  run_package_installation
 
 # Assert
 
 assert_failure \
-    "$INSTALL_TEST_STATUS" \
-    "cancelled package installation should fail"
+  "$INSTALL_TEST_STATUS" \
+  "cancelled package installation should fail"
 
 assert_file_not_exists \
-    "$TEST_STATE/arch-install-called"
+  "$TEST_STATE/arch-install-called"
 
 assert_file_not_exists \
-    "$TEST_STATE/aur-install-called"
+  "$TEST_STATE/aur-install-called"
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "Package installation cancelled."
+  "$TEST_STATE/output.log" \
+  "Package installation cancelled."
 
 printf 'PASS: cancelling installation prevents package installers from running\n'

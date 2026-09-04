@@ -3,8 +3,8 @@
 set -euo pipefail
 
 PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -37,20 +37,20 @@ mkdir -p "$fallback_path"
 # Act
 
 configure_runtime_directory \
-    "Wallpapers" \
-    "$default_path" \
-    <<< $'c\n'"$declined_path"$'\nn\n'"$fallback_path"
+  "Wallpapers" \
+  "$default_path" \
+  <<<$'c\n'"$declined_path"$'\nn\n'"$fallback_path"
 
 # Assert
 
 assert_file_not_exists \
-    "$declined_path"
+  "$declined_path"
 
 assert_directory_exists \
-    "$fallback_path"
+  "$fallback_path"
 
 assert_symlink_to \
-    "$default_path" \
-    "$fallback_path"
+  "$default_path" \
+  "$fallback_path"
 
 printf 'PASS: declined custom directory creation retries with another path\n'

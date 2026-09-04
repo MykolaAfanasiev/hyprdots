@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -19,16 +19,16 @@ setup_verification_test
 trap destroy_test_sandbox EXIT
 
 create_fake_pacman_installed \
-    hyprland
+  hyprland
 
 # Act
 
 verify_package_group \
-    "Official Arch packages" \
-    hyprland \
-    waybar \
-    kitty \
-    > "$TEST_STATE/output.log" 2>&1
+  "Official Arch packages" \
+  hyprland \
+  waybar \
+  kitty \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
@@ -36,15 +36,15 @@ assert_equals "0" "$VERIFY_PASS_COUNT" "missing package group should not pass"
 assert_equals "1" "$VERIFY_FAIL_COUNT" "missing package group should fail once"
 
 assert_verify_output_contains \
-    "$TEST_STATE/output.log" \
-    "2 package(s) are missing"
+  "$TEST_STATE/output.log" \
+  "2 package(s) are missing"
 
 assert_verify_output_contains \
-    "$TEST_STATE/output.log" \
-    "waybar"
+  "$TEST_STATE/output.log" \
+  "waybar"
 
 assert_verify_output_contains \
-    "$TEST_STATE/output.log" \
-    "kitty"
+  "$TEST_STATE/output.log" \
+  "kitty"
 
 printf 'PASS: missing packages are reported by verification\n'

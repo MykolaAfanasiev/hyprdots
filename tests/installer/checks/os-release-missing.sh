@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -20,17 +20,17 @@ use_test_os_release
 # Act
 
 run_captured \
-    "$TEST_STATE/output.log" \
-    check_arch_linux
+  "$TEST_STATE/output.log" \
+  check_arch_linux
 
 # Assert
 
 assert_failure \
-    "$LAST_STATUS" \
-    "missing os-release should be rejected"
+  "$LAST_STATUS" \
+  "missing os-release should be rejected"
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Cannot read $TEST_OS_RELEASE."
+  "$TEST_STATE/output.log" \
+  "Cannot read $TEST_OS_RELEASE."
 
 printf 'PASS: missing os-release file is rejected\n'

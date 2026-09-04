@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -31,18 +31,18 @@ location_file="$PROJECT_ROOT/configs/hyprsunset/location.conf"
 # Act
 
 secure_hyprsunset_location \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_file_not_exists \
-    "$location_file"
+  "$location_file"
 
 if ! grep -Fq -- \
-    "Hyprsunset location is not configured; skipping permissions" \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: missing Hyprsunset location skip message was not shown\n' >&2
-    exit 1
+  "Hyprsunset location is not configured; skipping permissions" \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: missing Hyprsunset location skip message was not shown\n' >&2
+  exit 1
 fi
 
 printf 'PASS: missing Hyprsunset location file is skipped\n'

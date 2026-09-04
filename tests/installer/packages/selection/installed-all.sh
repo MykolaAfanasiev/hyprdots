@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -28,11 +28,11 @@ package_group_installed packages
 
 # Assert
 
-actual_calls="$(wc -l < "$TEST_STATE/pacman.log")"
+actual_calls="$(wc -l <"$TEST_STATE/pacman.log")"
 
 assert_equals \
-    "3" \
-    "$actual_calls" \
-    "pacman should check every package"
+  "3" \
+  "$actual_calls" \
+  "pacman should check every package"
 
 printf 'PASS: package group passes when every package is installed\n'

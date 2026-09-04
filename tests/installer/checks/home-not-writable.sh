@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -20,17 +20,17 @@ mock_home_writable 0
 # Act
 
 run_captured \
-    "$TEST_STATE/output.log" \
-    check_home
+  "$TEST_STATE/output.log" \
+  check_home
 
 # Assert
 
 assert_failure \
-    "$LAST_STATUS" \
-    "non-writable home directory should be rejected"
+  "$LAST_STATUS" \
+  "non-writable home directory should be rejected"
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Home directory is not writable: $HOME"
+  "$TEST_STATE/output.log" \
+  "Home directory is not writable: $HOME"
 
 printf 'PASS: non-writable home directory is rejected\n'

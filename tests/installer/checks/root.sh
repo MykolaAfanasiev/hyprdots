@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -20,17 +20,17 @@ mock_effective_uid 0
 # Act
 
 run_captured \
-    "$TEST_STATE/output.log" \
-    check_not_root
+  "$TEST_STATE/output.log" \
+  check_not_root
 
 # Assert
 
 assert_failure \
-    "$LAST_STATUS" \
-    "root user should be rejected"
+  "$LAST_STATUS" \
+  "root user should be rejected"
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Do not run the installer as root."
+  "$TEST_STATE/output.log" \
+  "Do not run the installer as root."
 
 printf 'PASS: root user is rejected\n'

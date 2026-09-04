@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -32,39 +32,39 @@ target_file="$TEST_ROOT/external-location.conf"
 mkdir -p -- "$(dirname -- "$location_file")"
 
 printf '%s\n' \
-    'LATITUDE=48.765' \
-    'LONGITUDE=11.424' \
-    > "$target_file"
+  'LATITUDE=48.765' \
+  'LONGITUDE=11.424' \
+  >"$target_file"
 
 chmod 0644 -- "$target_file"
 
 ln -s \
-    "$target_file" \
-    "$location_file"
+  "$target_file" \
+  "$location_file"
 
 # Act
 
 secure_hyprsunset_location \
-    > "$TEST_STATE/output.log" 2>&1
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_symlink_to \
-    "$location_file" \
-    "$target_file"
+  "$location_file" \
+  "$target_file"
 
 target_mode="$(stat -c '%a' -- "$target_file")"
 
 assert_equals \
-    "644" \
-    "$target_mode" \
-    "Hyprsunset symlink target permissions should not be changed"
+  "644" \
+  "$target_mode" \
+  "Hyprsunset symlink target permissions should not be changed"
 
 if ! grep -Fq -- \
-    "Hyprsunset location.conf is a symlink; permissions were not changed" \
-    "$TEST_STATE/output.log"; then
-    printf 'FAIL: Hyprsunset symlink warning was not shown\n' >&2
-    exit 1
+  "Hyprsunset location.conf is a symlink; permissions were not changed" \
+  "$TEST_STATE/output.log"; then
+  printf 'FAIL: Hyprsunset symlink warning was not shown\n' >&2
+  exit 1
 fi
 
 printf 'PASS: Hyprsunset location symlink is detected and left unchanged\n'

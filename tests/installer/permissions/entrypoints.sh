@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -29,12 +29,12 @@ SETUP_DIR="$PROJECT_ROOT/setup"
 
 mkdir -p -- "$SETUP_DIR"
 
-printf '#!/usr/bin/env bash\n' > "$PROJECT_ROOT/install.sh"
-printf '#!/usr/bin/env bash\n' > "$SETUP_DIR/install.sh"
+printf '#!/usr/bin/env bash\n' >"$PROJECT_ROOT/install.sh"
+printf '#!/usr/bin/env bash\n' >"$SETUP_DIR/install.sh"
 
 chmod 0644 \
-    "$PROJECT_ROOT/install.sh" \
-    "$SETUP_DIR/install.sh"
+  "$PROJECT_ROOT/install.sh" \
+  "$SETUP_DIR/install.sh"
 
 # Act
 
@@ -43,9 +43,9 @@ ensure_installer_entrypoints_executable
 # Assert
 
 assert_executable \
-    "$PROJECT_ROOT/install.sh"
+  "$PROJECT_ROOT/install.sh"
 
 assert_executable \
-    "$SETUP_DIR/install.sh"
+  "$SETUP_DIR/install.sh"
 
 printf 'PASS: installer entrypoints are made executable\n'

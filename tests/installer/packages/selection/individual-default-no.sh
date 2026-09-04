@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -24,10 +24,10 @@ selected_packages=(old-value)
 # Act
 
 select_packages_individually \
-    source_packages \
-    selected_packages \
-    no \
-    <<< $'\n\n'
+  source_packages \
+  selected_packages \
+  no \
+  <<<$'\n\n'
 
 # Assert
 

@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
@@ -24,23 +24,23 @@ selected_packages=()
 # Act
 
 select_package_group \
-    "Core packages" \
-    "Test packages." \
-    source_packages \
-    selected_packages \
-    all \
-    <<< $'invalid\nall\n' \
-    > "$TEST_STATE/output.log" 2>&1
+  "Core packages" \
+  "Test packages." \
+  source_packages \
+  selected_packages \
+  all \
+  <<<$'invalid\nall\n' \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_array_equals \
-    selected_packages \
-    hyprland \
-    waybar
+  selected_packages \
+  hyprland \
+  waybar
 
 assert_package_output_contains \
-    "$TEST_STATE/output.log" \
-    "Choose A, C, or N."
+  "$TEST_STATE/output.log" \
+  "Choose A, C, or N."
 
 printf 'PASS: invalid group selection is rejected and retried\n'

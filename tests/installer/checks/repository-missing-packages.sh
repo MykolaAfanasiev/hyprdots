@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
@@ -22,17 +22,17 @@ rm -rf -- "$SETUP_DIR/packages"
 # Act
 
 run_captured \
-    "$TEST_STATE/output.log" \
-    check_repository
+  "$TEST_STATE/output.log" \
+  check_repository
 
 # Assert
 
 assert_failure \
-    "$LAST_STATUS" \
-    "missing setup packages directory should be rejected"
+  "$LAST_STATUS" \
+  "missing setup packages directory should be rejected"
 
 assert_output_contains \
-    "$TEST_STATE/output.log" \
-    "Required repository path is missing: $SETUP_DIR/packages"
+  "$TEST_STATE/output.log" \
+  "Required repository path is missing: $SETUP_DIR/packages"
 
 printf 'PASS: missing setup packages directory is rejected\n'

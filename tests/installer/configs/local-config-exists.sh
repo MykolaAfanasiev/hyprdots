@@ -3,8 +3,8 @@
 set -euo pipefail
 
 REAL_PROJECT_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -32,16 +32,16 @@ destination="$PROJECT_ROOT/configs/hypr/modules/vars/local.lua"
 mkdir -p "$(dirname -- "$destination")"
 
 printf '%s\n' \
-    'return {' \
-    '    template = true,' \
-    '}' \
-    > "$template"
+  'return {' \
+  '    template = true,' \
+  '}' \
+  >"$template"
 
 printf '%s\n' \
-    'return {' \
-    '    user_config = true,' \
-    '}' \
-    > "$destination"
+  'return {' \
+  '    user_config = true,' \
+  '}' \
+  >"$destination"
 
 before_content="$(cat "$destination")"
 before_inode="$(stat -c '%i' -- "$destination")"
@@ -49,9 +49,9 @@ before_inode="$(stat -c '%i' -- "$destination")"
 # Act
 
 create_local_config \
-    "$template" \
-    "$destination" \
-    "Hyprland local config"
+  "$template" \
+  "$destination" \
+  "Hyprland local config"
 
 # Assert
 
@@ -59,13 +59,13 @@ after_content="$(cat "$destination")"
 after_inode="$(stat -c '%i' -- "$destination")"
 
 assert_equals \
-    "$before_content" \
-    "$after_content" \
-    "existing local config should not be overwritten"
+  "$before_content" \
+  "$after_content" \
+  "existing local config should not be overwritten"
 
 assert_equals \
-    "$before_inode" \
-    "$after_inode" \
-    "existing local config should not be recreated"
+  "$before_inode" \
+  "$after_inode" \
+  "existing local config should not be recreated"
 
 printf 'PASS: existing Hyprland local config is left unchanged\n'

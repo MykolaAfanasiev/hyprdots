@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -19,16 +19,16 @@ setup_verification_test
 trap destroy_test_sandbox EXIT
 
 printf '#!/usr/bin/env bash\n' \
-    > "$PROJECT_ROOT/install.sh"
+  >"$PROJECT_ROOT/install.sh"
 
 printf '#!/usr/bin/env bash\n' \
-    > "$SETUP_DIR/install.sh"
+  >"$SETUP_DIR/install.sh"
 
 chmod +x \
-    "$PROJECT_ROOT/install.sh"
+  "$PROJECT_ROOT/install.sh"
 
 chmod -x \
-    "$SETUP_DIR/install.sh"
+  "$SETUP_DIR/install.sh"
 
 # Act
 

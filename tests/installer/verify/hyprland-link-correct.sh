@@ -6,8 +6,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -19,17 +19,17 @@ setup_verification_test
 trap destroy_test_sandbox EXIT
 
 mkdir -p \
-    "$PROJECT_ROOT/configs/hypr" \
-    "$HOME/.config/hypr"
+  "$PROJECT_ROOT/configs/hypr" \
+  "$HOME/.config/hypr"
 
 source_file="$PROJECT_ROOT/configs/hypr/hyprland.lua"
 destination="$HOME/.config/hypr/hyprland.lua"
 
-printf '%s\n' '-- hyprland' > "$source_file"
+printf '%s\n' '-- hyprland' >"$source_file"
 
 ln -s \
-    "$source_file" \
-    "$destination"
+  "$source_file" \
+  "$destination"
 
 # Act
 

@@ -7,8 +7,8 @@
 set -euo pipefail
 
 REPO_ROOT="$(
-    cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-        pwd
+  cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
+    pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -20,24 +20,24 @@ setup_package_installation_test
 trap destroy_test_sandbox EXIT
 
 create_fake_pacman \
-    0 \
-    hyprland \
-    waybar
+  0 \
+  hyprland \
+  waybar
 
 # Act
 
 install_arch_packages \
-    hyprland \
-    waybar \
-    > "$TEST_STATE/output.log" 2>&1
+  hyprland \
+  waybar \
+  >"$TEST_STATE/output.log" 2>&1
 
 # Assert
 
 assert_file_not_exists \
-    "$TEST_STATE/sudo.log"
+  "$TEST_STATE/sudo.log"
 
 assert_install_output_contains \
-    "$TEST_STATE/output.log" \
-    "All selected official Arch packages are already installed"
+  "$TEST_STATE/output.log" \
+  "All selected official Arch packages are already installed"
 
 printf 'PASS: installed Arch packages are not reinstalled\n'
