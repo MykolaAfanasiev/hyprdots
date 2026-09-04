@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_LOCAL_CONFIGS_LOADED=1
 
-
 create_local_config() {
     local template="$1"
     local destination="$2"
@@ -30,13 +29,11 @@ create_local_config() {
     success "Created $label"
 }
 
-
 coordinate_format_valid() {
     local value="$1"
 
     [[ "$value" =~ ^-?[0-9]+([.][0-9]+)?$ ]]
 }
-
 
 configure_hyprsunset_location() {
     local destination="$PROJECT_ROOT/configs/hyprsunset/location.conf"
@@ -50,8 +47,7 @@ configure_hyprsunset_location() {
 
     if ! confirm \
         "Configure Hyprsunset location now?" \
-        no
-    then
+        no; then
         info "Skipping Hyprsunset location configuration"
         return 0
     fi
@@ -90,9 +86,8 @@ configure_hyprsunset_location() {
     success "Hyprsunset location configured"
 }
 
-
 run_local_config_setup() {
-    section "[4/10] Local configuration"
+    section "[4/11] Local configuration"
 
     create_local_config \
         "$PROJECT_ROOT/configs/hypr/modules/vars/local.lua.example" \

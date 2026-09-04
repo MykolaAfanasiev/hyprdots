@@ -4,7 +4,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." &&
-    pwd
+        pwd
 )"
 
 TEST_DIR="$PROJECT_ROOT/tests/installer"
@@ -12,7 +12,7 @@ TEST_DIR="$PROJECT_ROOT/tests/installer"
 if [[ -n "${HYPRDOTS_TEST_JOBS:-}" ]]; then
     JOBS="$HYPRDOTS_TEST_JOBS"
 else
-    if command -v nproc >/dev/null 2>&1; then
+    if command -v nproc > /dev/null 2>&1; then
         JOBS="$(nproc)"
     else
         JOBS=4
@@ -20,7 +20,7 @@ else
 
     # More than 8 parallel shell tests normally gives little benefit
     # while creating unnecessary CPU and filesystem contention.
-    if (( JOBS > 8 )); then
+    if ((JOBS > 8)); then
         JOBS=8
     fi
 fi
@@ -30,21 +30,19 @@ if [[ ! "$JOBS" =~ ^[1-9][0-9]*$ ]]; then
     exit 1
 fi
 
-
 mapfile -d '' TESTS < <(
     find "$TEST_DIR" \
         -type f \
         -name '*.sh' \
         ! -name 'run.sh' \
         -print0 |
-    sort -z
+        sort -z
 )
 
-if (( ${#TESTS[@]} == 0 )); then
+if ((${#TESTS[@]} == 0)); then
     printf 'No installer tests found.\n' >&2
     exit 1
 fi
-
 
 TEST_RUN_ROOT="$(
     mktemp -d \
@@ -56,7 +54,6 @@ cleanup_test_runner() {
 }
 
 trap cleanup_test_runner EXIT
-
 
 run_one_test() {
     local index="$1"
@@ -78,7 +75,6 @@ run_one_test() {
 export TEST_RUN_ROOT
 export -f run_one_test
 
-
 declare -a TASK_ARGUMENTS=()
 
 for index in "${!TESTS[@]}"; do
@@ -87,7 +83,6 @@ for index in "${!TESTS[@]}"; do
         "${TESTS[$index]}"
     )
 done
-
 
 printf '\n==> Installer tests (%s parallel jobs)\n\n' "$JOBS"
 # $1 and $2 are intentionally expanded by the child bash process.
@@ -99,7 +94,6 @@ printf '%s\0' "${TASK_ARGUMENTS[@]}" |
         -n 2 \
         -P "$JOBS" \
         bash -c 'run_one_test "$1" "$2"' _
-
 
 failed=0
 
@@ -121,22 +115,21 @@ for index in "${!TESTS[@]}"; do
         continue
     fi
 
-    status="$(<"$status_file")"
+    status="$(< "$status_file")"
 
-    if (( status != 0 )); then
-      printf 'FAIL: test exited with status %s\n' "$status"
+    if ((status != 0)); then
+        printf 'FAIL: test exited with status %s\n' "$status"
 
-      FAILED_TESTS+=(
-          "${test#"$PROJECT_ROOT/"}"
-      )
+        FAILED_TESTS+=(
+            "${test#"$PROJECT_ROOT/"}"
+        )
 
-      failed=1
+        failed=1
     fi
-      printf '\n'
-    done
+    printf '\n'
+done
 
-
-if (( failed != 0 )); then
+if ((failed != 0)); then
     printf '\nFailed tests:\n' >&2
 
     for test in "${FAILED_TESTS[@]}"; do

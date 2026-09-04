@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
-
 
 # Arrange
 
@@ -39,11 +36,9 @@ chmod 0644 \
     "$PROJECT_ROOT/install.sh" \
     "$SETUP_DIR/install.sh"
 
-
 # Act
 
 ensure_installer_entrypoints_executable
-
 
 # Assert
 
@@ -52,6 +47,5 @@ assert_executable \
 
 assert_executable \
     "$SETUP_DIR/install.sh"
-
 
 printf 'PASS: installer entrypoints are made executable\n'

@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -18,14 +18,12 @@ source "$REPO_ROOT/tests/lib/verification.sh"
 setup_verification_test
 trap destroy_test_sandbox EXIT
 
-
 # Act
 
 verify_pass "first pass"
 verify_pass "second pass"
 verify_warn "one warning"
 verify_fail "one failure"
-
 
 # Assert
 

@@ -6,11 +6,10 @@ fi
 
 readonly HYPRDOTS_SCREENSHOT_TOOL_LOADED=1
 
-
 read_python_project_name() {
     local pyproject="$1"
 
-    python - "$pyproject" <<'PY'
+    python - "$pyproject" << 'PY'
 import sys
 import tomllib
 
@@ -28,16 +27,14 @@ print(name)
 PY
 }
 
-
 verify_screenshot_tool() {
     local executable="$1"
 
-    "$executable" --help >/dev/null 2>&1
+    "$executable" --help > /dev/null 2>&1
 }
 
-
 run_screenshot_tool_setup() {
-    section "[6/10] Screenshot tool"
+    section "[6/11] Screenshot tool"
 
     local tool_dir="$PROJECT_ROOT/scripts/screenshot"
     local pyproject="$tool_dir/pyproject.toml"

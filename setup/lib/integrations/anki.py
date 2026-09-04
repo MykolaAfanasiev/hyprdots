@@ -5,7 +5,6 @@ import sys
 import tempfile
 from pathlib import Path
 
-
 RECOLOR_ID = "688199788"
 THEME_NAME = "(dark) Catppuccin Mocha.json"
 
@@ -15,9 +14,7 @@ def find_recolor() -> Path | None:
 
     candidates = [
         home / ".local/share/Anki2/addons21" / RECOLOR_ID,
-        home
-        / ".var/app/net.ankiweb.Anki/data/Anki2/addons21"
-        / RECOLOR_ID,
+        home / ".var/app/net.ankiweb.Anki/data/Anki2/addons21" / RECOLOR_ID,
     ]
 
     for candidate in candidates:
@@ -38,9 +35,7 @@ def load_json(path: Path) -> dict:
         return data
 
     except json.JSONDecodeError as error:
-        raise RuntimeError(
-            f"Invalid JSON in {path}: {error}"
-        ) from error
+        raise RuntimeError(f"Invalid JSON in {path}: {error}") from error
 
 
 def write_json_atomic(path: Path, data: dict) -> None:
@@ -88,14 +83,10 @@ def apply_dark_theme(
     theme_colors = theme.get("colors")
 
     if not isinstance(config_colors, dict):
-        raise RuntimeError(
-            "ReColor config does not contain a valid 'colors' object"
-        )
+        raise RuntimeError("ReColor config does not contain a valid 'colors' object")
 
     if not isinstance(theme_colors, dict):
-        raise RuntimeError(
-            "Theme does not contain a valid 'colors' object"
-        )
+        raise RuntimeError("Theme does not contain a valid 'colors' object")
 
     changed = 0
 
@@ -136,10 +127,7 @@ def main() -> int:
     recolor_dir = find_recolor()
 
     if recolor_dir is None:
-        print(
-            "ReColor is not installed; "
-            f"expected Anki add-on {RECOLOR_ID}."
-        )
+        print("ReColor is not installed; " f"expected Anki add-on {RECOLOR_ID}.")
         return 0
 
     config_path = recolor_dir / "config.json"
@@ -148,16 +136,14 @@ def main() -> int:
 
     if not config_path.is_file():
         print(
-            f"ReColor default configuration was not found: "
-            f"{config_path}",
+            f"ReColor default configuration was not found: " f"{config_path}",
             file=sys.stderr,
         )
         return 1
 
     if not theme_path.is_file():
         print(
-            f"Catppuccin Mocha theme was not found: "
-            f"{theme_path}",
+            f"Catppuccin Mocha theme was not found: " f"{theme_path}",
             file=sys.stderr,
         )
         return 1
@@ -197,19 +183,11 @@ def main() -> int:
         return 1
 
     if changed == 0:
-        print(
-            "Anki ReColor is already using "
-            "Catppuccin Mocha."
-        )
+        print("Anki ReColor is already using " "Catppuccin Mocha.")
     else:
-        print(
-            f"Applied Catppuccin Mocha to "
-            f"{changed} ReColor color entries."
-        )
+        print(f"Applied Catppuccin Mocha to " f"{changed} ReColor color entries.")
 
-    print(
-        f"ReColor configuration: {meta_path}"
-    )
+    print(f"ReColor configuration: {meta_path}")
 
     return 0
 

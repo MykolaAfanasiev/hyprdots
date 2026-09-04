@@ -7,12 +7,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
 source "$REPO_ROOT/tests/lib/package-selection.sh"
-
 
 # Arrange
 
@@ -25,12 +24,10 @@ create_fake_pacman_all_installed
 
 PACKAGE_INSTALLATION_NEEDED=1
 
-
 # Act
 
 run_package_selection \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 
@@ -65,6 +62,5 @@ assert_package_output_contains \
 assert_package_output_contains \
     "$TEST_STATE/output.log" \
     "Skipping package selection"
-
 
 printf 'PASS: all-installed environment skips interactive package selection\n'

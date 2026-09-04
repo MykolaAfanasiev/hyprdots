@@ -1,2 +1,5 @@
 btop
 obsidian
+mpd
+mpc
+rmpc

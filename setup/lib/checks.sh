@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # ------------------------------------------------------------
 # System information helpers
 # ------------------------------------------------------------
@@ -9,21 +8,17 @@ get_effective_uid() {
     printf '%s\n' "$EUID"
 }
 
-
 get_bash_major_version() {
     printf '%s\n' "${BASH_VERSINFO[0]}"
 }
-
 
 get_os_release_path() {
     printf '%s\n' "/etc/os-release"
 }
 
-
 is_directory_writable() {
     [[ -w "$1" ]]
 }
-
 
 # ------------------------------------------------------------
 # Checks
@@ -33,25 +28,23 @@ check_not_root() {
     local effective_uid
     effective_uid="$(get_effective_uid)"
 
-    if (( effective_uid == 0 )); then
+    if ((effective_uid == 0)); then
         die "Do not run the installer as root. Run ./install.sh as your normal user."
     fi
 
     success "Running as user: ${USER:-$(id -un)}"
 }
 
-
 check_bash() {
     local bash_major
     bash_major="$(get_bash_major_version)"
 
-    if (( bash_major < 4 )); then
+    if ((bash_major < 4)); then
         die "Bash 4 or newer is required."
     fi
 
     success "Bash ${BASH_VERSION}"
 }
-
 
 check_home() {
     if [[ -z "${HOME:-}" ]]; then
@@ -68,7 +61,6 @@ check_home() {
 
     success "Home directory: $HOME"
 }
-
 
 check_arch_linux() {
     local os_release
@@ -99,7 +91,6 @@ check_arch_linux() {
     die "Unsupported distribution: ${PRETTY_NAME:-${ID:-unknown}}. Arch Linux is required."
 }
 
-
 check_pacman() {
     if ! command_exists pacman; then
         die "pacman was not found."
@@ -107,7 +98,6 @@ check_pacman() {
 
     success "pacman found: $(command -v pacman)"
 }
-
 
 check_sudo() {
     if ! command_exists sudo; then
@@ -118,7 +108,7 @@ check_sudo() {
 
     info "Checking sudo access..."
 
-    if sudo -n true 2>/dev/null; then
+    if sudo -n true 2> /dev/null; then
         success "sudo access available"
         return 0
     fi
@@ -130,7 +120,6 @@ check_sudo() {
 
     die "Unable to authenticate with sudo."
 }
-
 
 check_repository() {
     local required_paths=(
@@ -151,9 +140,8 @@ check_repository() {
     success "Repository structure looks valid"
 }
 
-
 run_system_checks() {
-    section "[1/10] System check"
+    section "[1/11] System check"
 
     check_not_root
     check_bash

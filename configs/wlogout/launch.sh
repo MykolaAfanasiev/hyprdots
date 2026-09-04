@@ -2,11 +2,10 @@
 
 set -euo pipefail
 
-if pgrep -x wlogout >/dev/null; then
+if pgrep -x wlogout > /dev/null; then
     pkill -x wlogout
     exit 0
 fi
-
 
 WLOGOUT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 

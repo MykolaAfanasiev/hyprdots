@@ -35,7 +35,6 @@ stow_configs() {
     success "Configurations and home files deployed with GNU Stow"
 }
 
-
 show_manual_stow_instructions() {
     printf '\n'
     info "Manual configuration selected."
@@ -64,7 +63,6 @@ show_manual_stow_instructions() {
     CONFIG_DEPLOYMENT_MODE="manual"
 }
 
-
 setup_config_deployment() {
     section "Configuration deployment"
 
@@ -80,12 +78,12 @@ setup_config_deployment() {
         answer="${answer:-a}"
 
         case "${answer,,}" in
-            a|automatic)
+            a | automatic)
                 stow_configs
                 return 0
                 ;;
 
-            m|manual)
+            m | manual)
                 show_manual_stow_instructions
                 return 0
                 ;;
@@ -97,9 +95,8 @@ setup_config_deployment() {
     done
 }
 
-
 run_config_link_setup() {
-    section "[5/10] Configuration deployment"
+    section "[5/11] Configuration deployment"
 
     setup_config_deployment
 

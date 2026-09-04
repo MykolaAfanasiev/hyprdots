@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_FILESYSTEM_LOADED=1
 
-
 backup_path() {
     local path="$1"
 

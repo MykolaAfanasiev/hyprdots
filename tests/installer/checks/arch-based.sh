@@ -4,12 +4,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
 source "$REPO_ROOT/tests/lib/system-checks.sh"
-
 
 # Arrange
 
@@ -23,12 +22,10 @@ write_test_os_release \
 
 use_test_os_release
 
-
 # Act
 
 check_arch_linux \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 
@@ -39,6 +36,5 @@ assert_output_contains \
 assert_output_contains \
     "$TEST_STATE/output.log" \
     "The installer is primarily tested on Arch Linux."
-
 
 printf 'PASS: Arch-based distribution is accepted with warning\n'

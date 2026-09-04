@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
-
 
 # Arrange
 
@@ -36,11 +33,9 @@ mkdir -p -- "$PROJECT_ROOT"
 printf '#!/usr/bin/env bash\n' > "$file"
 chmod 0644 -- "$file"
 
-
 # Act
 
 ensure_executable "$file"
-
 
 # Assert
 
@@ -53,6 +48,5 @@ assert_equals \
     "744" \
     "$actual_mode" \
     "ensure_executable should add only the user execute bit"
-
 
 printf 'PASS: non-executable file receives user execute permission\n'

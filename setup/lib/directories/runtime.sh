@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_RUNTIME_DIRECTORIES_LOADED=1
 
-
 expand_home_path() {
     local path="$1"
 
@@ -29,7 +28,6 @@ expand_home_path() {
     esac
 }
 
-
 absolute_path() {
     local path="$1"
 
@@ -42,7 +40,6 @@ absolute_path() {
         "$PWD" \
         "$path"
 }
-
 
 create_directory_link() {
     local target="$1"
@@ -60,8 +57,7 @@ create_directory_link() {
 
         if ! confirm \
             "Back it up and replace it with a symlink?" \
-            no
-        then
+            no; then
             warn "Skipping $label link"
             return 0
         fi
@@ -78,7 +74,6 @@ create_directory_link() {
 
     success "$label linked to: $target"
 }
-
 
 configure_runtime_directory() {
     local label="$1"
@@ -101,14 +96,14 @@ configure_runtime_directory() {
         answer="${answer:-d}"
 
         case "${answer,,}" in
-            d|default)
+            d | default)
                 mkdir -p -- "$default_path"
 
                 success "$label directory: $default_path"
                 return 0
                 ;;
 
-            c|custom)
+            c | custom)
                 break
                 ;;
 
@@ -140,8 +135,7 @@ configure_runtime_directory() {
 
         if confirm \
             "Create this directory?" \
-            no
-        then
+            no; then
             mkdir -p -- "$custom_path"
             break
         fi
@@ -161,9 +155,31 @@ configure_runtime_directory() {
         "$label"
 }
 
+ensure_music_directories() {
+    local data_home="${XDG_DATA_HOME:-$HOME/.local/share}"
+    local state_home="${XDG_STATE_HOME:-$HOME/.local/state}"
+
+    local -a directories=(
+        "$HOME/Music/music"
+        "$HOME/Music/playlists"
+        "$data_home/mpd"
+        "$state_home/mpd"
+    )
+
+    local directory
+
+    for directory in "${directories[@]}"; do
+        mkdir -p -- "$directory"
+    done
+
+    success "Music library directory: $HOME/Music/music"
+    success "MPD playlists directory: $HOME/Music/playlists"
+    success "MPD data directory: $data_home/mpd"
+    success "MPD state directory: $state_home/mpd"
+}
 
 run_runtime_directory_setup() {
-    section "[7/10] Runtime directories"
+    section "[7/11] Runtime directories"
 
     configure_runtime_directory \
         "Wallpapers" \
@@ -172,6 +188,12 @@ run_runtime_directory_setup() {
     configure_runtime_directory \
         "Screenshots" \
         "$HOME/Screenshots"
+
+    if package_is_selected mpd; then
+        ensure_music_directories
+    else
+        info "MPD was not selected; music directories skipped"
+    fi
 
     printf '\n'
     success "Runtime directory setup complete"

@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,7 +25,6 @@ create_fake_pacman \
 
 create_fake_sudo_passthrough
 
-
 # Act
 
 install_arch_packages \
@@ -33,7 +32,6 @@ install_arch_packages \
     waybar \
     kitty \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 

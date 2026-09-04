@@ -7,12 +7,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
 source "$REPO_ROOT/tests/lib/package-selection.sh"
-
 
 # Arrange
 
@@ -24,12 +23,10 @@ SELECTED_ARCH_RECOMMENDED=(wireplumber)
 SELECTED_ARCH_DEFAULT_APPS=(kitty)
 SELECTED_AUR_REQUIRED=(wlogout)
 
-
 # Act
 
 print_package_selection_summary \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 
@@ -54,12 +51,10 @@ for package in \
     waybar \
     wireplumber \
     kitty \
-    wlogout
-do
+    wlogout; do
     assert_package_output_contains \
         "$TEST_STATE/output.log" \
         "  - $package"
 done
-
 
 printf 'PASS: package selection summary displays selected packages\n'

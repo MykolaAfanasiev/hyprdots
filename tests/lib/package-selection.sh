@@ -10,12 +10,10 @@ fi
 
 readonly HYPRDOTS_TEST_PACKAGE_SELECTION_LOADED=1
 
-
 HYPRDOTS_TEST_REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/tests/lib/sandbox.sh"
@@ -34,7 +32,6 @@ source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/packages/manifest.sh"
 
 # shellcheck source=setup/lib/packages/select.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/packages/select.sh"
-
 
 setup_package_selection_test() {
     create_test_sandbox
@@ -57,16 +54,13 @@ setup_package_selection_test() {
     export SETUP_DIR
 }
 
-
 stdin_is_terminal() {
-    (( TEST_STDIN_IS_TERMINAL != 0 ))
+    ((TEST_STDIN_IS_TERMINAL != 0))
 }
-
 
 mock_terminal() {
     TEST_STDIN_IS_TERMINAL="$1"
 }
-
 
 create_manifest() {
     local filename="$1"
@@ -76,11 +70,10 @@ create_manifest() {
 
     : > "$path"
 
-    if (( $# > 0 )); then
+    if (($# > 0)); then
         printf '%s\n' "$@" > "$path"
     fi
 }
-
 
 create_default_manifests() {
     create_manifest \
@@ -103,21 +96,18 @@ create_default_manifests() {
         wlogout
 }
 
-
 create_fake_pacman_all_installed() {
     create_fake_command pacman 0
 }
-
 
 create_fake_pacman_all_missing() {
     create_fake_command pacman 1
 }
 
-
 create_fake_pacman_with_missing() {
     local missing_package="$1"
 
-    cat > "$TEST_BIN/pacman" <<EOF_PACMAN
+    cat > "$TEST_BIN/pacman" << EOF_PACMAN
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/pacman.log"
@@ -134,14 +124,13 @@ EOF_PACMAN
     chmod +x -- "$TEST_BIN/pacman"
 }
 
-
 assert_array_equals() {
     local array_name="$1"
     shift
 
     local -n actual_ref="$array_name"
 
-    if (( ${#actual_ref[@]} != $# )); then
+    if ((${#actual_ref[@]} != $#)); then
         printf 'FAIL: array %s has unexpected length\n' "$array_name" >&2
         printf '  expected: %s\n' "$#" >&2
         printf '  actual:   %s\n' "${#actual_ref[@]}" >&2
@@ -163,23 +152,21 @@ assert_array_equals() {
             return 1
         fi
 
-        (( index += 1 ))
+        ((index += 1))
     done
 }
-
 
 assert_array_empty() {
     local array_name="$1"
     local -n actual_ref="$array_name"
 
-    if (( ${#actual_ref[@]} == 0 )); then
+    if ((${#actual_ref[@]} == 0)); then
         return 0
     fi
 
     printf 'FAIL: array %s should be empty\n' "$array_name" >&2
     return 1
 }
-
 
 run_package_test_captured() {
     local output_file="$1"
@@ -196,7 +183,6 @@ run_package_test_captured() {
 
     set -e
 }
-
 
 assert_package_output_contains() {
     local output_file="$1"

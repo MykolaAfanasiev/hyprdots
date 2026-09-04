@@ -8,7 +8,7 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/../../.." && pwd)"
 HYPRLOCK_LAUNCH="$PROJECT_ROOT/configs/hyprlock/launch.sh"
 
 close_menu() {
-    pkill -x wlogout >/dev/null 2>&1 || true
+    pkill -x wlogout > /dev/null 2>&1 || true
 }
 
 case "${1:-}" in

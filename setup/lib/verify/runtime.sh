@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_VERIFY_RUNTIME_LOADED=1
 
-
 verify_screenshot_command() {
     local command_name="screenshot-tool"
 
@@ -24,7 +23,6 @@ verify_screenshot_command() {
         verify_fail "$command_name exists but cannot be executed correctly"
     fi
 }
-
 
 verify_runtime_directory() {
     local label="$1"
@@ -60,7 +58,6 @@ verify_runtime_directory() {
     verify_fail "$label directory does not exist: $path"
 }
 
-
 verify_runtime_directories() {
     local wallpaper_dir="${HYPRDOTS_WALLPAPER_DIR:-$HOME/.wallpapers}"
     local screenshot_dir="${HYPRDOTS_SCREENSHOT_DIR:-$HOME/Screenshots}"
@@ -73,7 +70,6 @@ verify_runtime_directories() {
         "Screenshots" \
         "$screenshot_dir"
 }
-
 
 verify_installer_entrypoints() {
     local -a files=(
@@ -94,7 +90,6 @@ verify_installer_entrypoints() {
     done
 }
 
-
 verify_runtime_script_permissions() {
     local -a non_executable=()
 
@@ -104,12 +99,11 @@ verify_runtime_script_permissions() {
 
     for directory in \
         "$PROJECT_ROOT/configs" \
-        "$PROJECT_ROOT/scripts"
-    do
+        "$PROJECT_ROOT/scripts"; do
         [[ -d "$directory" ]] || continue
 
         while IFS= read -r -d '' file; do
-            (( total += 1 ))
+            ((total += 1))
 
             if [[ ! -x "$file" ]]; then
                 non_executable+=("$file")
@@ -122,7 +116,7 @@ verify_runtime_script_permissions() {
         )
     done
 
-    if (( ${#non_executable[@]} == 0 )); then
+    if ((${#non_executable[@]} == 0)); then
         verify_pass "All $total runtime shell script(s) are executable"
         return 0
     fi
@@ -135,6 +129,42 @@ verify_runtime_script_permissions() {
     done
 }
 
+verify_mpd_user_service() {
+    if ! package_is_selected mpd; then
+        return 0
+    fi
+
+    if [[ "${CONFIG_DEPLOYMENT_MODE:-unknown}" != "automatic" ]]; then
+        return 0
+    fi
+
+    if ! command_exists systemctl; then
+        verify_fail "systemctl is unavailable; MPD user service cannot be verified"
+        return 0
+    fi
+
+    if command systemctl --user is-enabled --quiet mpd.service; then
+        verify_pass "MPD user service is enabled"
+    else
+        verify_fail "MPD user service is not enabled"
+    fi
+
+    if command systemctl --user is-active --quiet mpd.service; then
+        verify_pass "MPD user service is active"
+    else
+        verify_fail "MPD user service is not active"
+    fi
+
+    if [[ -n "${XDG_RUNTIME_DIR:-}" ]]; then
+        local socket="$XDG_RUNTIME_DIR/mpd/socket"
+
+        if [[ -S "$socket" ]]; then
+            verify_pass "MPD Unix socket is available: $socket"
+        else
+            verify_fail "MPD Unix socket is missing: $socket"
+        fi
+    fi
+}
 
 verify_runtime() {
     section "Runtime"
@@ -143,4 +173,5 @@ verify_runtime() {
     verify_runtime_directories
     verify_installer_entrypoints
     verify_runtime_script_permissions
+    verify_mpd_user_service
 }

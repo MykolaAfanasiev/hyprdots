@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
-
 
 # Arrange
 
@@ -59,11 +56,9 @@ chmod 0644 \
     "$runtime_script" \
     "$location_file"
 
-
 # Act
 
 run_permission_setup
-
 
 # Assert
 
@@ -85,6 +80,5 @@ assert_equals \
     "600" \
     "$location_mode" \
     "full permissions stage should secure Hyprsunset location.conf"
-
 
 printf 'PASS: full permissions stage configures all required permissions\n'

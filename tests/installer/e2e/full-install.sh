@@ -4,12 +4,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/e2e.sh
 source "$REPO_ROOT/tests/lib/e2e.sh"
-
 
 # Arrange
 
@@ -23,13 +22,12 @@ fi
 
 prepare_e2e_environment 0
 
-# Stage 8 should repair this before Stage 10 verifies it.
+# Stage 8 should repair this before Stage 11 verifies it.
 chmod -x -- \
     "$E2E_PROJECT/configs/hypridle/launch.sh"
 
 # Enough default answers for the remaining interactive stages.
 E2E_INPUT=$'\n\n\n\n\n\n\n\n\n\n'
-
 
 # Act
 
@@ -37,8 +35,7 @@ run_e2e_installer \
     "$E2E_INPUT" \
     "$TEST_STATE/output.log"
 
-
-if (( E2E_STATUS != 0 )); then
+if ((E2E_STATUS != 0)); then
     cat -- "$TEST_STATE/output.log" >&2
 fi
 
@@ -49,10 +46,10 @@ assert_equals \
     "$E2E_STATUS" \
     "full installer should exit successfully"
 
-for stage in {1..10}; do
+for stage in {1..11}; do
     assert_e2e_output_contains \
         "$TEST_STATE/output.log" \
-        "[$stage/10]"
+        "[$stage/11]"
 done
 
 assert_file_exists \
@@ -63,6 +60,18 @@ assert_directory_exists \
 
 assert_directory_exists \
     "$HOME/Screenshots"
+
+assert_directory_exists \
+    "$HOME/Music/music"
+
+assert_directory_exists \
+    "$HOME/Music/playlists"
+
+assert_directory_exists \
+    "$XDG_DATA_HOME/mpd"
+
+assert_directory_exists \
+    "$XDG_STATE_HOME/mpd"
 
 assert_executable \
     "$E2E_PROJECT/configs/hypridle/launch.sh"
@@ -96,6 +105,18 @@ assert_e2e_output_contains \
 assert_e2e_output_contains \
     "$TEST_STATE/stow.log" \
     "--target=$HOME home"
+
+assert_e2e_output_contains \
+    "$TEST_STATE/systemctl.log" \
+    "--user daemon-reload"
+
+assert_e2e_output_contains \
+    "$TEST_STATE/systemctl.log" \
+    "--user enable mpd.service"
+
+assert_e2e_output_contains \
+    "$TEST_STATE/systemctl.log" \
+    "--user restart mpd.service"
 
 assert_e2e_output_contains \
     "$TEST_STATE/output.log" \

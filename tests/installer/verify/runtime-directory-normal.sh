@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -23,13 +23,11 @@ directory="$TEST_ROOT/wallpapers"
 mkdir -p \
     "$directory"
 
-
 # Act
 
 verify_runtime_directory \
     "Wallpapers" \
     "$directory"
-
 
 # Assert
 

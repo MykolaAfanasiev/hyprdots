@@ -10,9 +10,9 @@ install automatically and what to offer as an option.
   installation of repository components.
 - `arch-recommended.txt` — desktop-integration packages strongly recommended
   for a complete Hyprland session, but not directly invoked by most configs.
-- `arch-default-apps.txt` — applications referenced by the default values in
-  `configs/hypr/modules/vars/global.lua`. These can be skipped when the commands
-  are overridden in `local.lua`.
+- `arch-default-apps.txt` — user-facing applications and optional workflow
+  components configured by the repository. These can be skipped when that
+  workflow is not wanted.
 - `aur-required.txt` — required packages that are not in the official Arch
   repositories.
 
@@ -39,10 +39,21 @@ Its external runtime commands are covered by the required package list:
 
 ## Audio
 
-The configuration is built around PipeWire/WirePlumber. Waybar uses its
+The desktop audio stack is built around PipeWire/WirePlumber. Waybar uses its
 WirePlumber module and `wpctl`, while Hyprland media key bindings use `pactl`.
 The required list therefore selects PipeWire, WirePlumber, PipeWire's PulseAudio
 compatibility layer, and the PipeWire JACK provider.
+
+The default application group also contains the local music stack:
+
+- `mpd` as the playback daemon;
+- `mpc` for command-line control and scripting;
+- `rmpc` as the interactive TUI client.
+
+MPD is configured to accept local clients through
+`$XDG_RUNTIME_DIR/mpd/socket`. The repository deploys a systemd user-unit
+drop-in that creates the `mpd` runtime directory, and the installer enables and
+restarts `mpd.service` after automatic Stow deployment.
 
 ## AUR
 

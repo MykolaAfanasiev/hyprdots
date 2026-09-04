@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_VERIFY_CONFIGS_LOADED=1
 
-
 verify_hyprland_local_config() {
     local config="$PROJECT_ROOT/configs/hypr/modules/vars/local.lua"
 
@@ -16,7 +15,6 @@ verify_hyprland_local_config() {
         verify_fail "Hyprland local config is missing or unreadable"
     fi
 }
-
 
 verify_hyprsunset_location() {
     local config="$PROJECT_ROOT/configs/hyprsunset/location.conf"
@@ -49,7 +47,6 @@ verify_hyprsunset_location() {
     fi
 }
 
-
 verify_hyprland_link() {
     local source="$PROJECT_ROOT/configs/hypr/hyprland.lua"
     local destination="$HOME/.config/hypr/hyprland.lua"
@@ -59,8 +56,7 @@ verify_hyprland_link() {
 
     if managed_path_resolves_to \
         "$destination" \
-        "$resolved_source"
-    then
+        "$resolved_source"; then
         verify_pass "Hyprland configuration resolves to the repository"
         return 0
     fi
@@ -78,7 +74,6 @@ verify_hyprland_link() {
     verify_warn "Hyprland configuration link is not configured"
 }
 
-
 managed_path_resolves_to() {
     local destination="$1"
     local source="$2"
@@ -95,10 +90,13 @@ managed_path_resolves_to() {
     [[ "$resolved_destination" == "$resolved_source" ]]
 }
 
-
 verify_managed_configuration_links() {
     local -a mappings=(
         "Ghostty|$PROJECT_ROOT/configs/ghostty/config.ghostty|$HOME/.config/ghostty/config.ghostty"
+        "MPD|$PROJECT_ROOT/configs/mpd/mpd.conf|$HOME/.config/mpd/mpd.conf"
+        "rmpc|$PROJECT_ROOT/configs/rmpc/config.ron|$HOME/.config/rmpc/config.ron"
+        "rmpc theme|$PROJECT_ROOT/configs/rmpc/themes/catppuccin-mocha.ron|$HOME/.config/rmpc/themes/catppuccin-mocha.ron"
+        "MPD systemd override|$PROJECT_ROOT/configs/systemd/user/mpd.service.d/10-hyprdots.conf|$HOME/.config/systemd/user/mpd.service.d/10-hyprdots.conf"
         "Starship|$PROJECT_ROOT/configs/starship/starship.toml|$HOME/.config/starship/starship.toml"
         "tmux|$PROJECT_ROOT/configs/tmux/tmux.conf|$HOME/.config/tmux/tmux.conf"
         "Zellij|$PROJECT_ROOT/configs/zellij/config.kdl|$HOME/.config/zellij/config.kdl"
@@ -124,14 +122,14 @@ verify_managed_configuration_links() {
         fi
     done
 
-    if (( ${#unresolved[@]} == 0 )); then
+    if ((${#unresolved[@]} == 0)); then
         verify_pass \
-            "All ${#mappings[@]} managed shell and desktop paths resolve to the repository"
+            "All ${#mappings[@]} managed configuration paths resolve to the repository"
         return 0
     fi
 
     verify_warn \
-        "${#unresolved[@]} managed shell or desktop path(s) are not deployed"
+        "${#unresolved[@]} managed configuration path(s) are not deployed"
 
     local item
 
@@ -139,7 +137,6 @@ verify_managed_configuration_links() {
         printf '  - %s\n' "$item"
     done
 }
-
 
 verify_configuration() {
     section "Configuration"

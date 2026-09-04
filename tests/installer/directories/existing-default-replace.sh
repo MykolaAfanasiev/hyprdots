@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -24,7 +22,6 @@ source "$PROJECT_ROOT/setup/lib/filesystem.sh"
 # shellcheck source=setup/lib/directories/runtime.sh
 source "$PROJECT_ROOT/setup/lib/directories/runtime.sh"
 
-
 # Arrange
 
 create_test_sandbox
@@ -40,7 +37,6 @@ mkdir -p \
 printf 'important data\n' \
     > "$default_path/original.txt"
 
-
 # Act
 
 configure_runtime_directory \
@@ -48,24 +44,20 @@ configure_runtime_directory \
     "$default_path" \
     <<< $'c\n'"$custom_path"$'\ny'
 
-
 # Assert
 
 assert_symlink_to \
     "$default_path" \
     "$custom_path"
 
-
 shopt -s nullglob
 backups=("$default_path".backup.*)
 shopt -u nullglob
-
 
 assert_equals \
     "1" \
     "${#backups[@]}" \
     "exactly one backup should be created"
-
 
 backup_path="${backups[0]}"
 
@@ -81,6 +73,5 @@ assert_equals \
     "important data" \
     "$actual_content" \
     "backup should preserve existing user data"
-
 
 printf 'PASS: existing default directory is backed up and replaced with symlink\n'

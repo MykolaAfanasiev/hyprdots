@@ -4,7 +4,7 @@ set -euo pipefail
 
 HYPRSUNSET_DIR="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &&
-    pwd
+        pwd
 )"
 
 LOCATION="$HYPRSUNSET_DIR/location.conf"
@@ -24,10 +24,10 @@ hyprsunset_pid=$!
 
 cleanup() {
     if [[ -n "${scheduler_pid:-}" ]]; then
-        kill "$scheduler_pid" 2>/dev/null || true
+        kill "$scheduler_pid" 2> /dev/null || true
     fi
 
-    kill "$hyprsunset_pid" 2>/dev/null || true
+    kill "$hyprsunset_pid" 2> /dev/null || true
 }
 
 trap cleanup EXIT INT TERM
@@ -36,12 +36,12 @@ trap cleanup EXIT INT TERM
 ready=false
 
 for _ in {1..50}; do
-    if hyprctl hyprsunset identity >/dev/null 2>&1; then
+    if hyprctl hyprsunset identity > /dev/null 2>&1; then
         ready=true
         break
     fi
 
-    if ! kill -0 "$hyprsunset_pid" 2>/dev/null; then
+    if ! kill -0 "$hyprsunset_pid" 2> /dev/null; then
         wait "$hyprsunset_pid"
         exit $?
     fi

@@ -7,23 +7,15 @@ import tempfile
 import urllib.request
 from pathlib import Path
 
-
 HOME = Path.home()
 
 THEME_NAME = "Catppuccin"
-THEME_BASE_URL = (
-    "https://raw.githubusercontent.com/"
-    "catppuccin/obsidian/main"
-)
+THEME_BASE_URL = "https://raw.githubusercontent.com/" "catppuccin/obsidian/main"
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 
 APPEARANCE_TEMPLATE = (
-    PROJECT_ROOT
-    / "setup"
-    / "templates"
-    / "obsidian"
-    / "appearance.json"
+    PROJECT_ROOT / "setup" / "templates" / "obsidian" / "appearance.json"
 )
 
 
@@ -44,9 +36,7 @@ def find_obsidian_config() -> Path | None:
     if xdg_config_home:
         candidates.insert(
             0,
-            Path(xdg_config_home)
-            / "obsidian"
-            / "obsidian.json",
+            Path(xdg_config_home) / "obsidian" / "obsidian.json",
         )
 
     seen = set()
@@ -132,12 +122,7 @@ def download(url: str, destination: Path) -> None:
 
 
 def install_theme(vault: Path) -> None:
-    theme_dir = (
-        vault
-        / ".obsidian"
-        / "themes"
-        / THEME_NAME
-    )
+    theme_dir = vault / ".obsidian" / "themes" / THEME_NAME
 
     print(f"Installing Catppuccin: {vault}")
 
@@ -153,11 +138,7 @@ def install_theme(vault: Path) -> None:
 
 
 def configure_appearance(vault: Path) -> None:
-    appearance_path = (
-        vault
-        / ".obsidian"
-        / "appearance.json"
-    )
+    appearance_path = vault / ".obsidian" / "appearance.json"
 
     current = load_json(appearance_path)
     desired = load_json(APPEARANCE_TEMPLATE)
@@ -183,14 +164,10 @@ def main() -> int:
     vaults = find_vaults(config_path)
 
     if not vaults:
-        print(
-            "No registered Obsidian vaults were found."
-        )
+        print("No registered Obsidian vaults were found.")
         return 0
 
-    print(
-        f"Found {len(vaults)} Obsidian vault(s)."
-    )
+    print(f"Found {len(vaults)} Obsidian vault(s).")
 
     for vault in vaults:
         try:
@@ -209,9 +186,7 @@ def main() -> int:
             )
             return 1
 
-    print(
-        "Obsidian Catppuccin configuration complete."
-    )
+    print("Obsidian Catppuccin configuration complete.")
 
     return 0
 

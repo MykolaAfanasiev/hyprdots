@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/configs/local.sh
 source "$REAL_PROJECT_ROOT/setup/lib/configs/local.sh"
-
 
 # Arrange
 
@@ -40,14 +37,12 @@ printf '%s\n' \
     '}' \
     > "$template"
 
-
 # Act
 
 create_local_config \
     "$template" \
     "$destination" \
     "Hyprland local config"
-
 
 # Assert
 
@@ -61,6 +56,5 @@ assert_equals \
     "$expected_content" \
     "$actual_content" \
     "local.lua should be copied from the example template"
-
 
 printf 'PASS: missing Hyprland local config is created from template\n'

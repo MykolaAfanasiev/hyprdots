@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -28,11 +28,9 @@ printf '%s\n' '-- source' \
 printf '%s\n' '-- local unmanaged config' \
     > "$HOME/.config/hypr/hyprland.lua"
 
-
 # Act
 
 verify_hyprland_link
-
 
 # Assert
 

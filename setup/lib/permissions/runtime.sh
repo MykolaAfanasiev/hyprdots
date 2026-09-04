@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_RUNTIME_PERMISSIONS_LOADED=1
 
-
 ensure_executable() {
     local file="$1"
 
@@ -25,7 +24,6 @@ ensure_executable() {
     info "Made executable: ${file#"$PROJECT_ROOT/"}"
 }
 
-
 ensure_installer_entrypoints_executable() {
     ensure_executable \
         "$PROJECT_ROOT/install.sh"
@@ -34,15 +32,13 @@ ensure_installer_entrypoints_executable() {
         "$SETUP_DIR/install.sh"
 }
 
-
 ensure_runtime_scripts_executable() {
     local directory
     local file
 
     for directory in \
         "$PROJECT_ROOT/configs" \
-        "$PROJECT_ROOT/scripts"
-    do
+        "$PROJECT_ROOT/scripts"; do
         if [[ ! -d "$directory" ]]; then
             warn "Runtime directory does not exist:"
             printf '  %s\n' "$directory"
@@ -59,7 +55,6 @@ ensure_runtime_scripts_executable() {
         )
     done
 }
-
 
 secure_hyprsunset_location() {
     local location_file="$PROJECT_ROOT/configs/hyprsunset/location.conf"
@@ -79,9 +74,8 @@ secure_hyprsunset_location() {
     success "Hyprsunset location permissions: 600"
 }
 
-
 run_permission_setup() {
-    section "[8/10] Permissions"
+    section "[8/11] Permissions"
 
     ensure_installer_entrypoints_executable
     ensure_runtime_scripts_executable

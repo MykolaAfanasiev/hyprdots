@@ -5,23 +5,21 @@
 
 set -euo pipefail
 
-
 # ------------------------------------------------------------
 # Paths
 # ------------------------------------------------------------
 
 SETUP_DIR="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &&
-    pwd
+        pwd
 )"
 
 PROJECT_ROOT="$(
     cd -- "$SETUP_DIR/.." &&
-    pwd
+        pwd
 )"
 
 LIB_DIR="$SETUP_DIR/lib"
-
 
 # ------------------------------------------------------------
 # Modules
@@ -50,6 +48,8 @@ source "$LIB_DIR/directories/runtime.sh"
 source "$LIB_DIR/permissions/runtime.sh"
 
 source "$LIB_DIR/integrations/desktop.sh"
+
+source "$LIB_DIR/services/user.sh"
 
 source "$LIB_DIR/verify/report.sh"
 source "$LIB_DIR/verify/packages.sh"
@@ -111,11 +111,15 @@ main() {
     printf '\n'
     info "Stage 9 complete."
 
-    run_post_install_verification
+    run_user_service_setup
 
     printf '\n'
     info "Stage 10 complete."
-}
 
+    run_post_install_verification
+
+    printf '\n'
+    info "Stage 11 complete."
+}
 
 main "$@"

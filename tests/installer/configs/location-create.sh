@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -21,7 +19,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 # shellcheck source=setup/lib/configs/local.sh
 source "$REAL_PROJECT_ROOT/setup/lib/configs/local.sh"
 
-
 # Arrange
 
 create_test_sandbox
@@ -33,11 +30,9 @@ destination="$PROJECT_ROOT/configs/hyprsunset/location.conf"
 
 mkdir -p "$(dirname -- "$destination")"
 
-
 # Act
 
 configure_hyprsunset_location <<< $'y\n48.765\n11.424'
-
 
 # Assert
 
@@ -58,6 +53,5 @@ assert_equals \
     "600" \
     "$actual_mode" \
     "Hyprsunset location config should have mode 600"
-
 
 printf 'PASS: Hyprsunset location config is created correctly\n'

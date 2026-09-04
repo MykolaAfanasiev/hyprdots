@@ -20,19 +20,19 @@ hyprpaper --config "$HYPRPAPER_DIR/hyprpaper.conf" &
 hyprpaper_pid=$!
 
 cleanup() {
-    kill "$hyprpaper_pid" 2>/dev/null || true
+    kill "$hyprpaper_pid" 2> /dev/null || true
 }
 
 trap cleanup EXIT INT TERM
 
 ready=false
 for _ in {1..50}; do
-    if hyprctl hyprpaper listactive >/dev/null 2>&1; then
+    if hyprctl hyprpaper listactive > /dev/null 2>&1; then
         ready=true
         break
     fi
 
-    if ! kill -0 "$hyprpaper_pid" 2>/dev/null; then
+    if ! kill -0 "$hyprpaper_pid" 2> /dev/null; then
         wait "$hyprpaper_pid"
         exit $?
     fi
@@ -51,7 +51,7 @@ IFS= read -r -d '' wallpaper < <(
         -type f \
         \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' \) \
         -print0 |
-    shuf -z -n 1
+        shuf -z -n 1
 ) || true
 
 if [[ -z "$wallpaper" ]]; then
@@ -59,8 +59,7 @@ if [[ -z "$wallpaper" ]]; then
     exit 1
 fi
 
-if hyprctl hyprpaper wallpaper ", $wallpaper, cover" >/dev/null 2>&1
-then
+if hyprctl hyprpaper wallpaper ", $wallpaper, cover" > /dev/null 2>&1; then
     printf '%s\n' "$wallpaper" > "$CURRENT_FILE"
     ln -sfn "$wallpaper" "$CURRENT_LINK"
 else

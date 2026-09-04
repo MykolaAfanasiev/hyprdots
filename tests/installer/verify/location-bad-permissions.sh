@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -27,12 +27,10 @@ printf '%s\n' 'LATITUDE=48.7' \
 chmod 644 \
     "$PROJECT_ROOT/configs/hyprsunset/location.conf"
 
-
 # Act
 
 verify_hyprsunset_location \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 

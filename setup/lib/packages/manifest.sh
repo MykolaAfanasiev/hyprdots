@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_PACKAGE_MANIFEST_LOADED=1
 
-
 load_package_manifest() {
     local manifest="$1"
     local destination_name="$2"

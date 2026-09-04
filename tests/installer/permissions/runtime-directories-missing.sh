@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -21,7 +19,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
 
-
 # Arrange
 
 create_test_sandbox
@@ -31,12 +28,10 @@ PROJECT_ROOT="$TEST_ROOT/project"
 
 mkdir -p -- "$PROJECT_ROOT"
 
-
 # Act
 
 ensure_runtime_scripts_executable \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 
@@ -50,6 +45,5 @@ assert_equals \
     "2" \
     "$warning_count" \
     "missing configs and scripts directories should each produce a warning"
-
 
 printf 'PASS: missing runtime directories are warned about and skipped\n'

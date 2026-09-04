@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_TEST_ASSERTIONS_LOADED=1
 
-
 assert_equals() {
     local expected="$1"
     local actual="$2"
@@ -23,7 +22,6 @@ assert_equals() {
     return 1
 }
 
-
 assert_file_exists() {
     local path="$1"
 
@@ -36,7 +34,6 @@ assert_file_exists() {
 
     return 1
 }
-
 
 assert_file_not_exists() {
     local path="$1"
@@ -51,7 +48,6 @@ assert_file_not_exists() {
     return 1
 }
 
-
 assert_directory_exists() {
     local path="$1"
 
@@ -64,7 +60,6 @@ assert_directory_exists() {
 
     return 1
 }
-
 
 assert_symlink_to() {
     local link="$1"
@@ -94,7 +89,6 @@ assert_symlink_to() {
     return 1
 }
 
-
 assert_executable() {
     local path="$1"
 
@@ -112,7 +106,7 @@ assert_failure() {
     local status="$1"
     local message="${2:-Expected command to fail}"
 
-    if (( status != 0 )); then
+    if ((status != 0)); then
         return 0
     fi
 

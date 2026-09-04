@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -24,7 +22,6 @@ source "$PROJECT_ROOT/setup/lib/common.sh"
 # shellcheck source=setup/lib/tools/screenshot.sh
 source "$PROJECT_ROOT/setup/lib/tools/screenshot.sh"
 
-
 # Arrange
 
 create_test_sandbox
@@ -34,11 +31,9 @@ create_fake_command python 0
 create_fake_command screenshot-tool 0
 create_fake_command pipx 0
 
-
 # Act
 
 run_screenshot_tool_setup
-
 
 # Assert
 
@@ -52,6 +47,5 @@ assert_equals \
 
 assert_file_not_exists \
     "$TEST_STATE/pipx.log"
-
 
 printf 'PASS: existing screenshot-tool skips pipx installation\n'

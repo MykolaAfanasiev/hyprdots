@@ -66,7 +66,6 @@ create_test_sandbox() {
         "$XDG_STATE_HOME"
 }
 
-
 destroy_test_sandbox() {
     if [[ -n "${TEST_ROOT:-}" && -d "$TEST_ROOT" ]]; then
         rm -rf -- "$TEST_ROOT"

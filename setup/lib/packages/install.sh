@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_PACKAGE_INSTALL_LOADED=1
 
-
 print_install_plan() {
     local arch_name="$1"
     local aur_name="$2"
@@ -18,7 +17,7 @@ print_install_plan() {
 
     printf 'Official Arch packages:\n'
 
-    if (( ${#arch_ref[@]} == 0 )); then
+    if ((${#arch_ref[@]} == 0)); then
         printf '  (none)\n'
     else
         print_package_list "$arch_name"
@@ -27,18 +26,17 @@ print_install_plan() {
     printf '\n'
     printf 'AUR packages:\n'
 
-    if (( ${#aur_ref[@]} == 0 )); then
+    if ((${#aur_ref[@]} == 0)); then
         printf '  (none)\n'
     else
         print_package_list "$aur_name"
     fi
 }
 
-
 run_package_installation() {
-    section "[3/10] Package installation"
+    section "[3/11] Package installation"
 
-    if (( PACKAGE_INSTALLATION_NEEDED == 0 )); then
+    if ((PACKAGE_INSTALLATION_NEEDED == 0)); then
         success "All packages are already installed"
         info "Skipping package installation"
         return 0
@@ -59,8 +57,7 @@ run_package_installation() {
 
     if ! confirm \
         "Install these packages now?" \
-        yes
-    then
+        yes; then
         die "Package installation cancelled."
     fi
 

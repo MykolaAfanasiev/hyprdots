@@ -4,7 +4,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -18,7 +18,6 @@ source "$REPO_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/integrations/desktop.sh
 source "$REPO_ROOT/setup/lib/integrations/desktop.sh"
-
 
 # Arrange
 
@@ -37,7 +36,7 @@ mkdir -p -- \
     "$native_profile" \
     "$flatpak_profile"
 
-cat > "$HOME/.zen/profiles.ini" <<'EOF_NATIVE'
+cat > "$HOME/.zen/profiles.ini" << 'EOF_NATIVE'
 [Profile0]
 Name=Default
 IsRelative=1
@@ -45,7 +44,7 @@ Path=profile.default
 Default=1
 EOF_NATIVE
 
-cat > "$HOME/.var/app/app.zen_browser.zen/.zen/profiles.ini" <<EOF_FLATPAK
+cat > "$HOME/.var/app/app.zen_browser.zen/.zen/profiles.ini" << EOF_FLATPAK
 [Profile0]
 Name=Default
 IsRelative=0
@@ -53,17 +52,15 @@ Path=$flatpak_profile
 Default=1
 EOF_FLATPAK
 
-cat > "$native_profile/user.js" <<'EOF_USER_JS'
+cat > "$native_profile/user.js" << 'EOF_USER_JS'
 user_pref("browser.tabs.warnOnClose", false);
 user_pref("widget.use-xdg-desktop-portal.file-picker", 0);
 EOF_USER_JS
-
 
 # Act: a second call must update in place without duplicating the preference.
 
 configure_zen_file_picker > "$TEST_STATE/first.log" 2>&1
 configure_zen_file_picker > "$TEST_STATE/second.log" 2>&1
-
 
 # Assert
 
@@ -87,6 +84,5 @@ assert_equals \
 grep -Fq -- \
     'Zen uses the XDG portal file picker in 2 profile(s)' \
     "$TEST_STATE/second.log"
-
 
 printf 'PASS: Zen portal preference is configured idempotently\n'

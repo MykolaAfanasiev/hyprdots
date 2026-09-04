@@ -4,7 +4,7 @@ set -euo pipefail
 
 PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")" &&
-    pwd
+        pwd
 )"
 
 exec "$PROJECT_ROOT/setup/install.sh" "$@"

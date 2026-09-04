@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -21,7 +19,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 # shellcheck source=setup/lib/configs/local.sh
 source "$REAL_PROJECT_ROOT/setup/lib/configs/local.sh"
 
-
 # Arrange
 
 create_test_sandbox
@@ -33,7 +30,6 @@ template="$PROJECT_ROOT/configs/hypr/modules/vars/local.lua.example"
 destination="$PROJECT_ROOT/configs/hypr/modules/vars/local.lua"
 
 mkdir -p "$(dirname -- "$destination")"
-
 
 # Act
 
@@ -52,7 +48,6 @@ status=$?
 
 set -e
 
-
 # Assert
 
 assert_failure \
@@ -64,11 +59,9 @@ assert_file_not_exists \
 
 if ! grep -Fq -- \
     "Local config template is not readable:" \
-    "$TEST_STATE/output.log"
-then
+    "$TEST_STATE/output.log"; then
     printf 'FAIL: missing template error was not shown\n' >&2
     exit 1
 fi
-
 
 printf 'PASS: missing local config template causes failure\n'

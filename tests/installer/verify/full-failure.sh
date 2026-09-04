@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -26,13 +26,11 @@ create_fake_pacman_installed
 chmod -x \
     "$SETUP_DIR/install.sh"
 
-
 # Act
 
 run_verification_test_captured \
     "$TEST_STATE/output.log" \
     run_post_install_verification
-
 
 # Assert
 
@@ -48,4 +46,4 @@ assert_verify_output_contains \
     "$TEST_STATE/output.log" \
     "Post-install verification failed."
 
-printf 'PASS: failed verification causes Stage 10 to fail\n'
+printf 'PASS: failed verification causes Stage 11 to fail\n'

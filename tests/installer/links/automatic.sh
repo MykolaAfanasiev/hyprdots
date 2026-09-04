@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -24,7 +22,6 @@ source "$PROJECT_ROOT/setup/lib/common.sh"
 # shellcheck source=setup/lib/links/config.sh
 source "$PROJECT_ROOT/setup/lib/links/config.sh"
 
-
 # Arrange
 
 create_test_sandbox
@@ -32,11 +29,9 @@ trap destroy_test_sandbox EXIT
 
 create_fake_command stow 0
 
-
 # Act
 
 run_config_link_setup <<< "a"
-
 
 # Assert
 
@@ -56,6 +51,5 @@ assert_equals \
     "$expected_args" \
     "$actual_args" \
     "GNU Stow should be called with the expected arguments"
-
 
 printf 'PASS: automatic deployment stows config and home packages correctly\n'

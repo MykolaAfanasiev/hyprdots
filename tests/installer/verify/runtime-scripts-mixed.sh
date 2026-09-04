@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -34,12 +34,10 @@ chmod +x \
 chmod -x \
     "$PROJECT_ROOT/scripts/example/bad.sh"
 
-
 # Act
 
 verify_runtime_script_permissions \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 

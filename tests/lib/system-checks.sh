@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 # This file provides test helpers and dynamically overrides functions from
 # setup/lib/checks.sh. The overridden functions and shared test state are
 # shellcheck disable=SC2034,SC2329
@@ -11,12 +10,10 @@ fi
 
 readonly HYPRDOTS_TEST_SYSTEM_CHECKS_LOADED=1
 
-
 HYPRDOTS_TEST_REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/tests/lib/sandbox.sh"
@@ -32,7 +29,6 @@ source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/checks.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/checks.sh"
-
 
 setup_system_checks_test() {
     create_test_sandbox
@@ -50,7 +46,6 @@ setup_system_checks_test() {
     export USER
 }
 
-
 create_valid_repository() {
     mkdir -p -- \
         "$PROJECT_ROOT/configs" \
@@ -59,26 +54,23 @@ create_valid_repository() {
         "$SETUP_DIR/packages"
 }
 
-
 write_test_os_release() {
     local id="$1"
     local id_like="${2:-}"
     local pretty_name="${3:-Test Linux}"
 
-    cat > "$TEST_OS_RELEASE" <<EOF_OS
+    cat > "$TEST_OS_RELEASE" << EOF_OS
 ID=$id
 ID_LIKE="$id_like"
 PRETTY_NAME="$pretty_name"
 EOF_OS
 }
 
-
 use_test_os_release() {
     get_os_release_path() {
         printf '%s\n' "$TEST_OS_RELEASE"
     }
 }
-
 
 mock_effective_uid() {
     TEST_EFFECTIVE_UID="$1"
@@ -88,7 +80,6 @@ mock_effective_uid() {
     }
 }
 
-
 mock_bash_major_version() {
     TEST_BASH_MAJOR="$1"
 
@@ -97,21 +88,19 @@ mock_bash_major_version() {
     }
 }
 
-
 mock_home_writable() {
     TEST_HOME_WRITABLE="$1"
 
     is_directory_writable() {
-        (( TEST_HOME_WRITABLE != 0 ))
+        ((TEST_HOME_WRITABLE != 0))
     }
 }
-
 
 create_fake_sudo() {
     local noninteractive_status="$1"
     local authentication_status="$2"
 
-    cat > "$TEST_BIN/sudo" <<EOF_SUDO
+    cat > "$TEST_BIN/sudo" << EOF_SUDO
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/sudo.log"
@@ -130,7 +119,6 @@ EOF_SUDO
     chmod +x -- "$TEST_BIN/sudo"
 }
 
-
 run_captured() {
     local output_file="$1"
     shift
@@ -146,7 +134,6 @@ run_captured() {
 
     set -e
 }
-
 
 assert_output_contains() {
     local output_file="$1"

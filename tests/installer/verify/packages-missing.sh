@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -21,7 +21,6 @@ trap destroy_test_sandbox EXIT
 create_fake_pacman_installed \
     hyprland
 
-
 # Act
 
 verify_package_group \
@@ -30,7 +29,6 @@ verify_package_group \
     waybar \
     kitty \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 

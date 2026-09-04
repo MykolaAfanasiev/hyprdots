@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_PACKAGE_PLAN_LOADED=1
 
-
 deduplicate_packages() {
     local destination_name="$1"
     shift
@@ -29,7 +28,6 @@ deduplicate_packages() {
         destination_ref+=("$package")
     done
 }
-
 
 build_package_plan() {
     local arch_destination_name="$1"

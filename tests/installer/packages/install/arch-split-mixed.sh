@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -28,14 +28,12 @@ source_packages=(hyprland waybar kitty)
 installed_packages=()
 missing_packages=()
 
-
 # Act
 
 split_arch_packages \
     source_packages \
     installed_packages \
     missing_packages
-
 
 # Assert
 

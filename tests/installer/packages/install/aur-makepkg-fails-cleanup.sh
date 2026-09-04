@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,14 +25,12 @@ create_fake_makepkg 1
 
 mock_confirm_yes
 
-
 # Act
 
 run_install_test_captured \
     "$TEST_STATE/output.log" \
     install_aur_package \
     wlogout
-
 
 # Assert
 

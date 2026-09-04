@@ -7,12 +7,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
 source "$REPO_ROOT/tests/lib/package-selection.sh"
-
 
 # Arrange
 
@@ -23,7 +22,6 @@ manifest="$TEST_STATE/missing.txt"
 
 packages=()
 
-
 # Act
 
 run_package_test_captured \
@@ -31,7 +29,6 @@ run_package_test_captured \
     load_package_manifest \
     "$manifest" \
     packages
-
 
 # Assert
 
@@ -42,6 +39,5 @@ assert_failure \
 assert_package_output_contains \
     "$TEST_STATE/output.log" \
     "Package manifest is not readable: $manifest"
-
 
 printf 'PASS: missing package manifest is rejected\n'

@@ -8,16 +8,13 @@ LOCK_FILE="$STATE_DIR/brightness.lock"
 
 mkdir -p -- "$STATE_DIR"
 
-
 get_brightness() {
     brightnessctl get
 }
 
-
 get_max_brightness() {
     brightnessctl max
 }
-
 
 save_brightness_once() {
     if [[ -s "$STATE_FILE" ]]; then
@@ -30,7 +27,6 @@ save_brightness_once() {
     printf '%s\n' "$current" > "$STATE_FILE"
 }
 
-
 smooth_set_raw() {
     local target="$1"
 
@@ -41,14 +37,14 @@ smooth_set_raw() {
     local step
     local value
 
-    for (( step = 1; step <= steps; step++ )); do
-        value=$(( current + (target - current) * step / steps ))
+    for ((step = 1; step <= steps; step++)); do
+        value=$((current + (target - current) * step / steps))
 
-        brightnessctl set "$value" >/dev/null
+        brightnessctl set "$value" > /dev/null
         sleep 0.02
     done
 
-    brightnessctl set "$target" >/dev/null
+    brightnessctl set "$target" > /dev/null
 }
 
 set_percent() {
@@ -59,15 +55,14 @@ set_percent() {
     local maximum
     maximum="$(get_max_brightness)"
 
-    local target=$(( maximum * percent / 100 ))
+    local target=$((maximum * percent / 100))
 
-    if (( target < 1 )); then
+    if ((target < 1)); then
         target=1
     fi
 
     smooth_set_raw "$target"
 }
-
 
 restore_brightness() {
     if [[ ! -s "$STATE_FILE" ]]; then
@@ -75,7 +70,7 @@ restore_brightness() {
     fi
 
     local target
-    target="$(<"$STATE_FILE")"
+    target="$(< "$STATE_FILE")"
 
     if [[ ! "$target" =~ ^[0-9]+$ ]]; then
         rm -f -- "$STATE_FILE"
@@ -85,7 +80,7 @@ restore_brightness() {
     local maximum
     maximum="$(get_max_brightness)"
 
-    if (( target > maximum )); then
+    if ((target > maximum)); then
         target="$maximum"
     fi
 
@@ -93,7 +88,6 @@ restore_brightness() {
 
     rm -f -- "$STATE_FILE"
 }
-
 
 main() {
     local action="${1:-}"
@@ -110,13 +104,13 @@ main() {
                 [[ -s "$STATE_FILE" ]]
                 ;;
 
-            ''|*[!0-9]*)
+            '' | *[!0-9]*)
                 printf 'Usage: %s <0-100|restore|pending>\n' "$0" >&2
                 return 1
                 ;;
 
             *)
-                if (( action < 0 || action > 100 )); then
+                if ((action < 0 || action > 100)); then
                     printf 'Brightness percentage must be between 0 and 100.\n' >&2
                     return 1
                 fi
@@ -124,7 +118,7 @@ main() {
                 set_percent "$action"
                 ;;
         esac
-    ) 9>"$LOCK_FILE"
+    ) 9> "$LOCK_FILE"
 }
 
 main "$@"

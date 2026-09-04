@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -25,13 +25,11 @@ mock_available_commands \
 
 create_fake_pacman 0
 
-
 # Act
 
 run_install_test_captured \
     "$TEST_STATE/output.log" \
     check_aur_requirements
-
 
 # Assert
 

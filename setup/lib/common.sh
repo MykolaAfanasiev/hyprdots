@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_COMMON_LOADED=1
 
-
 # ------------------------------------------------------------
 # Output
 # ------------------------------------------------------------
@@ -27,14 +26,12 @@ else
     readonly COLOR_BOLD=""
 fi
 
-
 info() {
     printf '%s[INFO]%s %s\n' \
         "$COLOR_BLUE" \
         "$COLOR_RESET" \
         "$*"
 }
-
 
 success() {
     printf '%s[ OK ]%s %s\n' \
@@ -43,14 +40,12 @@ success() {
         "$*"
 }
 
-
 warn() {
     printf '%s[WARN]%s %s\n' \
         "$COLOR_YELLOW" \
         "$COLOR_RESET" \
         "$*" >&2
 }
-
 
 error() {
     printf '%s[FAIL]%s %s\n' \
@@ -59,12 +54,10 @@ error() {
         "$*" >&2
 }
 
-
 die() {
     error "$*"
     exit 1
 }
-
 
 section() {
     printf '\n%s%s%s\n\n' \
@@ -89,11 +82,11 @@ confirm() {
         fi
 
         case "${answer,,}" in
-            y|yes)
+            y | yes)
                 return 0
                 ;;
 
-            n|no)
+            n | no)
                 return 1
                 ;;
 
@@ -109,5 +102,5 @@ confirm() {
 # ------------------------------------------------------------
 
 command_exists() {
-    command -v "$1" >/dev/null 2>&1
+    command -v "$1" > /dev/null 2>&1
 }

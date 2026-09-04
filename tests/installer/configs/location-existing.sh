@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/configs/local.sh
 source "$REAL_PROJECT_ROOT/setup/lib/configs/local.sh"
-
 
 # Arrange
 
@@ -41,11 +38,9 @@ printf '%s\n' \
 before_content="$(cat "$destination")"
 before_inode="$(stat -c '%i' -- "$destination")"
 
-
 # Act
 
 configure_hyprsunset_location
-
 
 # Assert
 
@@ -61,6 +56,5 @@ assert_equals \
     "$before_inode" \
     "$after_inode" \
     "existing Hyprsunset location should not be recreated"
-
 
 printf 'PASS: existing Hyprsunset location config is left unchanged\n'

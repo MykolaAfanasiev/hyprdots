@@ -12,7 +12,7 @@ readonly HYPRDOTS_TEST_PACKAGE_INSTALLATION_LOADED=1
 
 HYPRDOTS_TEST_REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -42,7 +42,6 @@ source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/packages/aur.sh"
 # shellcheck source=setup/lib/packages/install.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/packages/install.sh"
 
-
 setup_package_installation_test() {
     create_test_sandbox
 
@@ -63,11 +62,9 @@ setup_package_installation_test() {
     export SETUP_DIR
 }
 
-
 mock_available_commands() {
     TEST_AVAILABLE_COMMANDS=" $* "
 }
-
 
 command_exists() {
     local command_name="$1"
@@ -75,21 +72,17 @@ command_exists() {
     [[ "$TEST_AVAILABLE_COMMANDS" == *" $command_name "* ]]
 }
 
-
 mock_confirm_yes() {
     TEST_CONFIRM_STATUS=0
 }
-
 
 mock_confirm_no() {
     TEST_CONFIRM_STATUS=1
 }
 
-
 confirm() {
     return "$TEST_CONFIRM_STATUS"
 }
-
 
 create_fake_pacman() {
     local install_status="$1"
@@ -99,11 +92,11 @@ create_fake_pacman() {
 
     : > "$installed_file"
 
-    if (( $# > 0 )); then
+    if (($# > 0)); then
         printf '%s\n' "$@" > "$installed_file"
     fi
 
-    cat > "$TEST_BIN/pacman" <<EOF_PACMAN
+    cat > "$TEST_BIN/pacman" << EOF_PACMAN
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/pacman.log"
@@ -123,9 +116,8 @@ EOF_PACMAN
     chmod +x -- "$TEST_BIN/pacman"
 }
 
-
 create_fake_sudo_passthrough() {
-    cat > "$TEST_BIN/sudo" <<EOF_SUDO
+    cat > "$TEST_BIN/sudo" << EOF_SUDO
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/sudo.log"
@@ -136,11 +128,10 @@ EOF_SUDO
     chmod +x -- "$TEST_BIN/sudo"
 }
 
-
 create_fake_git_clone() {
     local clone_status="$1"
 
-    cat > "$TEST_BIN/git" <<EOF_GIT
+    cat > "$TEST_BIN/git" << EOF_GIT
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/git.log"
@@ -161,11 +152,10 @@ EOF_GIT
     chmod +x -- "$TEST_BIN/git"
 }
 
-
 create_fake_makepkg() {
     local status="$1"
 
-    cat > "$TEST_BIN/makepkg" <<EOF_MAKEPKG
+    cat > "$TEST_BIN/makepkg" << EOF_MAKEPKG
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/makepkg.log"
@@ -176,14 +166,13 @@ EOF_MAKEPKG
     chmod +x -- "$TEST_BIN/makepkg"
 }
 
-
 assert_array_equals() {
     local array_name="$1"
     shift
 
     local -n actual_ref="$array_name"
 
-    if (( ${#actual_ref[@]} != $# )); then
+    if ((${#actual_ref[@]} != $#)); then
         printf 'FAIL: array %s has unexpected length\n' "$array_name" >&2
         printf '  expected: %s\n' "$#" >&2
         printf '  actual:   %s\n' "${#actual_ref[@]}" >&2
@@ -204,23 +193,21 @@ assert_array_equals() {
             return 1
         fi
 
-        (( index += 1 ))
+        ((index += 1))
     done
 }
-
 
 assert_array_empty() {
     local array_name="$1"
     local -n actual_ref="$array_name"
 
-    if (( ${#actual_ref[@]} == 0 )); then
+    if ((${#actual_ref[@]} == 0)); then
         return 0
     fi
 
     printf 'FAIL: array %s should be empty\n' "$array_name" >&2
     return 1
 }
-
 
 run_install_test_captured() {
     local output_file="$1"
@@ -238,7 +225,6 @@ run_install_test_captured() {
     set -e
 }
 
-
 assert_install_output_contains() {
     local output_file="$1"
     local expected="$2"
@@ -252,14 +238,12 @@ assert_install_output_contains() {
     return 1
 }
 
-
 assert_log_contains() {
     local logfile="$1"
     local expected="$2"
 
     if [[ -f "$logfile" ]] &&
-       grep -Fq -- "$expected" "$logfile"
-    then
+        grep -Fq -- "$expected" "$logfile"; then
         return 0
     fi
 
@@ -268,7 +252,6 @@ assert_log_contains() {
     printf '  expected: %s\n' "$expected" >&2
     return 1
 }
-
 
 assert_no_aur_build_dirs() {
     local cache_root="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/aur"

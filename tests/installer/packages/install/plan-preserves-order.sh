@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -21,7 +21,6 @@ trap destroy_test_sandbox EXIT
 
 packages=()
 
-
 # Act
 
 deduplicate_packages \
@@ -32,7 +31,6 @@ deduplicate_packages \
     beta \
     alpha \
     gamma
-
 
 # Assert
 

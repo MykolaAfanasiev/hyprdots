@@ -6,14 +6,13 @@ fi
 
 readonly HYPRDOTS_VERIFY_PACKAGES_LOADED=1
 
-
 verify_package_group() {
     local label="$1"
     shift
 
     local -a packages=("$@")
 
-    if (( ${#packages[@]} == 0 )); then
+    if ((${#packages[@]} == 0)); then
         verify_pass "$label: nothing selected"
         return 0
     fi
@@ -22,12 +21,12 @@ verify_package_group() {
     local package
 
     for package in "${packages[@]}"; do
-        if ! pacman -Qq "$package" >/dev/null 2>&1; then
+        if ! pacman -Qq "$package" > /dev/null 2>&1; then
             missing_packages+=("$package")
         fi
     done
 
-    if (( ${#missing_packages[@]} == 0 )); then
+    if ((${#missing_packages[@]} == 0)); then
         verify_pass \
             "$label: all ${#packages[@]} selected package(s) are installed"
 
@@ -39,7 +38,6 @@ verify_package_group() {
 
     print_package_list missing_packages
 }
-
 
 verify_selected_packages() {
     section "Packages"

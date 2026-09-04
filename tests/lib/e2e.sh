@@ -9,10 +9,9 @@ fi
 
 readonly HYPRDOTS_TEST_E2E_LOADED=1
 
-
 HYPRDOTS_E2E_REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -21,7 +20,6 @@ source "$HYPRDOTS_E2E_REPO_ROOT/tests/lib/sandbox.sh"
 # shellcheck source=tests/lib/assertions.sh
 source "$HYPRDOTS_E2E_REPO_ROOT/tests/lib/assertions.sh"
 
-
 # ============================================================
 # Dependencies
 # ============================================================
@@ -29,7 +27,7 @@ source "$HYPRDOTS_E2E_REPO_ROOT/tests/lib/assertions.sh"
 require_e2e_command() {
     local command_name="$1"
 
-    if command -v "$command_name" >/dev/null 2>&1; then
+    if command -v "$command_name" > /dev/null 2>&1; then
         return 0
     fi
 
@@ -39,9 +37,8 @@ require_e2e_command() {
     return 1
 }
 
-
 e2e_can_switch_to_unprivileged_user() {
-    if (( EUID != 0 )); then
+    if ((EUID != 0)); then
         return 0
     fi
 
@@ -49,7 +46,7 @@ e2e_can_switch_to_unprivileged_user() {
 
     : > "$probe"
 
-    if chown 65534:65534 "$probe" 2>/dev/null; then
+    if chown 65534:65534 "$probe" 2> /dev/null; then
         rm -f -- "$probe"
         return 0
     fi
@@ -57,7 +54,6 @@ e2e_can_switch_to_unprivileged_user() {
     rm -f -- "$probe"
     return 1
 }
-
 
 # ============================================================
 # Sandbox
@@ -68,7 +64,7 @@ setup_e2e_test() {
 
     require_e2e_command script
 
-    if (( EUID == 0 )); then
+    if ((EUID == 0)); then
         require_e2e_command setpriv
     fi
 
@@ -112,13 +108,12 @@ setup_e2e_test() {
     export E2E_PROJECT
 }
 
-
 # ============================================================
 # Fake external commands
 # ============================================================
 
 create_e2e_pacman_all_installed() {
-    cat > "$TEST_BIN/pacman" <<EOF
+    cat > "$TEST_BIN/pacman" << EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/pacman.log"
@@ -139,11 +134,10 @@ EOF
         "$TEST_BIN/pacman"
 }
 
-
 create_e2e_sudo() {
     local status="$1"
 
-    cat > "$TEST_BIN/sudo" <<EOF
+    cat > "$TEST_BIN/sudo" << EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/sudo.log"
@@ -155,9 +149,8 @@ EOF
         "$TEST_BIN/sudo"
 }
 
-
 create_e2e_stow() {
-    cat > "$TEST_BIN/stow" <<EOF
+    cat > "$TEST_BIN/stow" << EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/stow.log"
@@ -169,6 +162,9 @@ case "\$package" in
         mkdir -p -- \
             "$TEST_HOME/.config/ghostty" \
             "$TEST_HOME/.config/hypr" \
+            "$TEST_HOME/.config/mpd" \
+            "$TEST_HOME/.config/rmpc/themes" \
+            "$TEST_HOME/.config/systemd/user/mpd.service.d" \
             "$TEST_HOME/.config/starship" \
             "$TEST_HOME/.config/tmux" \
             "$TEST_HOME/.config/xdg-desktop-portal" \
@@ -181,6 +177,14 @@ case "\$package" in
             "$TEST_HOME/.config/ghostty/config.ghostty"
         ln -sf -- "$E2E_PROJECT/configs/hypr/hyprland.lua" \
             "$TEST_HOME/.config/hypr/hyprland.lua"
+        ln -sf -- "$E2E_PROJECT/configs/mpd/mpd.conf" \
+            "$TEST_HOME/.config/mpd/mpd.conf"
+        ln -sf -- "$E2E_PROJECT/configs/rmpc/config.ron" \
+            "$TEST_HOME/.config/rmpc/config.ron"
+        ln -sf -- "$E2E_PROJECT/configs/rmpc/themes/catppuccin-mocha.ron" \
+            "$TEST_HOME/.config/rmpc/themes/catppuccin-mocha.ron"
+        ln -sf -- "$E2E_PROJECT/configs/systemd/user/mpd.service.d/10-hyprdots.conf" \
+            "$TEST_HOME/.config/systemd/user/mpd.service.d/10-hyprdots.conf"
         ln -sf -- "$E2E_PROJECT/configs/starship/starship.toml" \
             "$TEST_HOME/.config/starship/starship.toml"
         ln -sf -- "$E2E_PROJECT/configs/tmux/tmux.conf" \
@@ -215,9 +219,25 @@ EOF
         "$TEST_BIN/stow"
 }
 
+create_e2e_systemctl() {
+    cat > "$TEST_BIN/systemctl" << EOF
+#!/usr/bin/env bash
+
+printf '%s\n' "\$*" >> "$TEST_STATE/systemctl.log"
+
+if [[ "\${1:-}" == "--user" && "\${2:-}" == "status" ]]; then
+    printf '%s\n' 'mpd.service - Music Player Daemon' 'Active: active (running)'
+fi
+
+exit 0
+EOF
+
+    chmod +x -- \
+        "$TEST_BIN/systemctl"
+}
 
 create_e2e_screenshot_tool() {
-    cat > "$TEST_BIN/screenshot-tool" <<EOF
+    cat > "$TEST_BIN/screenshot-tool" << EOF
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/screenshot-tool.log"
@@ -228,7 +248,6 @@ EOF
     chmod +x -- \
         "$TEST_BIN/screenshot-tool"
 }
-
 
 # ============================================================
 # Complete fake environment
@@ -241,7 +260,7 @@ prepare_e2e_environment() {
         "$E2E_PROJECT/configs/hyprsunset"
 
     cat > \
-        "$E2E_PROJECT/configs/hyprsunset/location.conf" <<'EOF'
+        "$E2E_PROJECT/configs/hyprsunset/location.conf" << 'EOF'
 LATITUDE=48.7
 LONGITUDE=11.4
 EOF
@@ -252,9 +271,9 @@ EOF
     create_e2e_pacman_all_installed
     create_e2e_sudo "$sudo_status"
     create_e2e_stow
+    create_e2e_systemctl
     create_e2e_screenshot_tool
 }
-
 
 # ============================================================
 # Installer execution
@@ -272,7 +291,7 @@ run_e2e_installer() {
 
     set +e
 
-    if (( EUID == 0 )); then
+    if ((EUID == 0)); then
         # GitHub Actions runs the Arch container as root.
         #
         # The real installer intentionally rejects root, so only the
@@ -292,19 +311,20 @@ run_e2e_installer() {
                 --regid=65534 \
                 --clear-groups \
                 env \
-                    "HOME=$HOME" \
-                    "USER=e2e" \
-                    "LOGNAME=e2e" \
-                    "SHELL=/bin/bash" \
-                    "PATH=$PATH" \
-                    "TMPDIR=$TMPDIR" \
-                    "XDG_CONFIG_HOME=$XDG_CONFIG_HOME" \
-                    "XDG_CACHE_HOME=$XDG_CACHE_HOME" \
-                    "XDG_DATA_HOME=$XDG_DATA_HOME" \
-                    "XDG_STATE_HOME=$XDG_STATE_HOME" \
+                "HOME=$HOME" \
+                "USER=e2e" \
+                "LOGNAME=e2e" \
+                "SHELL=/bin/bash" \
+                "PATH=$PATH" \
+                "TMPDIR=$TMPDIR" \
+                "XDG_CONFIG_HOME=$XDG_CONFIG_HOME" \
+                "XDG_CACHE_HOME=$XDG_CACHE_HOME" \
+                "XDG_DATA_HOME=$XDG_DATA_HOME" \
+                "XDG_STATE_HOME=$XDG_STATE_HOME" \
+                "XDG_RUNTIME_DIR=" \
                 script \
-                    -qec "$command" \
-                    /dev/null \
+                -qec "$command" \
+                /dev/null \
                 > "$output_file" 2>&1
 
         E2E_STATUS="${PIPESTATUS[1]}"
@@ -324,17 +344,17 @@ run_e2e_installer() {
                 "XDG_CACHE_HOME=$XDG_CACHE_HOME" \
                 "XDG_DATA_HOME=$XDG_DATA_HOME" \
                 "XDG_STATE_HOME=$XDG_STATE_HOME" \
-            script \
+                "XDG_RUNTIME_DIR=" \
+                script \
                 -qec "$command" \
                 /dev/null \
-            > "$output_file" 2>&1
+                > "$output_file" 2>&1
 
         E2E_STATUS="${PIPESTATUS[1]}"
     fi
 
     set -e
 }
-
 
 # ============================================================
 # E2E assertions
@@ -354,7 +374,6 @@ assert_e2e_output_contains() {
     return 1
 }
 
-
 assert_e2e_output_not_contains() {
     local output_file="$1"
     local unexpected="$2"
@@ -368,7 +387,6 @@ assert_e2e_output_not_contains() {
 
     return 1
 }
-
 
 print_e2e_output() {
     local output_file="$1"

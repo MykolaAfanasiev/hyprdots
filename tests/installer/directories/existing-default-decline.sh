@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -23,7 +21,6 @@ source "$PROJECT_ROOT/setup/lib/filesystem.sh"
 
 # shellcheck source=setup/lib/directories/runtime.sh
 source "$PROJECT_ROOT/setup/lib/directories/runtime.sh"
-
 
 # Arrange
 
@@ -41,14 +38,12 @@ printf 'keep me\n' > "$default_path/original.txt"
 
 before_inode="$(stat -c '%i' -- "$default_path")"
 
-
 # Act
 
 configure_runtime_directory \
     "Wallpapers" \
     "$default_path" \
     <<< $'c\n'"$custom_path"$'\nn'
-
 
 # Assert
 
@@ -69,6 +64,5 @@ if [[ -L "$default_path" ]]; then
     printf 'FAIL: declined replacement should not create a symlink\n' >&2
     exit 1
 fi
-
 
 printf 'PASS: existing default directory is preserved when replacement is declined\n'

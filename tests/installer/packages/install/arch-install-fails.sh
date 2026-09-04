@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -22,14 +22,12 @@ trap destroy_test_sandbox EXIT
 create_fake_pacman 1
 create_fake_sudo_passthrough
 
-
 # Act
 
 run_install_test_captured \
     "$TEST_STATE/output.log" \
     install_arch_packages \
     hyprland
-
 
 # Assert
 

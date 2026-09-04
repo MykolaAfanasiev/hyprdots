@@ -7,7 +7,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/verification.sh
@@ -23,12 +23,10 @@ create_valid_verification_environment
 # shellcheck disable=SC2119
 create_fake_pacman_installed
 
-
 # Act
 
 run_post_install_verification \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 

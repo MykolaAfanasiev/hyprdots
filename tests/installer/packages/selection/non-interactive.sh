@@ -7,12 +7,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
 source "$REPO_ROOT/tests/lib/package-selection.sh"
-
 
 # Arrange
 
@@ -21,13 +20,11 @@ trap destroy_test_sandbox EXIT
 
 mock_terminal 0
 
-
 # Act
 
 run_package_test_captured \
     "$TEST_STATE/output.log" \
     run_package_selection
-
 
 # Assert
 
@@ -38,6 +35,5 @@ assert_failure \
 assert_package_output_contains \
     "$TEST_STATE/output.log" \
     "Interactive package selection requires a terminal."
-
 
 printf 'PASS: package selection rejects non-interactive stdin\n'

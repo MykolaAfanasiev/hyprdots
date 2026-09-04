@@ -7,12 +7,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
 source "$REPO_ROOT/tests/lib/package-selection.sh"
-
 
 # Arrange
 
@@ -21,7 +20,6 @@ trap destroy_test_sandbox EXIT
 
 source_packages=(hyprland)
 selected_packages=()
-
 
 # Act
 
@@ -32,7 +30,6 @@ select_packages_individually \
     <<< $'invalid\nyes\n' \
     > "$TEST_STATE/output.log" 2>&1
 
-
 # Assert
 
 assert_array_equals \
@@ -42,6 +39,5 @@ assert_array_equals \
 assert_package_output_contains \
     "$TEST_STATE/output.log" \
     "Please answer y or n."
-
 
 printf 'PASS: invalid individual answer is rejected and retried\n'

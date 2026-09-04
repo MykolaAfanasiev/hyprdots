@@ -12,12 +12,12 @@ mkdir -p "$CACHE_DIR"
 
 notify_ok() {
     hyprctl notify 5 2000 "rgb(a6e3a1)" "$1" \
-        >/dev/null 2>&1
+        > /dev/null 2>&1
 }
 
 notify_error() {
     hyprctl notify 3 3000 "rgb(f38ba8)" "$1" \
-        >/dev/null 2>&1
+        > /dev/null 2>&1
 }
 
 show_wallpapers() {
@@ -29,7 +29,7 @@ show_wallpapers() {
     fi
 
     if [[ -f "$CURRENT_FILE" ]]; then
-        current="$(<"$CURRENT_FILE")"
+        current="$(< "$CURRENT_FILE")"
     fi
 
     printf '\0prompt\x1fWallpaper\n'
@@ -56,13 +56,13 @@ show_wallpapers() {
         find "$WALLPAPER_DIR" \
             -type f \
             \( \
-                -iname '*.png' \
-                -o -iname '*.jpg' \
-                -o -iname '*.jpeg' \
-                -o -iname '*.webp' \
+            -iname '*.png' \
+            -o -iname '*.jpg' \
+            -o -iname '*.jpeg' \
+            -o -iname '*.webp' \
             \) \
             -print0 |
-        sort -z
+            sort -z
     )
 }
 
@@ -75,8 +75,7 @@ set_wallpaper() {
     fi
 
     if hyprctl hyprpaper wallpaper \
-        ", $wallpaper, cover" >/dev/null 2>&1
-    then
+        ", $wallpaper, cover" > /dev/null 2>&1; then
         printf '%s\n' "$wallpaper" > "$CURRENT_FILE"
         ln -sfn "$wallpaper" "$CURRENT_LINK"
 

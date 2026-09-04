@@ -4,12 +4,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
 source "$REPO_ROOT/tests/lib/system-checks.sh"
-
 
 # Arrange
 
@@ -32,18 +31,16 @@ create_fake_sudo 0 1
 
 create_valid_repository
 
-
 # Act
 
 run_system_checks \
     > "$TEST_STATE/output.log" 2>&1
 
-
 # Assert
 
 assert_output_contains \
     "$TEST_STATE/output.log" \
-    "[1/10] System check"
+    "[1/11] System check"
 
 assert_output_contains \
     "$TEST_STATE/output.log" \
@@ -60,6 +57,5 @@ assert_output_contains \
 assert_output_contains \
     "$TEST_STATE/output.log" \
     "System check passed"
-
 
 printf 'PASS: full system check stage succeeds in a valid environment\n'

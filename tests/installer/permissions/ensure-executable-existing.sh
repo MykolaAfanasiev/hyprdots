@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
-
 
 # Arrange
 
@@ -39,11 +36,9 @@ chmod 0751 -- "$file"
 
 before_mode="$(stat -c '%a' -- "$file")"
 
-
 # Act
 
 ensure_executable "$file"
-
 
 # Assert
 
@@ -56,6 +51,5 @@ assert_equals \
     "$before_mode" \
     "$after_mode" \
     "existing executable permissions should remain unchanged"
-
 
 printf 'PASS: already executable file keeps its existing permissions\n'

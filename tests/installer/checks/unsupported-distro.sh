@@ -4,12 +4,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
 source "$REPO_ROOT/tests/lib/system-checks.sh"
-
 
 # Arrange
 
@@ -23,13 +22,11 @@ write_test_os_release \
 
 use_test_os_release
 
-
 # Act
 
 run_captured \
     "$TEST_STATE/output.log" \
     check_arch_linux
-
 
 # Assert
 
@@ -40,6 +37,5 @@ assert_failure \
 assert_output_contains \
     "$TEST_STATE/output.log" \
     "Unsupported distribution: Ubuntu. Arch Linux is required."
-
 
 printf 'PASS: unsupported distribution is rejected\n'

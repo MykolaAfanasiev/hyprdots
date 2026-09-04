@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -24,7 +22,6 @@ source "$PROJECT_ROOT/setup/lib/filesystem.sh"
 # shellcheck source=setup/lib/directories/runtime.sh
 source "$PROJECT_ROOT/setup/lib/directories/runtime.sh"
 
-
 # Arrange
 
 create_test_sandbox
@@ -40,7 +37,6 @@ ln -s \
     "$default_path"
 
 before_inode="$(stat -c '%i' -- "$default_path")"
-
 
 # Act
 
@@ -61,23 +57,18 @@ assert_equals \
     "$after_inode" \
     "correct runtime directory symlink should be left unchanged"
 
-
 if grep -Fq -- \
     "default path already exists" \
-    "$TEST_STATE/output.log"
-then
+    "$TEST_STATE/output.log"; then
     printf 'FAIL: correct symlink was treated as a conflict\n' >&2
     exit 1
 fi
 
-
 if ! grep -Fq -- \
     "Wallpapers is already linked to: $custom_path" \
-    "$TEST_STATE/output.log"
-then
+    "$TEST_STATE/output.log"; then
     printf 'FAIL: existing correct symlink was not detected\n' >&2
     exit 1
 fi
-
 
 printf 'PASS: existing correct runtime directory symlink is detected and left unchanged\n'

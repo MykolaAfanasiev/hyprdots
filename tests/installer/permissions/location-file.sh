@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
-
 
 # Arrange
 
@@ -40,11 +37,9 @@ printf '%s\n' \
 
 chmod 0644 -- "$location_file"
 
-
 # Act
 
 secure_hyprsunset_location
-
 
 # Assert
 
@@ -54,6 +49,5 @@ assert_equals \
     "600" \
     "$actual_mode" \
     "Hyprsunset location.conf should be restricted to mode 600"
-
 
 printf 'PASS: Hyprsunset location file is secured to mode 600\n'

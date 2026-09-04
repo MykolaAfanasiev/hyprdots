@@ -4,12 +4,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/system-checks.sh
 source "$REPO_ROOT/tests/lib/system-checks.sh"
-
 
 # Arrange
 
@@ -18,13 +17,11 @@ trap destroy_test_sandbox EXIT
 
 create_fake_sudo 1 1
 
-
 # Act
 
 run_captured \
     "$TEST_STATE/output.log" \
     check_sudo
-
 
 # Assert
 
@@ -48,6 +45,5 @@ assert_equals \
     "$expected_log" \
     "$actual_log" \
     "both sudo authentication paths should be attempted"
-
 
 printf 'PASS: failed sudo authentication is rejected\n'

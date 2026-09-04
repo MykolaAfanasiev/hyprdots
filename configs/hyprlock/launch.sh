@@ -4,7 +4,7 @@ set -euo pipefail
 
 HYPRLOCK_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 
-if pgrep -x hyprlock >/dev/null; then
+if pgrep -x hyprlock > /dev/null; then
     exit 0
 fi
 

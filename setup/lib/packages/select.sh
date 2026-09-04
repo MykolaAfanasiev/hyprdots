@@ -10,13 +10,11 @@ fi
 
 readonly HYPRDOTS_PACKAGE_SELECT_LOADED=1
 
-
 declare -ag SELECTED_ARCH_REQUIRED=()
 declare -ag SELECTED_ARCH_RECOMMENDED=()
 declare -ag SELECTED_ARCH_DEFAULT_APPS=()
 declare -ag SELECTED_AUR_REQUIRED=()
 declare -gi PACKAGE_INSTALLATION_NEEDED=1
-
 
 stdin_is_terminal() {
     [[ -t 0 ]]
@@ -32,7 +30,6 @@ print_package_list() {
         printf '  - %s\n' "$package"
     done
 }
-
 
 select_packages_individually() {
     local source_name="$1"
@@ -60,12 +57,12 @@ select_packages_individually() {
             fi
 
             case "${answer,,}" in
-                y|yes)
+                y | yes)
                     destination_ref+=("$package")
                     break
                     ;;
 
-                n|no)
+                n | no)
                     break
                     ;;
 
@@ -76,7 +73,6 @@ select_packages_individually() {
         done
     done
 }
-
 
 select_package_group() {
     local title="$1"
@@ -115,12 +111,12 @@ select_package_group() {
         fi
 
         case "${answer,,}" in
-            a|all)
+            a | all)
                 destination_ref=("${source_ref[@]}")
                 return 0
                 ;;
 
-            c|custom)
+            c | custom)
                 local individual_default="no"
 
                 if [[ "$default_mode" == "all" ]]; then
@@ -135,18 +131,17 @@ select_package_group() {
                 return 0
                 ;;
 
-              n|none)
-                  destination_ref=()
-                  return 0
-                  ;;
+            n | none)
+                destination_ref=()
+                return 0
+                ;;
 
-              *)
-                  warn "Choose A, C, or N."
-                  ;;
+            *)
+                warn "Choose A, C, or N."
+                ;;
         esac
     done
 }
-
 
 print_selected_group() {
     local title="$1"
@@ -156,14 +151,13 @@ print_selected_group() {
 
     printf '%s\n' "$title"
 
-    if (( ${#packages_ref[@]} == 0 )); then
+    if ((${#packages_ref[@]} == 0)); then
         printf '  (none)\n'
         return 0
     fi
 
     print_package_list "$array_name"
 }
-
 
 print_package_selection_summary() {
     section "Package selection summary"
@@ -191,6 +185,28 @@ print_package_selection_summary() {
         SELECTED_AUR_REQUIRED
 }
 
+package_is_selected() {
+    local package="$1"
+    local array_name
+    local candidate
+
+    for array_name in \
+        SELECTED_ARCH_REQUIRED \
+        SELECTED_ARCH_RECOMMENDED \
+        SELECTED_ARCH_DEFAULT_APPS \
+        SELECTED_AUR_REQUIRED; do
+        local -n packages_ref="$array_name"
+
+        for candidate in "${packages_ref[@]}"; do
+            if [[ "$candidate" == "$package" ]]; then
+                return 0
+            fi
+        done
+    done
+
+    return 1
+}
+
 package_group_installed() {
     local array_name="$1"
     local -n packages_ref="$array_name"
@@ -198,7 +214,7 @@ package_group_installed() {
     local package
 
     for package in "${packages_ref[@]}"; do
-        if ! pacman -Qq "$package" >/dev/null 2>&1; then
+        if ! pacman -Qq "$package" > /dev/null 2>&1; then
             return 1
         fi
     done
@@ -206,9 +222,8 @@ package_group_installed() {
     return 0
 }
 
-
 run_package_selection() {
-    section "[2/10] Package selection"
+    section "[2/11] Package selection"
 
     PACKAGE_INSTALLATION_NEEDED=1
 
@@ -238,10 +253,9 @@ run_package_selection() {
         aur_required
 
     if package_group_installed arch_required &&
-       package_group_installed arch_recommended &&
-       package_group_installed arch_default_apps &&
-       package_group_installed aur_required
-    then
+        package_group_installed arch_recommended &&
+        package_group_installed arch_default_apps &&
+        package_group_installed aur_required; then
         SELECTED_ARCH_REQUIRED=("${arch_required[@]}")
         SELECTED_ARCH_RECOMMENDED=("${arch_recommended[@]}")
         SELECTED_ARCH_DEFAULT_APPS=("${arch_default_apps[@]}")
@@ -262,7 +276,7 @@ run_package_selection() {
         SELECTED_ARCH_REQUIRED \
         all
 
-    if (( ${#SELECTED_ARCH_REQUIRED[@]} < ${#arch_required[@]} )); then
+    if ((${#SELECTED_ARCH_REQUIRED[@]} < ${#arch_required[@]})); then
         warn "Some core packages were skipped."
         warn "Parts of Hyprdots Norexil may not work without them."
     fi

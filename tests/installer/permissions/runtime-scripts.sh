@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
-
 
 # Arrange
 
@@ -46,11 +43,9 @@ chmod 0644 \
     "$runtime_script" \
     "$non_shell_file"
 
-
 # Act
 
 ensure_runtime_scripts_executable
-
 
 # Assert
 
@@ -66,6 +61,5 @@ assert_equals \
     "644" \
     "$non_shell_mode" \
     "non-shell runtime files should not have permissions changed"
-
 
 printf 'PASS: runtime shell scripts are executable and non-shell files are untouched\n'

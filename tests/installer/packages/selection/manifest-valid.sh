@@ -7,12 +7,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
 source "$REPO_ROOT/tests/lib/package-selection.sh"
-
 
 # Arrange
 
@@ -26,13 +25,11 @@ printf '  hyprland  \n\n# comment\n\twaybar\t\nkitty' \
 
 packages=(old-value)
 
-
 # Act
 
 load_package_manifest \
     "$manifest" \
     packages
-
 
 # Assert
 
@@ -41,6 +38,5 @@ assert_array_equals \
     hyprland \
     waybar \
     kitty
-
 
 printf 'PASS: package manifest is trimmed and loaded correctly\n'

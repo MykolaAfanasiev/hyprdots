@@ -8,7 +8,7 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-installation.sh
@@ -24,12 +24,10 @@ PACKAGE_INSTALLATION_NEEDED=0
 SELECTED_ARCH_REQUIRED=(hyprland)
 SELECTED_AUR_REQUIRED=(wlogout)
 
-
 # Act
 
 run_package_installation \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 

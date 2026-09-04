@@ -2,12 +2,10 @@
 
 set -euo pipefail
 
-
 REAL_PROJECT_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../.." &&
-    pwd
+        pwd
 )"
-
 
 # shellcheck source=tests/lib/sandbox.sh
 source "$REAL_PROJECT_ROOT/tests/lib/sandbox.sh"
@@ -20,7 +18,6 @@ source "$REAL_PROJECT_ROOT/setup/lib/common.sh"
 
 # shellcheck source=setup/lib/permissions/runtime.sh
 source "$REAL_PROJECT_ROOT/setup/lib/permissions/runtime.sh"
-
 
 # Arrange
 
@@ -45,12 +42,10 @@ ln -s \
     "$target_file" \
     "$location_file"
 
-
 # Act
 
 secure_hyprsunset_location \
     > "$TEST_STATE/output.log" 2>&1
-
 
 # Assert
 
@@ -67,11 +62,9 @@ assert_equals \
 
 if ! grep -Fq -- \
     "Hyprsunset location.conf is a symlink; permissions were not changed" \
-    "$TEST_STATE/output.log"
-then
+    "$TEST_STATE/output.log"; then
     printf 'FAIL: Hyprsunset symlink warning was not shown\n' >&2
     exit 1
 fi
-
 
 printf 'PASS: Hyprsunset location symlink is detected and left unchanged\n'

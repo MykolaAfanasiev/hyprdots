@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Test state and dynamically overridden functions are consumed indirectly
-# by Stage 10 scenario tests.
+# by Stage 11 scenario tests.
 # shellcheck disable=SC2034,SC2317,SC2329
 
 if [[ -n "${HYPRDOTS_TEST_VERIFICATION_LOADED:-}" ]]; then
@@ -12,7 +12,7 @@ readonly HYPRDOTS_TEST_VERIFICATION_LOADED=1
 
 HYPRDOTS_TEST_REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/sandbox.sh
@@ -55,9 +55,7 @@ source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/verify/runtime.sh"
 # shellcheck source=setup/lib/verify/install.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/verify/install.sh"
 
-
 TEST_SCREENSHOT_TOOL_STATUS=0
-
 
 setup_verification_test() {
     create_test_sandbox
@@ -83,27 +81,24 @@ setup_verification_test() {
     export SETUP_DIR
 }
 
-
 verify_screenshot_tool() {
     return "$TEST_SCREENSHOT_TOOL_STATUS"
 }
 
-
 mock_screenshot_tool_status() {
     TEST_SCREENSHOT_TOOL_STATUS="$1"
 }
-
 
 create_fake_pacman_installed() {
     local installed_file="$TEST_STATE/installed-packages"
 
     : > "$installed_file"
 
-    if (( $# > 0 )); then
+    if (($# > 0)); then
         printf '%s\n' "$@" > "$installed_file"
     fi
 
-    cat > "$TEST_BIN/pacman" <<EOF_PACMAN
+    cat > "$TEST_BIN/pacman" << EOF_PACMAN
 #!/usr/bin/env bash
 
 printf '%s\n' "\$*" >> "$TEST_STATE/pacman.log"
@@ -119,12 +114,14 @@ EOF_PACMAN
     chmod +x -- "$TEST_BIN/pacman"
 }
 
-
 create_valid_verification_environment() {
     mkdir -p \
         "$PROJECT_ROOT/configs/ghostty" \
         "$PROJECT_ROOT/configs/hypr/modules/vars" \
         "$PROJECT_ROOT/configs/hyprsunset" \
+        "$PROJECT_ROOT/configs/mpd" \
+        "$PROJECT_ROOT/configs/rmpc/themes" \
+        "$PROJECT_ROOT/configs/systemd/user/mpd.service.d" \
         "$PROJECT_ROOT/configs/starship" \
         "$PROJECT_ROOT/configs/tmux" \
         "$PROJECT_ROOT/configs/xdg-desktop-portal" \
@@ -137,6 +134,9 @@ create_valid_verification_environment() {
         "$PROJECT_ROOT/scripts/example" \
         "$HOME/.config/ghostty" \
         "$HOME/.config/hypr" \
+        "$HOME/.config/mpd" \
+        "$HOME/.config/rmpc/themes" \
+        "$HOME/.config/systemd/user/mpd.service.d" \
         "$HOME/.config/starship" \
         "$HOME/.config/tmux" \
         "$HOME/.config/xdg-desktop-portal" \
@@ -155,7 +155,7 @@ create_valid_verification_environment() {
     printf '%s\n' '-- hyprland config' \
         > "$PROJECT_ROOT/configs/hypr/hyprland.lua"
 
-    cat > "$PROJECT_ROOT/configs/hyprsunset/location.conf" <<'EOF_LOCATION'
+    cat > "$PROJECT_ROOT/configs/hyprsunset/location.conf" << 'EOF_LOCATION'
 LATITUDE=48.7
 LONGITUDE=11.4
 EOF_LOCATION
@@ -169,6 +169,10 @@ EOF_LOCATION
 
     local -a managed_pairs=(
         "$PROJECT_ROOT/configs/ghostty/config.ghostty|$HOME/.config/ghostty/config.ghostty"
+        "$PROJECT_ROOT/configs/mpd/mpd.conf|$HOME/.config/mpd/mpd.conf"
+        "$PROJECT_ROOT/configs/rmpc/config.ron|$HOME/.config/rmpc/config.ron"
+        "$PROJECT_ROOT/configs/rmpc/themes/catppuccin-mocha.ron|$HOME/.config/rmpc/themes/catppuccin-mocha.ron"
+        "$PROJECT_ROOT/configs/systemd/user/mpd.service.d/10-hyprdots.conf|$HOME/.config/systemd/user/mpd.service.d/10-hyprdots.conf"
         "$PROJECT_ROOT/configs/starship/starship.toml|$HOME/.config/starship/starship.toml"
         "$PROJECT_ROOT/configs/tmux/tmux.conf|$HOME/.config/tmux/tmux.conf"
         "$PROJECT_ROOT/configs/xdg-desktop-portal/hyprland-portals.conf|$HOME/.config/xdg-desktop-portal/hyprland-portals.conf"
@@ -215,7 +219,6 @@ EOF_LOCATION
     mock_screenshot_tool_status 0
 }
 
-
 run_verification_test_captured() {
     local output_file="$1"
     shift
@@ -231,7 +234,6 @@ run_verification_test_captured() {
 
     set -e
 }
-
 
 assert_verify_output_contains() {
     local output_file="$1"

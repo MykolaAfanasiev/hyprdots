@@ -6,7 +6,6 @@ fi
 
 readonly HYPRDOTS_AUR_PACKAGES_LOADED=1
 
-
 check_aur_requirements() {
     if ! command_exists git; then
         die "git is required to install AUR packages."
@@ -16,16 +15,14 @@ check_aur_requirements() {
         die "makepkg is required to install AUR packages."
     fi
 
-    if ! pacman -Qq base-devel >/dev/null 2>&1; then
+    if ! pacman -Qq base-devel > /dev/null 2>&1; then
         die "base-devel is required to build AUR packages."
     fi
 }
 
-
 aur_package_installed() {
-    pacman -Qq "$1" >/dev/null 2>&1
+    pacman -Qq "$1" > /dev/null 2>&1
 }
-
 
 install_aur_package() {
     local package="$1"
@@ -53,8 +50,7 @@ install_aur_package() {
     if ! git clone \
         --depth=1 \
         "https://aur.archlinux.org/${package}.git" \
-        "$repo_dir"
-    then
+        "$repo_dir"; then
         rm -rf "$build_dir"
         die "Failed to clone AUR package: $package"
     fi
@@ -66,18 +62,17 @@ install_aur_package() {
 
     if ! confirm \
         "Build and install $package?" \
-        no
-    then
+        no; then
         rm -rf "$build_dir"
         die "AUR package installation cancelled: $package"
     fi
 
     if ! (
-    cd -- "$repo_dir" || exit 1
+        cd -- "$repo_dir" || exit 1
 
-    makepkg \
-        -si \
-        --needed
+        makepkg \
+            -si \
+            --needed
     ); then
         rm -rf -- "$build_dir"
         die "Failed to build or install AUR package: $package"
@@ -88,11 +83,10 @@ install_aur_package() {
     success "$package installed"
 }
 
-
 install_aur_packages() {
     local -a packages=("$@")
 
-    if (( ${#packages[@]} == 0 )); then
+    if ((${#packages[@]} == 0)); then
         success "No AUR packages selected"
         return 0
     fi

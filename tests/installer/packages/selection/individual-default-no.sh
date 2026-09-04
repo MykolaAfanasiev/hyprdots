@@ -7,12 +7,11 @@ set -euo pipefail
 
 REPO_ROOT="$(
     cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../../../.." &&
-    pwd
+        pwd
 )"
 
 # shellcheck source=tests/lib/package-selection.sh
 source "$REPO_ROOT/tests/lib/package-selection.sh"
-
 
 # Arrange
 
@@ -22,7 +21,6 @@ trap destroy_test_sandbox EXIT
 source_packages=(hyprland waybar)
 selected_packages=(old-value)
 
-
 # Act
 
 select_packages_individually \
@@ -31,10 +29,8 @@ select_packages_individually \
     no \
     <<< $'\n\n'
 
-
 # Assert
 
 assert_array_empty selected_packages
-
 
 printf 'PASS: empty individual answers skip packages when default is no\n'
