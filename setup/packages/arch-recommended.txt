@@ -13,3 +13,6 @@ poppler
 resvg
 ripgrep
 shfmt
+networkmanager
+bluez
+bluez-utils

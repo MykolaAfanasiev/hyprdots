@@ -65,10 +65,55 @@ activate_mpd_service() {
 }
 
 run_user_service_setup() {
-  section "[10/11] User services"
+  section "[10/11] Services"
+
+  activate_system_service \
+    networkmanager \
+    NetworkManager.service \
+    "NetworkManager"
+
+  activate_system_service \
+    bluez \
+    bluetooth.service \
+    "Bluetooth"
 
   activate_mpd_service
 
   printf '\n'
-  success "User service setup complete"
+  success "Service setup complete"
+}
+
+show_system_service_status() {
+  local service="$1"
+
+  command sudo systemctl status "$service" --no-pager -l >&2 || true
+}
+
+activate_system_service() {
+  local package="$1"
+  local service="$2"
+  local name="$3"
+
+  if ! package_is_selected "$package"; then
+    info "$name was not selected; service activation skipped"
+    return 0
+  fi
+
+  if ! command_exists systemctl; then
+    die "systemctl is unavailable; $name cannot be activated."
+  fi
+
+  info "Enabling $name service..."
+
+  if ! command sudo systemctl enable --now "$service"; then
+    show_system_service_status "$service"
+    die "Failed to enable and start $service."
+  fi
+
+  if ! command systemctl is-active --quiet "$service"; then
+    show_system_service_status "$service"
+    die "$service did not become active."
+  fi
+
+  success "$name service is enabled and running"
 }
