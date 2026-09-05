@@ -73,6 +73,20 @@ prepare_yazi_packages() {
     return 0
   fi
 
+  local flavor_dir="$config_dir/flavors"
+  local default_flavor="$flavor_dir/catppuccin-mocha.yazi"
+  local current_flavor="$flavor_dir/current.yazi"
+
+  if [[ -d "$default_flavor" ]]; then
+    if [[ ! -e "$current_flavor" || -L "$current_flavor" ]]; then
+      ln -sfn -- "catppuccin-mocha.yazi" "$current_flavor"
+    else
+      warn "Yazi current flavor already exists and was left unchanged"
+    fi
+  else
+    warn "Default Yazi flavor is unavailable; current theme alias was not created"
+  fi
+
   success "Yazi packages and flavors are ready"
 }
 

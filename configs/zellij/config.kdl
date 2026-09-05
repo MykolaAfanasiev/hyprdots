@@ -4,7 +4,7 @@
 
 default_shell "/usr/bin/zsh"
 
-theme "catppuccin-mocha"
+theme "current"
 
 default_layout "compact"
 default_mode "locked"
