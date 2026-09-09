@@ -1,23 +1,23 @@
 hl.config({
-  input = {
-    kb_layout    = "us, ru",
-    kb_variant   = "altgr-intl,",
-    kb_model     = "",
-    kb_options   = "grp:alt_shift_toggle",
-    kb_rules     = "",
+	input = {
+		kb_layout = "us, ru",
+		kb_variant = "altgr-intl,",
+		kb_model = "",
+		kb_options = "grp:alt_shift_toggle",
+		kb_rules = "",
 
-    follow_mouse = 1,
+		follow_mouse = 1,
 
-    sensitivity  = 0, -- -1.0 - 1.0, 0 means no modification.
+		sensitivity = 0, -- -1.0 - 1.0, 0 means no modification.
 
-    touchpad     = {
-      natural_scroll = false,
-    },
-  },
+		touchpad = {
+			natural_scroll = false,
+		},
+	},
 })
 
 hl.gesture({
-  fingers = 3,
-  direction = "horizontal",
-  action = "workspace"
+	fingers = 3,
+	direction = "horizontal",
+	action = "workspace",
 })

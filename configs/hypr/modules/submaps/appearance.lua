@@ -8,26 +8,17 @@ local paths = require("modules.vars.paths")
 -- Open appearance submap
 -- ==========================================
 
-hl.bind(
-    vars.mainMod .. " + A",
-    submap.switch("appearance")
-)
+hl.bind(vars.mainMod .. " + A", submap.switch("appearance"))
 
 -- ==========================================
 -- Main appearance submap
 -- ==========================================
 
 hl.define_submap("appearance", function()
-    hl.bind(
-        "W",
-        hl.dsp.exec_cmd(paths.wallpaper_switcher.launch)
-    )
+	hl.bind("W", hl.dsp.exec_cmd(paths.wallpaper_switcher.launch))
 
-    -- Theme switcher can be added here later.
-    -- hl.bind("T", ... theme switcher ...)
+	-- Theme switcher can be added here later.
+	-- hl.bind("T", ... theme switcher ...)
 
-    hl.bind(
-        "escape",
-        submap.switch("reset")
-    )
+	hl.bind("escape", submap.switch("reset"))
 end)

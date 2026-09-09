@@ -23,5 +23,5 @@ local home = os.getenv("HOME")
 local path = os.getenv("PATH") or ""
 
 if home then
-  hl.env("PATH", home .. "/.local/bin:" .. path)
+	hl.env("PATH", home .. "/.local/bin:" .. path)
 end
