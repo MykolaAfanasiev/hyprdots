@@ -83,10 +83,24 @@ stack stored in this repository:
 ## Yazi previews
 
 Yazi itself is required. Its optional preview/search tools are kept in the
-recommended list: `7zip`, `chafa`, `fd`, `ffmpeg`, `imagemagick`, `jq`,
-`poppler`, `resvg` and `ripgrep`. Selecting the recommended group enables the
-full preview experience without making those tools mandatory for a minimal
-installation.
+recommended list: `7zip`, `chafa`, `fd`, `ffmpeg`, `imagemagick`, `poppler`,
+`resvg` and `ripgrep`.
+
+`jq` is required independently by the Hyprlock keyboard-layout integration and
+also provides additional functionality for Yazi.
+
+## Hyprlock integration
+
+Hyprlock uses `hyprctl` and `jq` to show the active keyboard layout when more
+than one layout is configured.
+
+The lock-session integration pauses active MPRIS players through `playerctl`,
+manages MPD through `mpc` when the optional local music stack is installed,
+saves and restores audio sink state through `pactl`, and manages Bluetooth
+audio devices through `bluetoothctl`.
+
+The MPD integration is optional at runtime; Hyprlock continues to work when
+`mpc` is not installed.
 
 ## GNU Stow layout
 
