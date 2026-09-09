@@ -38,3 +38,7 @@ end, { desc = "Next diagnostic" })
 vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], {
 	desc = "Exit terminal mode",
 })
+
+vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, {
+	desc = "Rename symbol",
+})
