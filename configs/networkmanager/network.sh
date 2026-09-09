@@ -3,12 +3,51 @@
 set -euo pipefail
 
 NETWORK_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd -- "$NETWORK_DIR/../.." && pwd)"
 
 ROFI_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/config.rasi"
-NETWORK_THEME="$NETWORK_DIR/theme.rasi"
+
+THEME_CLI="$PROJECT_ROOT/scripts/theme-switcher/theme.sh"
+
+NETWORK_LAYOUT="$NETWORK_DIR/theme.rasi"
+NETWORK_FALLBACK_THEME="$NETWORK_DIR/themes/current.rasi"
+
+if [[ -n "${XDG_RUNTIME_DIR:-}" ]]; then
+  NETWORK_RUNTIME_DIR="$XDG_RUNTIME_DIR/hyprdots"
+else
+  NETWORK_RUNTIME_DIR="${TMPDIR:-/tmp}/hyprdots-$UID"
+fi
+
+NETWORK_RUNTIME_THEME="$NETWORK_RUNTIME_DIR/networkmanager.rasi"
+
+prepare_network_theme() {
+  local palette="$NETWORK_FALLBACK_THEME"
+  local generated=""
+
+  if [[ -x "$THEME_CLI" ]]; then
+    generated="$(
+      "$THEME_CLI" path networkmanager 2>/dev/null ||
+        true
+    )"
+
+    if [[ -r "$generated" ]]; then
+      palette="$generated"
+    fi
+  fi
+
+  mkdir -p -- "$NETWORK_RUNTIME_DIR"
+
+  {
+    printf '@import "%s"\n' "$palette"
+    printf '@import "%s"\n' "$NETWORK_LAYOUT"
+  } >"$NETWORK_RUNTIME_THEME"
+
+  printf '%s\n' "$NETWORK_RUNTIME_THEME"
+}
+
+NETWORK_THEME="$(prepare_network_theme)"
 
 declare -a ROFI_COMMON=()
-
 if [[ -f "$ROFI_CONFIG" ]]; then
   ROFI_COMMON+=(
     -config "$ROFI_CONFIG"

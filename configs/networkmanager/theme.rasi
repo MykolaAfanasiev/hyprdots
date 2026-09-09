@@ -1,5 +1,3 @@
-@import "themes/current.rasi"
-
 * {
     background-color: transparent;
     text-color: @text;
