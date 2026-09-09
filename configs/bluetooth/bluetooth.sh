@@ -3,12 +3,49 @@
 set -euo pipefail
 
 BLUETOOTH_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd -- "$BLUETOOTH_DIR/../.." && pwd)"
 
 ROFI_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/rofi/config.rasi"
-BLUETOOTH_THEME="$BLUETOOTH_DIR/theme.rasi"
 
-declare -a ROFI_COMMON=()
+THEME_CLI="$PROJECT_ROOT/scripts/theme-switcher/theme.sh"
 
+BLUETOOTH_LAYOUT="$BLUETOOTH_DIR/theme.rasi"
+BLUETOOTH_FALLBACK_THEME="$BLUETOOTH_DIR/themes/current.rasi"
+
+if [[ -n "${XDG_RUNTIME_DIR:-}" ]]; then
+  BLUETOOTH_RUNTIME_DIR="$XDG_RUNTIME_DIR/hyprdots"
+else
+  BLUETOOTH_RUNTIME_DIR="${TMPDIR:-/tmp}/hyprdots-$UID"
+fi
+
+BLUETOOTH_RUNTIME_THEME="$BLUETOOTH_RUNTIME_DIR/bluetooth.rasi"
+
+prepare_bluetooth_theme() {
+  local palette="$BLUETOOTH_FALLBACK_THEME"
+  local generated=""
+
+  if [[ -x "$THEME_CLI" ]]; then
+    generated="$(
+      "$THEME_CLI" path bluetooth 2>/dev/null ||
+        true
+    )"
+
+    if [[ -r "$generated" ]]; then
+      palette="$generated"
+    fi
+  fi
+
+  mkdir -p -- "$BLUETOOTH_RUNTIME_DIR"
+
+  {
+    printf '@import "%s"\n' "$palette"
+    printf '@import "%s"\n' "$BLUETOOTH_LAYOUT"
+  } >"$BLUETOOTH_RUNTIME_THEME"
+
+  printf '%s\n' "$BLUETOOTH_RUNTIME_THEME"
+}
+
+BLUETOOTH_THEME="$(prepare_bluetooth_theme)"
 if [[ -f "$ROFI_CONFIG" ]]; then
   ROFI_COMMON+=(
     -config "$ROFI_CONFIG"
