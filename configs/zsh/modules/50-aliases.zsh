@@ -45,3 +45,7 @@ fi
 if [[ -x "$HYPRDOTS_ROOT/configs/ghostty/launch.sh" ]]; then
   alias ghostty="$HYPRDOTS_ROOT/configs/ghostty/launch.sh"
 fi
+
+if [[ -x "$HYPRDOTS_ROOT/configs/zellij/launch.sh" ]]; then
+  alias zellij="$HYPRDOTS_ROOT/configs/zellij/launch.sh"
+fi

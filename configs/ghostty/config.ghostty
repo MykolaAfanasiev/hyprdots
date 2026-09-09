@@ -3,6 +3,7 @@
 # ==================
 
 config-file = themes/current.conf
+config-file = ?~/.cache/hyprdots/theme/current/ghostty.conf
 config-file = keybindings.conf
 
 # ==================
