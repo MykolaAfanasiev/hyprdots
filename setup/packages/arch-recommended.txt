@@ -8,7 +8,6 @@ chafa
 fd
 ffmpeg
 imagemagick
-jq
 poppler
 resvg
 ripgrep

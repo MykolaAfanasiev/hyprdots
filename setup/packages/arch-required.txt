@@ -44,3 +44,4 @@ desktop-file-utils
 xdg-desktop-portal
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-gtk
+jq
