@@ -19,6 +19,7 @@ path=(
 export PATH
 
 # Default applications
+export HYPRDOTS_ROOT="${${(%):-%N}:A:h:h:h:h}"
 export EDITOR="${EDITOR:-nvim}"
 export VISUAL="${VISUAL:-$EDITOR}"
 export SUDO_EDITOR="${SUDO_EDITOR:-$EDITOR}"

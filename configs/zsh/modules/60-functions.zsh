@@ -80,7 +80,9 @@ y() {
 
   tmp="$(mktemp -t "yazi-cwd.XXXXXX")" || return 1
 
-  command yazi "$@" --cwd-file="$tmp"
+  "$HYPRDOTS_ROOT/configs/yazi/launch.sh" \
+    "$@" \
+    --cwd-file="$tmp"
 
   IFS= read -r -d '' cwd <"$tmp"
 
@@ -90,12 +92,3 @@ y() {
 
   command rm -f -- "$tmp"
 }
-
-# # Tmux function
-# function tmux {
-#   if [[ "$1" == "attach" ]]; then
-#     command tmux -f "$HOME/.config/.dotfiles/configs/tmux/.tmux.conf" attach "${@:2}"
-#   else
-#     command tmux -f "$HOME/.config/.dotfiles/configs/tmux/.tmux.conf" "$@"
-#   fi
-# }

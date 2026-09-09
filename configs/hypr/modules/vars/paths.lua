@@ -66,4 +66,9 @@ M.bluetooth = {
 	launch = project_root .. "configs/bluetooth/bluetooth.sh",
 }
 
+M.btop = {
+	root = project_root .. "configs/btop/",
+	launch = project_root .. "configs/btop/launch.sh",
+}
+
 return M

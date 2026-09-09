@@ -28,3 +28,16 @@ else
   alias ll='ls -lah --color=auto'
   alias la='ls -A --color=auto'
 fi
+
+# Theme
+if [[ -x "$HYPRDOTS_ROOT/configs/btop/launch.sh" ]]; then
+  alias btop="$HYPRDOTS_ROOT/configs/btop/launch.sh"
+fi
+
+if [[ -x "$HYPRDOTS_ROOT/configs/rmpc/launch.sh" ]]; then
+  alias rmpc="$HYPRDOTS_ROOT/configs/rmpc/launch.sh"
+fi
+
+if [[ -x "$HYPRDOTS_ROOT/configs/yazi/launch.sh" ]]; then
+  alias yazi="$HYPRDOTS_ROOT/configs/yazi/launch.sh"
+fi

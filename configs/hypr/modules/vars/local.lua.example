@@ -9,6 +9,5 @@ return {
   -- apps = {
   --   terminal = "ghostty",
   --   notes = "obsidian",
-  --   system_monitor = "ghostty -e btop",
   -- },
 }
