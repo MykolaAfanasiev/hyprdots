@@ -127,6 +127,6 @@ printf '%s\0' "${SHELL_FILES[@]}" |
     -r \
     -n 1 \
     -P "$JOBS" \
-    shellcheck -x
+    shellcheck -x -P SCRIPTDIR
 
 printf '\nAll static checks passed.\n'

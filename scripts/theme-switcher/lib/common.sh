@@ -22,7 +22,11 @@ THEME_DEFAULT_FILE="$THEME_CONFIG_ROOT/default"
 
 THEME_STATE_ROOT="${XDG_STATE_HOME:-$HOME/.local/state}/hyprdots/theme"
 THEME_CACHE_ROOT="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/theme"
+
+# Used by scripts that source this library.
+# shellcheck disable=SC2034
 THEME_ACTIVE_LINK="$THEME_CACHE_ROOT/current"
+
 THEME_RENDER_ROOT="$THEME_CACHE_ROOT/rendered"
 THEME_CURRENT_FILE="$THEME_STATE_ROOT/current"
 

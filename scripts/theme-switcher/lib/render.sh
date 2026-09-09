@@ -809,6 +809,8 @@ render_theme() {
   destination="$THEME_RENDER_ROOT/$theme_name"
   temporary_link="$THEME_CACHE_ROOT/.current.$$"
 
+  # Invoked indirectly by the RETURN trap below.
+  # shellcheck disable=SC2329
   cleanup_theme_render() {
     rm -rf -- "${temporary_dir:-}"
     rm -f -- "${temporary_link:-}"
