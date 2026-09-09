@@ -102,6 +102,9 @@ show_path() {
   rmpc)
     printf '%s/rmpc.ron\n' "$THEME_ACTIVE_LINK"
     ;;
+  tmux)
+    printf '%s/tmux.conf\n' "$THEME_ACTIVE_LINK"
+    ;;
   zellij)
     printf '%s/zellij.kdl\n' "$THEME_ACTIVE_LINK"
     ;;
