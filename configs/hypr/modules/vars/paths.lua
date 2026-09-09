@@ -71,4 +71,9 @@ M.btop = {
 	launch = project_root .. "configs/btop/launch.sh",
 }
 
+M.ghostty = {
+	root = project_root .. "configs/ghostty/",
+	launch = project_root .. "configs/ghostty/launch.sh",
+}
+
 return M

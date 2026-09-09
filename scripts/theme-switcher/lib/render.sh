@@ -309,6 +309,7 @@ render_ghostty_palette() {
 background = $(theme_hex "$COLOR_BASE")
 foreground = $(theme_hex "$COLOR_TEXT")
 cursor-color = $(theme_hex "$COLOR_ROSEWATER")
+cursor-text = $(theme_hex "$COLOR_BASE")
 selection-background = $(theme_hex "$COLOR_SURFACE2")
 selection-foreground = $(theme_hex "$COLOR_TEXT")
 

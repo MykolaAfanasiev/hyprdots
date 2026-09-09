@@ -4,9 +4,9 @@ local M = {
 	mainMod = "SUPER",
 
 	apps = {
-		terminal = "ghostty",
+		terminal = paths.ghostty.launch,
 		notes = "obsidian",
-		system_monitor = "ghostty -e " .. paths.btop.launch,
+		system_monitor = paths.ghostty.launch .. " -e " .. paths.btop.launch,
 	},
 
 	monitor = {

@@ -41,3 +41,7 @@ fi
 if [[ -x "$HYPRDOTS_ROOT/configs/yazi/launch.sh" ]]; then
   alias yazi="$HYPRDOTS_ROOT/configs/yazi/launch.sh"
 fi
+
+if [[ -x "$HYPRDOTS_ROOT/configs/ghostty/launch.sh" ]]; then
+  alias ghostty="$HYPRDOTS_ROOT/configs/ghostty/launch.sh"
+fi
