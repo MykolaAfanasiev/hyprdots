@@ -1,4 +1,7 @@
 -- Variables
+package.loaded["modules.vars.global"] = nil
+package.loaded["modules.vars.paths"] = nil
+
 local vars = require("modules.vars.global")
 local paths = require("modules.vars.paths")
 

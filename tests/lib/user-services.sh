@@ -72,7 +72,7 @@ EOF_MOUSELESS
   chmod +x -- "$HOME/.local/bin/mouseless"
 }
 
-user_in_group() {
+current_session_in_group() {
   return 0
 }
 

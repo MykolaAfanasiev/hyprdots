@@ -66,11 +66,21 @@ install_mouseless_binary() {
   success "Mouseless installed: $binary"
 }
 
-user_in_group() {
+user_assigned_to_group() {
   local group="$1"
   local user="${USER:-$(id -un)}"
 
-  id -nG "$user" 2>/dev/null | tr ' ' '\n' | grep -Fxq -- "$group"
+  id -nG "$user" 2>/dev/null |
+    tr ' ' '\n' |
+    grep -Fxq -- "$group"
+}
+
+current_session_in_group() {
+  local group="$1"
+
+  id -nG 2>/dev/null |
+    tr ' ' '\n' |
+    grep -Fxq -- "$group"
 }
 
 ensure_system_group() {
@@ -90,28 +100,31 @@ ensure_user_group_membership() {
   local group
 
   for group in input uinput; do
-    if ! user_in_group "$group"; then
+    if ! user_assigned_to_group "$group"; then
       missing+=("$group")
     fi
   done
 
-  if ((${#missing[@]} == 0)); then
+  if ((${#missing[@]} > 0)); then
+    info "Adding $user to groups: ${missing[*]}"
+
+    command sudo usermod \
+      -aG "$(
+        IFS=,
+        printf '%s' "${missing[*]}"
+      )" \
+      "$user"
+  fi
+
+  if current_session_in_group input &&
+    current_session_in_group uinput; then
     success "Mouseless input groups are already active"
     return 0
   fi
 
-  info "Adding $user to groups: ${missing[*]}"
-
-  command sudo usermod \
-    -aG "$(
-      IFS=,
-      printf '%s' "${missing[*]}"
-    )" \
-    "$user"
-
-  # Supplemental groups are fixed when a login session starts. The service is
-  # enabled later, but startup is deferred until the next login when needed.
-  # Consumed later by setup/lib/services/user.sh.
+  # The account may already have input/uinput, while this login
+  # session still has its old supplementary group list.
+  # Consumed by the service and verification stages.
   # shellcheck disable=SC2034
   MOUSELESS_RELOGIN_REQUIRED=1
 

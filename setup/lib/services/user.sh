@@ -100,8 +100,8 @@ activate_mouseless_service() {
   fi
 
   if ((MOUSELESS_RELOGIN_REQUIRED != 0)) ||
-    ! user_in_group input ||
-    ! user_in_group uinput; then
+    ! current_session_in_group input ||
+    ! current_session_in_group uinput; then
     warn "Mouseless is enabled but will start after the next login or reboot"
     return 0
   fi

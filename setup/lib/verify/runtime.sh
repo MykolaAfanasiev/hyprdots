@@ -201,14 +201,17 @@ verify_mouseless_runtime() {
     return 0
   fi
 
-  if user_in_group input && user_in_group uinput; then
-    if command systemctl --user is-active --quiet mouseless.service; then
-      verify_pass "Mouseless user service is active"
-    else
-      verify_fail "Mouseless user service is not active"
-    fi
-  else
+  if ((MOUSELESS_RELOGIN_REQUIRED != 0)) ||
+    ! current_session_in_group input ||
+    ! current_session_in_group uinput; then
     verify_warn "Mouseless needs a new login before its input groups become active"
+    return 0
+  fi
+
+  if command systemctl --user is-active --quiet mouseless.service; then
+    verify_pass "Mouseless user service is active"
+  else
+    verify_fail "Mouseless user service is not active"
   fi
 }
 
