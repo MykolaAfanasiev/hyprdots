@@ -2,6 +2,10 @@
 
 set -u
 
+SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/../.." && pwd)"
+THEME_CLI="$PROJECT_ROOT/scripts/theme-switcher/theme.sh"
+
 WALLPAPER_DIR="${HYPRDOTS_WALLPAPER_DIR:-$HOME/.wallpapers}"
 
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/wallpaper"
@@ -78,6 +82,10 @@ set_wallpaper() {
     ", $wallpaper, cover" >/dev/null 2>&1; then
     printf '%s\n' "$wallpaper" >"$CURRENT_FILE"
     ln -sfn "$wallpaper" "$CURRENT_LINK"
+
+    if [[ -x "$THEME_CLI" ]]; then
+      "$THEME_CLI" wallpaper
+    fi
 
     notify_ok "Wallpaper: $(basename "$wallpaper")"
     return 0
