@@ -8,3 +8,6 @@ require("modules.decoration")
 require("modules.misc")
 require("modules.submaps.submaps")
 require("modules.special_workspaces")
+
+-- Theme overrides must always be loaded last.
+require("modules.theme")
