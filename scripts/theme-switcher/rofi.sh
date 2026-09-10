@@ -29,13 +29,16 @@ fi
 
 rofi_menu() {
   local prompt="$1"
+  shift
 
   rofi \
     -dmenu \
     -i \
+    -markup-rows \
     -p "$prompt" \
     -config "$ROFI_CONFIG" \
-    -theme "$rofi_theme"
+    -theme "$rofi_theme" \
+    "$@"
 }
 
 theme_display_name() {
@@ -59,6 +62,43 @@ theme_display_name() {
   printf '%s\n' "$display"
 }
 
+theme_metadata() {
+  local slug="$1"
+  local theme_file="$THEMES_DIR/$slug.theme"
+  local variant=""
+  local accent=""
+
+  if [[ -r "$theme_file" ]]; then
+    variant="$(
+      sed -nE \
+        's/^THEME_VARIANT="(.*)"$/\1/p' \
+        "$theme_file" |
+        head -n 1
+    )"
+
+    accent="$(
+      sed -nE \
+        's/^COLOR_BLUE="(#[0-9A-Fa-f]{6})"$/\1/p' \
+        "$theme_file" |
+        head -n 1
+    )"
+  fi
+
+  case "$variant" in
+  light)
+    variant="Light"
+    ;;
+  dark)
+    variant="Dark"
+    ;;
+  *)
+    variant="Unknown"
+    ;;
+  esac
+
+  printf '%s\t%s\n' "$variant" "$accent"
+}
+
 choose_static_theme() {
   local prompt="$1"
   local action="$2"
@@ -66,6 +106,9 @@ choose_static_theme() {
   local selected
   local slug
   local display
+  local metadata
+  local variant
+  local accent
   local choice
   local index
 
@@ -79,10 +122,16 @@ choose_static_theme() {
 
     display="$(theme_display_name "$slug")"
 
+    metadata="$(theme_metadata "$slug")"
+    IFS=$'\t' read -r variant accent <<<"$metadata"
+
+    local swatch
+    swatch="<span foreground=\"$accent\">●</span>"
+
     if [[ "$slug" == "$selected" ]]; then
-      entries+=("● $display")
+      entries+=("$(printf '● %-26s %-7s %s  %s' "$display" "$variant" "$swatch" "$accent")")
     else
-      entries+=("  $display")
+      entries+=("$(printf '  %-26s %-7s %s  %s' "$display" "$variant" "$swatch" "$accent")")
     fi
 
     slugs+=("$slug")
@@ -95,7 +144,8 @@ choose_static_theme() {
 
   choice="$(
     printf '%s\n' "${entries[@]}" |
-      rofi_menu "$prompt"
+      rofi_menu "$prompt" \
+        -theme-str 'listview { columns: 1; }'
   )" || return 0
 
   for ((index = 0; index < ${#entries[@]}; index++)); do
