@@ -7,9 +7,9 @@ local paths = require("modules.vars.paths")
 
 -- Submaps
 require("modules.submaps.clean")
--- =========================================================
+-- ========================================================================
 -- Return to standard/global mode from any submap
--- =========================================================
+-- ========================================================================
 
 hl.bind(vars.mainMod .. " + CTRL + SHIFT + ALT + escape", function()
 	hl.dispatch(hl.dsp.submap("reset"))
@@ -18,9 +18,9 @@ end, {
 	description = "Return to standard/global mode",
 })
 
--- =============
+-- ========================================================================
 -- Basic actions
--- =============
+-- ========================================================================
 
 hl.bind(vars.mainMod .. " + RETURN", hl.dsp.exec_cmd(vars.apps.terminal))
 
@@ -67,9 +67,9 @@ hl.bind(vars.mainMod .. " + ALT + L", hl.dsp.exec_cmd(paths.hyprlock.launch))
 
 hl.bind(vars.mainMod .. " + ALT + P", hl.dsp.exec_cmd(paths.wlogout.launch))
 
--- ==============
+-- ========================================================================
 -- Window actions
--- ==============
+-- ========================================================================
 hl.bind(
 	vars.mainMod .. " + SHIFT + F",
 	hl.dsp.window.fullscreen({
@@ -87,9 +87,9 @@ hl.bind(
 
 hl.bind(vars.mainMod .. " + V", hl.dsp.layout("togglesplit"))
 
--- =============
+-- ========================================================================
 -- Focus windows
--- =============
+-- ========================================================================
 hl.bind(vars.mainMod .. " + L", hl.dsp.focus({ direction = "r" }))
 hl.bind(vars.mainMod .. " + H", hl.dsp.focus({ direction = "l" }))
 hl.bind(vars.mainMod .. " + J", hl.dsp.focus({ direction = "d" }))
@@ -107,9 +107,9 @@ hl.bind(
 	})
 )
 
--- ==========
+-- ========================================================================
 -- Workspaces
--- ==========
+-- ========================================================================
 for i = 1, 10 do
 	local key = tostring(i % 10) -- 10 becomes key 0
 
@@ -144,9 +144,9 @@ hl.bind(
 	})
 )
 
--- ===================
+-- ========================================================================
 -- Mouse move / resize
--- ===================
+-- ========================================================================
 
 hl.bind(vars.mainMod .. " + mouse:272", hl.dsp.window.drag(), {
 	mouse = true,
@@ -155,9 +155,9 @@ hl.bind(vars.mainMod .. " + mouse:272", hl.dsp.window.drag(), {
 hl.bind(vars.mainMod .. " + mouse:273", hl.dsp.window.resize(), {
 	mouse = true,
 })
--- ================================
+-- ========================================================================
 -- Volume / brightness / media keys
--- ================================
+-- ========================================================================
 
 hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("brightnessctl s 10%+"), {
 	locked = true,
