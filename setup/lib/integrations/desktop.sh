@@ -145,71 +145,6 @@ configure_yazi_file_manager() {
   success "Yazi is the default directory handler"
 }
 
-configure_zen_file_picker() {
-  local preference
-  local profile_root
-  local profiles_ini
-  local relative_path
-  local profile_dir
-  local user_js
-  local updated=0
-
-  local -a profile_roots=(
-    "$HOME/.zen"
-    "$HOME/.var/app/app.zen_browser.zen/.zen"
-  )
-
-  preference='user_pref("widget.use-xdg-desktop-portal.file-picker", 1);'
-
-  for profile_root in "${profile_roots[@]}"; do
-    profiles_ini="$profile_root/profiles.ini"
-    [[ -r "$profiles_ini" ]] || continue
-
-    while IFS= read -r relative_path; do
-      relative_path="${relative_path%$'\r'}"
-      [[ -n "$relative_path" ]] || continue
-
-      if [[ "$relative_path" == /* ]]; then
-        profile_dir="$relative_path"
-      else
-        profile_dir="$profile_root/$relative_path"
-      fi
-
-      [[ -d "$profile_dir" ]] || continue
-
-      user_js="$profile_dir/user.js"
-
-      if [[ -f "$user_js" ]] &&
-        grep -q \
-          '^[[:space:]]*user_pref("widget\.use-xdg-desktop-portal\.file-picker",' \
-          "$user_js"; then
-        sed -i \
-          '/^[[:space:]]*user_pref("widget\.use-xdg-desktop-portal\.file-picker",/c\
-user_pref("widget.use-xdg-desktop-portal.file-picker", 1);' \
-          "$user_js"
-      else
-        printf '%s\n' "$preference" >>"$user_js"
-      fi
-
-      ((updated += 1))
-    done < <(
-      awk -F= '
-                /^Path=/ {
-                    sub(/^Path=/, "")
-                    print
-                }
-            ' "$profiles_ini"
-    )
-  done
-
-  if ((updated == 0)); then
-    info "Zen profile was not found; launch Zen and rerun the installer later"
-    return 0
-  fi
-
-  success "Zen uses the XDG portal file picker in $updated profile(s)"
-}
-
 offer_zsh_as_login_shell() {
   if ! command_exists zsh || ! command_exists chsh; then
     return 0
@@ -274,10 +209,8 @@ run_desktop_integration_setup() {
 
   if [[ "${CONFIG_DEPLOYMENT_MODE:-unknown}" == "automatic" ]]; then
     configure_yazi_file_manager
-    configure_zen_file_picker
     configure_obsidian
     configure_anki
-    configure_zen_theme
     restart_desktop_portals
   else
     info "Automatic deployment was not selected; desktop activation skipped"
@@ -342,27 +275,4 @@ configure_anki() {
   fi
 
   success "Anki Catppuccin Mocha configuration is ready"
-}
-
-configure_zen_theme() {
-  local configurator="$PROJECT_ROOT/setup/lib/integrations/zen.py"
-
-  if ! command_exists python; then
-    warn "Python is unavailable; Zen theme configuration skipped"
-    return 0
-  fi
-
-  if [[ ! -r "$configurator" ]]; then
-    warn "Zen configurator is missing: $configurator"
-    return 0
-  fi
-
-  info "Configuring Zen Browser theme..."
-
-  if ! command python "$configurator"; then
-    warn "Zen Browser theme configuration failed"
-    return 0
-  fi
-
-  success "Zen Browser Catppuccin theme is ready"
 }
