@@ -1,0 +1,6 @@
+[config]
+caching = false
+
+[templates.hyprdots]
+input_path = "./templates/hyprdots.theme"
+output_path = "~/.cache/hyprdots/theme/matugen-generated.theme"

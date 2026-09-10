@@ -1,0 +1,18 @@
+THEME_DISPLAY_NAME="Dynamic (Matugen)"
+
+MATUGEN_GENERATOR="$THEME_PROJECT_ROOT/configs/matugen/generate.sh"
+MATUGEN_PALETTE="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/theme/matugen-generated.theme"
+
+if [[ ! -x "$MATUGEN_GENERATOR" ]]; then
+  theme_die "Matugen generator is unavailable: $MATUGEN_GENERATOR"
+fi
+
+"$MATUGEN_GENERATOR" >/dev/null
+
+if [[ ! -r "$MATUGEN_PALETTE" ]]; then
+  theme_die "Matugen palette was not generated: $MATUGEN_PALETTE"
+fi
+
+# Generated locally from the current wallpaper.
+# shellcheck disable=SC1090
+source "$MATUGEN_PALETTE"
