@@ -17,8 +17,7 @@ hl.bind(vars.mainMod .. " + A", submap.switch("appearance"))
 hl.define_submap("appearance", function()
 	hl.bind("W", hl.dsp.exec_cmd(paths.wallpaper_switcher.launch))
 
-	-- Theme switcher can be added here later.
-	-- hl.bind("T", ... theme switcher ...)
+	hl.bind("T", hl.dsp.exec_cmd(paths.theme_switcher.rofi))
 
-	hl.bind("escape", submap.switch("reset"))
+  hl.bind("escape", submap.switch("reset"))
 end)
