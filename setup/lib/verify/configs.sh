@@ -108,6 +108,19 @@ verify_managed_configuration_links() {
     "Yazi desktop entry|$PROJECT_ROOT/home/.local/share/applications/yazi.desktop|$HOME/.local/share/applications/yazi.desktop"
   )
 
+  if [[ -r "$PROJECT_ROOT/configs/mouseless/config.yaml" ]]; then
+    mappings+=(
+      "Mouseless|$PROJECT_ROOT/configs/mouseless/config.yaml|$HOME/.config/mouseless/config.yaml"
+      "Mouseless systemd unit|$PROJECT_ROOT/configs/systemd/user/mouseless.service|$HOME/.config/systemd/user/mouseless.service"
+    )
+  fi
+
+  if [[ -r "$PROJECT_ROOT/configs/theme/settings.conf" ]]; then
+    mappings+=(
+      "Theme settings|$PROJECT_ROOT/configs/theme/settings.conf|$HOME/.config/theme/settings.conf"
+    )
+  fi
+
   local -a unresolved=()
   local mapping
   local label

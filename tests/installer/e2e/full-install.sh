@@ -81,6 +81,21 @@ assert_symlink_to \
   "$E2E_PROJECT/configs/hypr/hyprland.lua"
 
 assert_symlink_to \
+  "$HOME/.config/mouseless/config.yaml" \
+  "$E2E_PROJECT/configs/mouseless/config.yaml"
+
+assert_symlink_to \
+  "$HOME/.config/systemd/user/mouseless.service" \
+  "$E2E_PROJECT/configs/systemd/user/mouseless.service"
+
+assert_symlink_to \
+  "$HOME/.config/theme/settings.conf" \
+  "$E2E_PROJECT/configs/theme/settings.conf"
+
+assert_executable \
+  "$HOME/.local/bin/mouseless"
+
+assert_symlink_to \
   "$HOME/.zshenv" \
   "$E2E_PROJECT/home/.zshenv"
 
@@ -117,6 +132,14 @@ assert_e2e_output_contains \
 assert_e2e_output_contains \
   "$TEST_STATE/systemctl.log" \
   "--user restart mpd.service"
+
+assert_e2e_output_contains \
+  "$TEST_STATE/systemctl.log" \
+  "--user enable mouseless.service"
+
+assert_e2e_output_contains \
+  "$TEST_STATE/systemctl.log" \
+  "--user restart mouseless.service"
 
 assert_e2e_output_contains \
   "$TEST_STATE/output.log" \

@@ -2,12 +2,12 @@ qt5-wayland
 qt6-wayland
 hyprpolkitagent
 noto-fonts
+noto-fonts-emoji
 pipewire-alsa
 7zip
 chafa
 fd
 ffmpeg
-imagemagick
 poppler
 resvg
 ripgrep

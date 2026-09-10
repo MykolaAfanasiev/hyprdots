@@ -64,6 +64,63 @@ activate_mpd_service() {
   success "MPD user service is enabled and running"
 }
 
+show_mouseless_service_status() {
+  command systemctl --user status mouseless.service --no-pager -l >&2 || true
+}
+
+activate_mouseless_service() {
+  local binary="${HYPRDOTS_MOUSELESS_BIN:-$HOME/.local/bin/mouseless}"
+  local config="$HOME/.config/mouseless/config.yaml"
+  local unit="$HOME/.config/systemd/user/mouseless.service"
+
+  if [[ "${CONFIG_DEPLOYMENT_MODE:-unknown}" != "automatic" ]]; then
+    info "Automatic configuration deployment was not selected; Mouseless activation skipped"
+    return 0
+  fi
+
+  if [[ ! -x "$binary" ]]; then
+    warn "Mouseless binary is unavailable; user service activation skipped"
+    return 0
+  fi
+
+  if [[ ! -r "$config" ]]; then
+    warn "Mouseless configuration is not deployed: $config"
+    return 0
+  fi
+
+  if [[ ! -r "$unit" ]]; then
+    warn "Mouseless user service is not deployed: $unit"
+    return 0
+  fi
+
+  info "Enabling Mouseless user service..."
+
+  if ! command systemctl --user enable mouseless.service; then
+    die "Failed to enable mouseless.service."
+  fi
+
+  if ((MOUSELESS_RELOGIN_REQUIRED != 0)) ||
+    ! user_in_group input ||
+    ! user_in_group uinput; then
+    warn "Mouseless is enabled but will start after the next login or reboot"
+    return 0
+  fi
+
+  info "Starting Mouseless..."
+
+  if ! command systemctl --user restart mouseless.service; then
+    show_mouseless_service_status
+    die "Failed to start mouseless.service."
+  fi
+
+  if ! command systemctl --user is-active --quiet mouseless.service; then
+    show_mouseless_service_status
+    die "mouseless.service did not become active."
+  fi
+
+  success "Mouseless user service is enabled and running"
+}
+
 run_user_service_setup() {
   section "[10/11] Services"
 
@@ -78,6 +135,7 @@ run_user_service_setup() {
     "Bluetooth"
 
   activate_mpd_service
+  activate_mouseless_service
 
   printf '\n'
   success "Service setup complete"

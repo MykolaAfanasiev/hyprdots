@@ -163,8 +163,10 @@ case "\$package" in
             "$TEST_HOME/.config/ghostty" \
             "$TEST_HOME/.config/hypr" \
             "$TEST_HOME/.config/mpd" \
+            "$TEST_HOME/.config/mouseless" \
             "$TEST_HOME/.config/rmpc/themes" \
             "$TEST_HOME/.config/systemd/user/mpd.service.d" \
+            "$TEST_HOME/.config/theme" \
             "$TEST_HOME/.config/starship" \
             "$TEST_HOME/.config/tmux" \
             "$TEST_HOME/.config/xdg-desktop-portal" \
@@ -185,6 +187,12 @@ case "\$package" in
             "$TEST_HOME/.config/rmpc/themes/catppuccin-mocha.ron"
         ln -sf -- "$E2E_PROJECT/configs/systemd/user/mpd.service.d/10-hyprdots.conf" \
             "$TEST_HOME/.config/systemd/user/mpd.service.d/10-hyprdots.conf"
+        ln -sf -- "$E2E_PROJECT/configs/mouseless/config.yaml" \
+            "$TEST_HOME/.config/mouseless/config.yaml"
+        ln -sf -- "$E2E_PROJECT/configs/systemd/user/mouseless.service" \
+            "$TEST_HOME/.config/systemd/user/mouseless.service"
+        ln -sf -- "$E2E_PROJECT/configs/theme/settings.conf" \
+            "$TEST_HOME/.config/theme/settings.conf"
         ln -sf -- "$E2E_PROJECT/configs/starship/starship.toml" \
             "$TEST_HOME/.config/starship/starship.toml"
         ln -sf -- "$E2E_PROJECT/configs/tmux/tmux.conf" \
@@ -236,6 +244,46 @@ EOF
     "$TEST_BIN/systemctl"
 }
 
+create_e2e_go() {
+  cat >"$TEST_BIN/go" <<'EOF_GO'
+#!/usr/bin/env bash
+
+if [[ "${1:-}" == "install" ]]; then
+  mkdir -p -- "${GOBIN:?}"
+  cat >"$GOBIN/mouseless" <<'EOF_MOUSELESS'
+#!/usr/bin/env bash
+exit 0
+EOF_MOUSELESS
+  chmod +x -- "$GOBIN/mouseless"
+  exit 0
+fi
+
+exit 0
+EOF_GO
+
+  chmod +x -- "$TEST_BIN/go"
+}
+
+create_e2e_id() {
+  cat >"$TEST_BIN/id" <<'EOF_ID'
+#!/usr/bin/env bash
+
+if [[ "${1:-}" == "-nG" ]]; then
+  printf '%s\n' 'users input uinput'
+  exit 0
+fi
+
+if [[ "${1:-}" == "-un" ]]; then
+  printf '%s\n' "${USER:-e2e}"
+  exit 0
+fi
+
+exec /usr/bin/id "$@"
+EOF_ID
+
+  chmod +x -- "$TEST_BIN/id"
+}
+
 create_e2e_screenshot_tool() {
   cat >"$TEST_BIN/screenshot-tool" <<EOF
 #!/usr/bin/env bash
@@ -274,6 +322,8 @@ EOF
   create_e2e_systemctl
   create_e2e_chsh
   create_e2e_screenshot_tool
+  create_e2e_go
+  create_e2e_id
 }
 
 # ============================================================

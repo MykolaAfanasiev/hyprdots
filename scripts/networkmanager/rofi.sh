@@ -192,7 +192,6 @@ show_disabled() {
 }
 
 show_networks() {
-  local line
   local active
   local signal
   local security

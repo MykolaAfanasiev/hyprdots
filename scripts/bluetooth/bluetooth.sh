@@ -82,7 +82,6 @@ list_devices() {
 
   local prefix
   local mac
-  local ignored
   local name
   local paired
   local connected
@@ -91,7 +90,7 @@ list_devices() {
   local icon
   local -A seen=()
 
-  while read -r prefix mac ignored; do
+  while read -r prefix mac _; do
     [[ "$prefix" == "Device" ]] || continue
     [[ -n "$mac" ]] || continue
     [[ -z "${seen[$mac]:-}" ]] || continue

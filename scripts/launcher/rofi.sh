@@ -26,7 +26,7 @@ fi
 rofi_theme="$ROFI_FALLBACK_THEME"
 
 if [[ -x "$ROFI_DIR/prepare-theme.sh" ]]; then
-  if generated_theme="$($ROFI_DIR/prepare-theme.sh 2>/dev/null)" &&
+  if generated_theme="$("${ROFI_DIR}/prepare-theme.sh" 2>/dev/null)" &&
     [[ -r "$generated_theme" ]]; then
     rofi_theme="$generated_theme"
   fi

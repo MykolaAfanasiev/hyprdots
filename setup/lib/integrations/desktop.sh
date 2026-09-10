@@ -6,6 +6,24 @@ fi
 
 readonly HYPRDOTS_DESKTOP_INTEGRATIONS_LOADED=1
 
+prepare_theme_runtime() {
+  local theme_cli="$PROJECT_ROOT/scripts/theme-switcher/theme.sh"
+
+  if [[ ! -x "$theme_cli" ]]; then
+    warn "Theme manager is unavailable; initial theme render skipped"
+    return 0
+  fi
+
+  info "Rendering the current Hyprdots theme..."
+
+  if ! "$theme_cli" apply --no-reload >/dev/null; then
+    warn "Initial theme render failed; application fallbacks remain available"
+    return 0
+  fi
+
+  success "Theme runtime is ready"
+}
+
 build_starship_config() {
   local builder="$PROJECT_ROOT/configs/starship/build.zsh"
 
@@ -201,6 +219,8 @@ restart_desktop_portals() {
 run_desktop_integration_setup() {
   section "[9/11] Shell and desktop integrations"
 
+  prepare_theme_runtime
+  install_mouseless_binary
   build_starship_config
   prepare_sheldon_plugins
   prepare_yazi_packages

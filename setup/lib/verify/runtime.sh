@@ -166,6 +166,52 @@ verify_mpd_user_service() {
   fi
 }
 
+verify_theme_runtime() {
+  [[ -r "$PROJECT_ROOT/configs/theme/default" ]] || return 0
+
+  local current="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/theme/current"
+
+  if [[ -L "$current" && -r "$current/palette.env" ]]; then
+    verify_pass "Generated theme runtime is available"
+  else
+    verify_warn "Generated theme runtime is unavailable; fallback themes will be used"
+  fi
+}
+
+verify_mouseless_runtime() {
+  [[ -r "$PROJECT_ROOT/configs/mouseless/config.yaml" ]] || return 0
+
+  local binary="${HYPRDOTS_MOUSELESS_BIN:-$HOME/.local/bin/mouseless}"
+
+  if [[ -x "$binary" ]]; then
+    verify_pass "Mouseless binary is installed: $binary"
+  else
+    verify_warn "Mouseless binary is not installed"
+    return 0
+  fi
+
+  if [[ "${CONFIG_DEPLOYMENT_MODE:-unknown}" != "automatic" ]]; then
+    return 0
+  fi
+
+  if command systemctl --user is-enabled --quiet mouseless.service; then
+    verify_pass "Mouseless user service is enabled"
+  else
+    verify_fail "Mouseless user service is not enabled"
+    return 0
+  fi
+
+  if user_in_group input && user_in_group uinput; then
+    if command systemctl --user is-active --quiet mouseless.service; then
+      verify_pass "Mouseless user service is active"
+    else
+      verify_fail "Mouseless user service is not active"
+    fi
+  else
+    verify_warn "Mouseless needs a new login before its input groups become active"
+  fi
+}
+
 verify_runtime() {
   section "Runtime"
 
@@ -174,4 +220,6 @@ verify_runtime() {
   verify_installer_entrypoints
   verify_runtime_script_permissions
   verify_mpd_user_service
+  verify_theme_runtime
+  verify_mouseless_runtime
 }

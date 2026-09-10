@@ -81,6 +81,10 @@ run_permission_setup() {
   ensure_runtime_scripts_executable
   secure_hyprsunset_location
 
+  if declare -F setup_mouseless_permissions >/dev/null 2>&1; then
+    setup_mouseless_permissions
+  fi
+
   printf '\n'
   success "Permissions setup complete"
 }

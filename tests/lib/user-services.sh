@@ -26,6 +26,9 @@ source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/common.sh"
 # shellcheck source=setup/lib/packages/select.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/packages/select.sh"
 
+# shellcheck source=setup/lib/integrations/mouseless.sh
+source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/integrations/mouseless.sh"
+
 # shellcheck source=setup/lib/services/user.sh
 source "$HYPRDOTS_TEST_REPO_ROOT/setup/lib/services/user.sh"
 
@@ -45,7 +48,10 @@ setup_user_service_test() {
   mkdir -p -- \
     "$PROJECT_ROOT" \
     "$HOME/.config/mpd" \
-    "$HOME/.config/systemd/user/mpd.service.d"
+    "$HOME/.config/mouseless" \
+    "$HOME/.config/systemd/user" \
+    "$HOME/.config/systemd/user/mpd.service.d" \
+    "$HOME/.local/bin"
 
   export PROJECT_ROOT
   export SETUP_DIR
@@ -53,6 +59,21 @@ setup_user_service_test() {
 
 select_mpd_for_test() {
   SELECTED_ARCH_DEFAULT_APPS=(mpd mpc rmpc)
+}
+
+create_deployed_mouseless_files() {
+  printf '%s\n' 'layers:' >"$HOME/.config/mouseless/config.yaml"
+  printf '%s\n' '[Service]' >"$HOME/.config/systemd/user/mouseless.service"
+
+  cat >"$HOME/.local/bin/mouseless" <<'EOF_MOUSELESS'
+#!/usr/bin/env bash
+exit 0
+EOF_MOUSELESS
+  chmod +x -- "$HOME/.local/bin/mouseless"
+}
+
+user_in_group() {
+  return 0
 }
 
 create_deployed_mpd_files() {

@@ -55,6 +55,23 @@ MPD is configured to accept local clients through
 drop-in that creates the `mpd` runtime directory, and the installer enables and
 restarts `mpd.service` after automatic Stow deployment.
 
+## Dynamic theming and launcher
+
+The core package list includes `matugen` for wallpaper-derived Dynamic and
+Hybrid themes and `imagemagick` for the wallpaper brightness measurement used
+to choose light versus dark palettes automatically. `rofimoji` powers the Emoji
+entry in the unified launcher; `noto-fonts-emoji` is recommended for complete
+emoji rendering.
+
+## Mouseless
+
+Mouseless is installed from the pinned upstream Go module into
+`~/.local/bin/mouseless`. The installer deploys the repository-managed user
+service, installs the `uinput` udev/module configuration, and adds the current
+user to the `input` and `uinput` groups when necessary. A new login or reboot is
+required when those group memberships are added. `go` is therefore part of the
+required package list.
+
 ## AUR
 
 The required AUR group currently contains:

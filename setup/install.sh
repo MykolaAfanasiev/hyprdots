@@ -45,6 +45,7 @@ source "$LIB_DIR/tools/screenshot.sh"
 
 source "$LIB_DIR/directories/runtime.sh"
 
+source "$LIB_DIR/integrations/mouseless.sh"
 source "$LIB_DIR/permissions/runtime.sh"
 
 source "$LIB_DIR/integrations/desktop.sh"
