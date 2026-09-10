@@ -4,9 +4,6 @@ local paths = require("modules.vars.paths")
 
 -- Submaps
 require("modules.submaps.clean")
-require("modules.submaps.screenshot")
-require("modules.submaps.appearance")
-
 -- =========================================================
 -- Return to standard/global mode from any submap
 -- =========================================================
@@ -23,8 +20,32 @@ end, {
 -- =============
 
 hl.bind(vars.mainMod .. " + RETURN", hl.dsp.exec_cmd(vars.apps.terminal))
-hl.bind(vars.mainMod .. " + SPACE", hl.dsp.exec_cmd(paths.rofi.launch))
-hl.bind(vars.mainMod .. " + CTRL + SHIFT + N", hl.dsp.exec_cmd(paths.control_center.rofi))
+
+hl.bind(
+  vars.mainMod .. " + A",
+  hl.dsp.exec_cmd(paths.control_center.rofi .. " appearance")
+)
+
+hl.bind(
+  vars.mainMod .. " + SHIFT + S",
+  hl.dsp.exec_cmd(paths.launcher.rofi .. " screenshot")
+)
+
+hl.bind("PRINT", hl.dsp.exec_cmd("screenshot-tool"), {
+  description = "Quick screenshot",
+})
+
+
+-- Hyprdots frontends
+hl.bind(
+  vars.mainMod .. " + SPACE",
+  hl.dsp.exec_cmd(paths.launcher.rofi)
+)
+
+hl.bind(
+  vars.mainMod .. " + CTRL + SHIFT + M",
+  hl.dsp.exec_cmd(paths.control_center.rofi)
+)
 
 -- Connectivity
 hl.bind(vars.mainMod .. " + CTRL + N", hl.dsp.exec_cmd(paths.networkmanager.launch))

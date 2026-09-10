@@ -88,6 +88,15 @@ M.theme_switcher = {
   settings = project_root .. "scripts/theme-switcher/settings-rofi.sh",
 }
 
+
+
+
+M.launcher = {
+  root = project_root .. "scripts/launcher/",
+  cli = project_root .. "scripts/launcher/launcher.sh",
+  rofi = project_root .. "scripts/launcher/rofi.sh",
+}
+
 M.control_center = {
   root = project_root .. "scripts/control-center/",
   cli = project_root .. "scripts/control-center/control-center.sh",

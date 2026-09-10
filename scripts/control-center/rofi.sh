@@ -413,4 +413,35 @@ main_menu() {
   done
 }
 
-main_menu
+main() {
+  case "${1:-main}" in
+  main)
+    main_menu
+    ;;
+  appearance)
+    appearance_menu
+    ;;
+  connectivity)
+    connectivity_menu
+    ;;
+  input)
+    input_menu
+    ;;
+  desktop)
+    desktop_menu
+    ;;
+  config)
+    configuration_menu
+    ;;
+  system)
+    system_menu
+    ;;
+  *)
+    printf 'Unknown Control Center frontend: %s
+' "$1" >&2
+    return 2
+    ;;
+  esac
+}
+
+main "$@"
