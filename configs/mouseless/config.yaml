@@ -1,0 +1,60 @@
+# Hyprdots Mouseless configuration
+
+# Read from all keyboards.
+# Later this can be restricted with `devices`.
+devices:
+
+devicesExclude:
+
+mouseLoopInterval: 20
+
+baseMouseSpeed: 750.0
+baseScrollSpeed: 20.0
+
+mouseAccelerationTime: 200.0
+mouseAccelerationCurve: 2.0
+startMouseSpeed: 0.0
+
+mouseDecelerationTime: 300.0
+mouseDecelerationCurve: 3.0
+
+quickTapTime: 150
+comboTime: 25
+
+layers:
+  - name: initial
+    bindings:
+      q: mod-layer q mouse
+
+  - name: mouse
+    passThrough: false
+
+    bindings:
+      # Movement — Vim style
+      h: move -1 0
+      j: move 0 1
+      k: move 0 -1
+      l: move 1 0
+
+      # Mouse buttons
+      f: button left
+      d: button right
+      s: button middle
+
+      # Vertical scroll
+      p: scroll up
+      n: scroll down
+
+      # Horizontal scroll
+      y: scroll left
+      o: scroll right
+
+      # Speed modifiers
+      leftshift: speed 3.0
+      leftalt: speed 0.25
+
+      # Reload Mouseless config
+      r: reload-config
+
+      # Emergency exit
+      q: layer initial

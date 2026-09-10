@@ -1,0 +1,12 @@
+[Unit]
+Description=Hyprdots Mouseless
+Documentation=https://github.com/jbensmann/mouseless
+
+[Service]
+Type=simple
+ExecStart=%h/.local/bin/mouseless --config %h/.config/mouseless/config.yaml
+Restart=on-failure
+RestartSec=2
+
+[Install]
+WantedBy=default.target
