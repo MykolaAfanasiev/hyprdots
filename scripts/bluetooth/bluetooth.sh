@@ -205,19 +205,31 @@ main() {
   list) list_devices ;;
   scan) scan "${2:-5}" ;;
   info)
-    [[ $# -eq 2 ]] || { usage >&2; return 2; }
+    [[ $# -eq 2 ]] || {
+      usage >&2
+      return 2
+    }
     info "$2"
     ;;
   pair)
-    [[ $# -eq 2 ]] || { usage >&2; return 2; }
+    [[ $# -eq 2 ]] || {
+      usage >&2
+      return 2
+    }
     pair "$2"
     ;;
   connect | disconnect | trust | untrust | block | unblock | remove)
-    [[ $# -eq 2 ]] || { usage >&2; return 2; }
+    [[ $# -eq 2 ]] || {
+      usage >&2
+      return 2
+    }
     run "$command_name" "$2"
     ;;
   rename)
-    [[ $# -eq 3 ]] || { usage >&2; return 2; }
+    [[ $# -eq 3 ]] || {
+      usage >&2
+      return 2
+    }
     rename_device "$2" "$3"
     ;;
   help | -h | --help) usage ;;
