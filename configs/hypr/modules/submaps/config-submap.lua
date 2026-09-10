@@ -7,6 +7,13 @@ local paths = require("modules.vars.paths")
 -- Open config submap
 -- ==========================================
 
+local function launch_and_reset(command)
+  return function()
+    hl.dispatch(hl.dsp.submap("reset"))
+    hl.dispatch(hl.dsp.exec_cmd(command))
+  end
+end
+
 hl.bind(vars.mainMod .. " + CTRL + SHIFT + N", submap.switch("config"))
 
 -- ==========================================
@@ -17,7 +24,9 @@ hl.define_submap("config", function()
 	hl.bind("W", submap.switch("config_waybar"))
 	hl.bind("S", submap.switch("config_swaync"))
 	hl.bind("H", submap.switch("config_hyprpaper"))
-	hl.bind("escape", submap.switch("reset"))
+	hl.bind("M", launch_and_reset(paths.theme_switcher.settings))
+
+  hl.bind("escape", submap.switch("reset"))
 end)
 
 -- ==========================================

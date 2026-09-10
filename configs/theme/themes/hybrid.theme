@@ -28,6 +28,20 @@ fi
 
 "$MATUGEN_GENERATOR" >/dev/null
 
+THEME_SETTINGS="$THEME_PROJECT_ROOT/configs/theme/settings.conf"
+
+if [[ -r "$THEME_SETTINGS" ]]; then
+  # shellcheck disable=SC1090
+  source "$THEME_SETTINGS"
+fi
+
+export HYPRDOTS_HYBRID_ACCENT_TINT="${
+  HYBRID_ACCENT_TINT:-0.25
+}"
+export HYPRDOTS_HYBRID_NEUTRAL_TINT="${
+  HYBRID_NEUTRAL_TINT:-0.12
+}"
+
 python3 \
   "$HYBRID_BLENDER" \
   "$DYNAMIC_PALETTE" \

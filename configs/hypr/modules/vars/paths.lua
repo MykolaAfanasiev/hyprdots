@@ -79,6 +79,7 @@ M.ghostty = {
 M.theme_switcher = {
   root = project_root .. "scripts/theme-switcher/",
   rofi = project_root .. "scripts/theme-switcher/rofi.sh",
+  settings = project_root .. "scripts/theme-switcher/settings-rofi.sh",
 }
 
 return M

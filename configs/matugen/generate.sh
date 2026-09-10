@@ -4,6 +4,12 @@ set -euo pipefail
 
 MATUGEN_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 MATUGEN_CONFIG="$MATUGEN_DIR/config.toml"
+THEME_SETTINGS="$MATUGEN_DIR/../theme/settings.conf"
+
+if [[ -r "$THEME_SETTINGS" ]]; then
+  # shellcheck disable=SC1090
+  source "$THEME_SETTINGS"
+fi
 
 DEFAULT_WALLPAPER="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/wallpaper/current-wallpaper"
 OUTPUT="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/theme/matugen-generated.theme"
@@ -11,10 +17,10 @@ OUTPUT="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/theme/matugen-generated.theme"
 wallpaper="${1:-$DEFAULT_WALLPAPER}"
 
 # auto | dark | light
-requested_mode="${HYPRDOTS_MATUGEN_MODE:-auto}"
+requested_mode="${HYPRDOTS_MATUGEN_MODE:-${MATUGEN_MODE:-auto}}"
 
 # Wallpapers at or above this average brightness become light themes.
-light_threshold="${HYPRDOTS_MATUGEN_LIGHT_THRESHOLD:-0.56}"
+light_threshold="${HYPRDOTS_MATUGEN_LIGHT_THRESHOLD:-${MATUGEN_LIGHT_THRESHOLD:-0.56}}"
 
 if ! command -v matugen >/dev/null 2>&1; then
   printf 'Error: Matugen is not installed.\n' >&2
@@ -93,8 +99,8 @@ matugen_args=(
   -c "$MATUGEN_CONFIG"
   image "$wallpaper"
   -m "$matugen_mode"
-  -t scheme-content
-  --prefer saturation
+  -t "${MATUGEN_SCHEME:-scheme-content}"
+  --prefer "${MATUGEN_PREFER:-saturation}"
   --base16-backend wal
 )
 
