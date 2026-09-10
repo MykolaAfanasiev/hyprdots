@@ -84,7 +84,7 @@ show_path() {
   rofi | networkmanager | bluetooth)
     printf '%s/%s.rasi\n' "$THEME_ACTIVE_LINK" "$component"
     ;;
-  waybar | swaync | wlogout)
+  waybar | swaync | wlogout | obsidian)
     printf '%s/%s.css\n' "$THEME_ACTIVE_LINK" "$component"
     ;;
   hyprlock | ghostty)
