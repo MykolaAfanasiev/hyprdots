@@ -103,7 +103,10 @@ ensure_user_group_membership() {
   info "Adding $user to groups: ${missing[*]}"
 
   command sudo usermod \
-    -aG "$(IFS=,; printf '%s' "${missing[*]}")" \
+    -aG "$(
+      IFS=,
+      printf '%s' "${missing[*]}"
+    )" \
     "$user"
 
   # Supplemental groups are fixed when a login session starts. The service is
