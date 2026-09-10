@@ -18,16 +18,30 @@ if ! command -v rofi >/dev/null 2>&1; then
   exit 1
 fi
 
-current="$("$THEME_CLI" current 2>/dev/null || true)"
+rofi_theme="$ROFI_FALLBACK_THEME"
 
-declare -a entries=()
-declare -a slugs=()
+if [[ -x "$ROFI_DIR/prepare-theme.sh" ]]; then
+  if generated_theme="$("$ROFI_DIR/prepare-theme.sh" 2>/dev/null)" &&
+    [[ -r "$generated_theme" ]]; then
+    rofi_theme="$generated_theme"
+  fi
+fi
 
-while IFS= read -r slug; do
-  [[ -n "$slug" ]] || continue
+rofi_menu() {
+  local prompt="$1"
 
-  theme_file="$THEMES_DIR/$slug.theme"
-  display=""
+  rofi \
+    -dmenu \
+    -i \
+    -p "$prompt" \
+    -config "$ROFI_CONFIG" \
+    -theme "$rofi_theme"
+}
+
+theme_display_name() {
+  local slug="$1"
+  local theme_file="$THEMES_DIR/$slug.theme"
+  local display=""
 
   if [[ -r "$theme_file" ]]; then
     display="$(
@@ -42,44 +56,113 @@ while IFS= read -r slug; do
     display="${slug//-/ }"
   fi
 
-  if [[ "$slug" == "$current" ]]; then
-    entries+=("● $display")
-  else
-    entries+=("  $display")
+  printf '%s\n' "$display"
+}
+
+choose_static_theme() {
+  local prompt="$1"
+  local action="$2"
+
+  local selected
+  local slug
+  local display
+  local choice
+  local index
+
+  local -a entries=()
+  local -a slugs=()
+
+  selected="$("$THEME_CLI" selected 2>/dev/null || true)"
+
+  while IFS= read -r slug; do
+    [[ -n "$slug" ]] || continue
+
+    display="$(theme_display_name "$slug")"
+
+    if [[ "$slug" == "$selected" ]]; then
+      entries+=("● $display")
+    else
+      entries+=("  $display")
+    fi
+
+    slugs+=("$slug")
+  done < <("$THEME_CLI" list)
+
+  if ((${#entries[@]} == 0)); then
+    printf 'Error: no static themes found.\n' >&2
+    return 1
   fi
 
-  slugs+=("$slug")
-done < <("$THEME_CLI" list)
+  choice="$(
+    printf '%s\n' "${entries[@]}" |
+      rofi_menu "$prompt"
+  )" || return 0
 
-if ((${#entries[@]} == 0)); then
-  printf 'Error: no themes found.\n' >&2
-  exit 1
-fi
+  for ((index = 0; index < ${#entries[@]}; index++)); do
+    if [[ "${entries[index]}" != "$choice" ]]; then
+      continue
+    fi
 
-rofi_theme="$ROFI_FALLBACK_THEME"
+    case "$action" in
+    fixed)
+      "$THEME_CLI" set "${slugs[index]}"
+      ;;
+    hybrid)
+      "$THEME_CLI" hybrid "${slugs[index]}"
+      ;;
+    *)
+      printf 'Error: unknown theme action: %s\n' "$action" >&2
+      return 1
+      ;;
+    esac
 
-if [[ -x "$ROFI_DIR/prepare-theme.sh" ]]; then
-  if generated_theme="$("$ROFI_DIR/prepare-theme.sh" 2>/dev/null)" &&
-    [[ -r "$generated_theme" ]]; then
-    rofi_theme="$generated_theme"
-  fi
-fi
+    return 0
+  done
+}
 
-choice="$(
-  printf '%s\n' "${entries[@]}" |
-    rofi \
-      -dmenu \
-      -i \
-      -p "Theme" \
-      -config "$ROFI_CONFIG" \
-      -theme "$rofi_theme"
-)" || exit 0
+choose_mode() {
+  local current_mode
+  local choice
 
-for ((i = 0; i < ${#entries[@]}; i++)); do
-  if [[ "${entries[i]}" == "$choice" ]]; then
-    "$THEME_CLI" set "${slugs[i]}"
-    exit 0
-  fi
-done
+  current_mode="$("$THEME_CLI" mode)"
 
-exit 0
+  local fixed="  Fixed"
+  local dynamic="  Dynamic"
+  local hybrid="  Hybrid"
+
+  case "$current_mode" in
+  fixed)
+    fixed="● Fixed"
+    ;;
+  dynamic)
+    dynamic="● Dynamic"
+    ;;
+  hybrid)
+    hybrid="● Hybrid"
+    ;;
+  esac
+
+  choice="$(
+    printf '%s\n' \
+      "$fixed" \
+      "$dynamic" \
+      "$hybrid" |
+      rofi_menu "Theme Mode"
+  )" || return 0
+
+  case "$choice" in
+  "● Fixed" | "  Fixed")
+    choose_static_theme "Fixed Theme" fixed
+    ;;
+
+  "● Dynamic" | "  Dynamic")
+    "$THEME_CLI" mode dynamic
+    ;;
+
+  "● Hybrid" | "  Hybrid")
+    choose_static_theme "Hybrid Tint" hybrid
+    ;;
+  esac
+}
+
+choose_mode
