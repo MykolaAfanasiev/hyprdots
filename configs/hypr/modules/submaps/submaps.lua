@@ -5,7 +5,6 @@ local paths = require("modules.vars.paths")
 -- Submaps
 require("modules.submaps.clean")
 require("modules.submaps.screenshot")
-require("modules.submaps.config-submap")
 require("modules.submaps.appearance")
 
 -- =========================================================
@@ -25,6 +24,7 @@ end, {
 
 hl.bind(vars.mainMod .. " + RETURN", hl.dsp.exec_cmd(vars.apps.terminal))
 hl.bind(vars.mainMod .. " + SPACE", hl.dsp.exec_cmd(paths.rofi.launch))
+hl.bind(vars.mainMod .. " + CTRL + SHIFT + N", hl.dsp.exec_cmd(paths.control_center.rofi))
 
 -- Connectivity
 hl.bind(vars.mainMod .. " + CTRL + N", hl.dsp.exec_cmd(paths.networkmanager.launch))
