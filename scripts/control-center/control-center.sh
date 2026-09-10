@@ -8,15 +8,14 @@ PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/../.." && pwd)"
 THEME_CLI="$PROJECT_ROOT/scripts/theme-switcher/theme.sh"
 THEME_SETTINGS_CLI="$PROJECT_ROOT/scripts/theme-switcher/settings.sh"
 MOUSELESS_CLI="$PROJECT_ROOT/scripts/mouseless/mouseless.sh"
+NETWORK_CLI="$PROJECT_ROOT/scripts/networkmanager/network.sh"
+BLUETOOTH_CLI="$PROJECT_ROOT/scripts/bluetooth/bluetooth.sh"
+WALLPAPER_CLI="$PROJECT_ROOT/scripts/wallpaper-switcher/wallpaper.sh"
 
 WAYBAR_LAUNCH="$PROJECT_ROOT/configs/waybar/launch.sh"
 WAYBAR_CLOCK="$PROJECT_ROOT/configs/waybar/scripts/clock.sh"
 SWAYNC_CONTROL="$PROJECT_ROOT/configs/swaync/scripts/control.sh"
 HYPRPAPER_CONTROL="$PROJECT_ROOT/configs/hyprpaper/scripts/control.sh"
-
-WALLPAPER_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/wallpaper"
-WALLPAPER_CURRENT_FILE="$WALLPAPER_CACHE_DIR/current"
-WALLPAPER_CURRENT_LINK="$WALLPAPER_CACHE_DIR/current-wallpaper"
 
 usage() {
   cat <<'EOF_USAGE'
@@ -54,56 +53,6 @@ require_command() {
   fi
 }
 
-network_status() {
-  require_command nmcli
-
-  if [[ "$(LC_ALL=C nmcli radio wifi)" == "enabled" ]]; then
-    printf 'enabled\n'
-  else
-    printf 'disabled\n'
-  fi
-}
-
-network_set() {
-  local state="$1"
-
-  require_command nmcli
-  nmcli radio wifi "$state"
-}
-
-network_toggle() {
-  if [[ "$(network_status)" == "enabled" ]]; then
-    network_set off
-  else
-    network_set on
-  fi
-}
-
-bluetooth_status() {
-  require_command bluetoothctl
-
-  if LC_ALL=C bluetoothctl show 2>/dev/null | grep -q 'Powered: yes'; then
-    printf 'enabled\n'
-  else
-    printf 'disabled\n'
-  fi
-}
-
-bluetooth_set() {
-  local state="$1"
-
-  require_command bluetoothctl
-  bluetoothctl power "$state" >/dev/null
-}
-
-bluetooth_toggle() {
-  if [[ "$(bluetooth_status)" == "enabled" ]]; then
-    bluetooth_set off
-  else
-    bluetooth_set on
-  fi
-}
-
 waybar_status() {
   if pgrep -x waybar >/dev/null 2>&1; then
     printf 'running\n'
@@ -117,41 +66,6 @@ waybar_restart() {
   sleep 0.2
 
   "$WAYBAR_LAUNCH" >/dev/null 2>&1 &
-}
-
-wallpaper_current() {
-  if [[ -L "$WALLPAPER_CURRENT_LINK" ]]; then
-    readlink -f -- "$WALLPAPER_CURRENT_LINK"
-    return 0
-  fi
-
-  if [[ -r "$WALLPAPER_CURRENT_FILE" ]]; then
-    cat -- "$WALLPAPER_CURRENT_FILE"
-    return 0
-  fi
-
-  return 1
-}
-
-wallpaper_set() {
-  local wallpaper="$1"
-
-  require_command hyprctl
-
-  if [[ ! -f "$wallpaper" ]]; then
-    printf 'Wallpaper does not exist: %s\n' "$wallpaper" >&2
-    return 1
-  fi
-
-  wallpaper="$(readlink -f -- "$wallpaper")"
-
-  hyprctl hyprpaper wallpaper ", $wallpaper, cover" >/dev/null
-
-  mkdir -p -- "$WALLPAPER_CACHE_DIR"
-  printf '%s\n' "$wallpaper" >"$WALLPAPER_CURRENT_FILE"
-  ln -sfn -- "$wallpaper" "$WALLPAPER_CURRENT_LINK"
-
-  "$THEME_CLI" wallpaper
 }
 
 config_list() {
@@ -173,8 +87,6 @@ yazi	Yazi
 zsh	Zsh
 rmpc	RMPC
 mpd	MPD
-network	NetworkManager frontend
-bluetooth	Bluetooth frontend
 EOF_CONFIGS
 }
 
@@ -231,12 +143,6 @@ config_path() {
   mpd)
     printf '%s\n' "$PROJECT_ROOT/configs/mpd/mpd.conf"
     ;;
-  network)
-    printf '%s\n' "$PROJECT_ROOT/configs/networkmanager/network.sh"
-    ;;
-  bluetooth)
-    printf '%s\n' "$PROJECT_ROOT/configs/bluetooth/bluetooth.sh"
-    ;;
   *)
     printf 'Unknown configuration: %s\n' "$1" >&2
     return 1
@@ -257,11 +163,11 @@ show_status() {
   current_theme="$($THEME_CLI current)"
 
   if command -v nmcli >/dev/null 2>&1; then
-    wifi="$(network_status)"
+    wifi="$("$NETWORK_CLI" status)"
   fi
 
   if command -v bluetoothctl >/dev/null 2>&1; then
-    bluetooth="$(bluetooth_status)"
+    bluetooth="$("$BLUETOOTH_CLI" status)"
   fi
 
   if command -v systemctl >/dev/null 2>&1; then
@@ -309,45 +215,13 @@ main() {
     ;;
 
   network)
-    case "$action" in
-    status)
-      network_status
-      ;;
-    on)
-      network_set on
-      ;;
-    off)
-      network_set off
-      ;;
-    toggle)
-      network_toggle
-      ;;
-    *)
-      usage >&2
-      return 2
-      ;;
-    esac
+    shift
+    exec "$NETWORK_CLI" "$@"
     ;;
 
   bluetooth)
-    case "$action" in
-    status)
-      bluetooth_status
-      ;;
-    on)
-      bluetooth_set on
-      ;;
-    off)
-      bluetooth_set off
-      ;;
-    toggle)
-      bluetooth_toggle
-      ;;
-    *)
-      usage >&2
-      return 2
-      ;;
-    esac
+    shift
+    exec "$BLUETOOTH_CLI" "$@"
     ;;
 
   waybar)
@@ -406,22 +280,8 @@ main() {
     ;;
 
   wallpaper)
-    case "$action" in
-    current)
-      wallpaper_current
-      ;;
-    set)
-      [[ $# -eq 3 ]] || {
-        usage >&2
-        return 2
-      }
-      wallpaper_set "$3"
-      ;;
-    *)
-      usage >&2
-      return 2
-      ;;
-    esac
+    shift
+    exec "$WALLPAPER_CLI" "$@"
     ;;
 
   config)

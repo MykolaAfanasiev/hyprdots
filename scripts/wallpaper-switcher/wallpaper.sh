@@ -1,110 +1,113 @@
 #!/usr/bin/env bash
 
-set -u
+set -euo pipefail
 
 SCRIPT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd -- "$SCRIPT_DIR/../.." && pwd)"
 THEME_CLI="$PROJECT_ROOT/scripts/theme-switcher/theme.sh"
 
 WALLPAPER_DIR="${HYPRDOTS_WALLPAPER_DIR:-$HOME/.wallpapers}"
-
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/wallpaper"
 CURRENT_FILE="$CACHE_DIR/current"
 CURRENT_LINK="$CACHE_DIR/current-wallpaper"
 
-mkdir -p "$CACHE_DIR"
-
-notify_ok() {
-  hyprctl notify 5 2000 "rgb(a6e3a1)" "$1" \
-    >/dev/null 2>&1
-}
-
-notify_error() {
-  hyprctl notify 3 3000 "rgb(f38ba8)" "$1" \
-    >/dev/null 2>&1
-}
-
-show_wallpapers() {
-  local current=""
-
-  if [[ ! -d "$WALLPAPER_DIR" ]]; then
-    notify_error "Wallpaper directory not found"
-    return 1
-  fi
-
-  if [[ -f "$CURRENT_FILE" ]]; then
-    current="$(<"$CURRENT_FILE")"
-  fi
-
-  printf '\0prompt\x1fWallpaper\n'
-  printf '\0no-custom\x1ftrue\n'
-
-  while IFS= read -r -d '' wallpaper; do
-    local name
-
-    name="$(basename "$wallpaper")"
-    name="${name%.*}"
-
-    if [[ "$wallpaper" == "$current" ]]; then
-      printf '%s\0icon\x1f%s\x1finfo\x1f%s\x1factive\x1ftrue\n' \
-        "$name" \
-        "$wallpaper" \
-        "$wallpaper"
-    else
-      printf '%s\0icon\x1f%s\x1finfo\x1f%s\n' \
-        "$name" \
-        "$wallpaper" \
-        "$wallpaper"
-    fi
-  done < <(
-    find "$WALLPAPER_DIR" \
-      -type f \
-      \( \
-      -iname '*.png' \
-      -o -iname '*.jpg' \
-      -o -iname '*.jpeg' \
-      -o -iname '*.webp' \
-      \) \
-      -print0 |
-      sort -z
-  )
-}
-
-set_wallpaper() {
-  local wallpaper="${ROFI_INFO:-}"
-
-  if [[ -z "$wallpaper" || ! -f "$wallpaper" ]]; then
-    notify_error "Wallpaper not found"
-    return 1
-  fi
-
-  if hyprctl hyprpaper wallpaper \
-    ", $wallpaper, cover" >/dev/null 2>&1; then
-    printf '%s\n' "$wallpaper" >"$CURRENT_FILE"
-    ln -sfn "$wallpaper" "$CURRENT_LINK"
-
-    if [[ -x "$THEME_CLI" ]]; then
-      "$THEME_CLI" wallpaper
-    fi
-
-    notify_ok "Wallpaper: $(basename "$wallpaper")"
+current() {
+  if [[ -L "$CURRENT_LINK" ]]; then
+    readlink -f -- "$CURRENT_LINK"
     return 0
   fi
 
-  notify_error "Failed to set wallpaper"
+  if [[ -r "$CURRENT_FILE" ]]; then
+    cat -- "$CURRENT_FILE"
+    return 0
+  fi
+
   return 1
 }
 
-case "${ROFI_RETV:-0}" in
-0)
-  show_wallpapers
-  ;;
+list_wallpapers() {
+  [[ -d "$WALLPAPER_DIR" ]] || {
+    printf 'Wallpaper directory not found: %s\n' "$WALLPAPER_DIR" >&2
+    return 1
+  }
 
-1)
-  set_wallpaper
-  ;;
+  find "$WALLPAPER_DIR" \
+    -type f \
+    \( \
+    -iname '*.png' \
+    -o -iname '*.jpg' \
+    -o -iname '*.jpeg' \
+    -o -iname '*.webp' \
+    \) \
+    -print0 |
+    sort -z |
+    tr '\0' '\n'
+}
 
-*)
-  exit 0
-  ;;
-esac
+set_wallpaper() {
+  local wallpaper="$1"
+
+  command -v hyprctl >/dev/null 2>&1 || {
+    printf 'Required command is not installed: hyprctl\n' >&2
+    return 127
+  }
+
+  [[ -f "$wallpaper" ]] || {
+    printf 'Wallpaper not found: %s\n' "$wallpaper" >&2
+    return 1
+  }
+
+  wallpaper="$(readlink -f -- "$wallpaper")"
+
+  hyprctl hyprpaper wallpaper ", $wallpaper, cover" >/dev/null
+
+  mkdir -p -- "$CACHE_DIR"
+  printf '%s\n' "$wallpaper" >"$CURRENT_FILE"
+  ln -sfn -- "$wallpaper" "$CURRENT_LINK"
+
+  if [[ -x "$THEME_CLI" ]]; then
+    "$THEME_CLI" wallpaper
+  fi
+
+  printf '%s\n' "$wallpaper"
+}
+
+usage() {
+  cat <<'EOF_USAGE'
+Usage:
+  wallpaper.sh current
+  wallpaper.sh list
+  wallpaper.sh set <file>
+  wallpaper.sh dir
+EOF_USAGE
+}
+
+main() {
+  case "${1:-}" in
+  current)
+    current
+    ;;
+  list)
+    list_wallpapers
+    ;;
+  set)
+    [[ $# -eq 2 ]] || {
+      usage >&2
+      return 2
+    }
+    set_wallpaper "$2"
+    ;;
+  dir)
+    printf '%s\n' "$WALLPAPER_DIR"
+    ;;
+  help | -h | --help)
+    usage
+    ;;
+  *)
+    usage >&2
+    return 2
+    ;;
+  esac
+}
+
+main "$@"

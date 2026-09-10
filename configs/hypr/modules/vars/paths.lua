@@ -33,6 +33,8 @@ M.hyprpaper = {
 
 M.wallpaper_switcher = {
 	root = project_root .. "scripts/wallpaper-switcher/",
+	cli = project_root .. "scripts/wallpaper-switcher/wallpaper.sh",
+	rofi = project_root .. "scripts/wallpaper-switcher/launch.sh",
 	launch = project_root .. "scripts/wallpaper-switcher/launch.sh",
 }
 
@@ -57,13 +59,17 @@ M.hyprsunset = {
 }
 
 M.networkmanager = {
-	root = project_root .. "configs/networkmanager/",
-	launch = project_root .. "configs/networkmanager/network.sh",
+	root = project_root .. "scripts/networkmanager/",
+	cli = project_root .. "scripts/networkmanager/network.sh",
+	rofi = project_root .. "scripts/networkmanager/rofi.sh",
+	launch = project_root .. "scripts/networkmanager/rofi.sh",
 }
 
 M.bluetooth = {
-	root = project_root .. "configs/bluetooth/",
-	launch = project_root .. "configs/bluetooth/bluetooth.sh",
+	root = project_root .. "scripts/bluetooth/",
+	cli = project_root .. "scripts/bluetooth/bluetooth.sh",
+	rofi = project_root .. "scripts/bluetooth/rofi.sh",
+	launch = project_root .. "scripts/bluetooth/rofi.sh",
 }
 
 M.btop = {

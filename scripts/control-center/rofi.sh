@@ -14,8 +14,8 @@ ROFI_FALLBACK_THEME="$ROFI_DIR/theme.rasi"
 THEME_FRONTEND="$PROJECT_ROOT/scripts/theme-switcher/rofi.sh"
 THEME_SETTINGS_FRONTEND="$PROJECT_ROOT/scripts/theme-switcher/settings-rofi.sh"
 WALLPAPER_FRONTEND="$PROJECT_ROOT/scripts/wallpaper-switcher/launch.sh"
-NETWORK_FRONTEND="$PROJECT_ROOT/configs/networkmanager/network.sh"
-BLUETOOTH_FRONTEND="$PROJECT_ROOT/configs/bluetooth/bluetooth.sh"
+NETWORK_FRONTEND="$PROJECT_ROOT/scripts/networkmanager/rofi.sh"
+BLUETOOTH_FRONTEND="$PROJECT_ROOT/scripts/bluetooth/rofi.sh"
 GHOSTTY_LAUNCH="$PROJECT_ROOT/configs/ghostty/launch.sh"
 
 if ! command -v rofi >/dev/null 2>&1; then
