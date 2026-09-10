@@ -19,8 +19,8 @@ usage() {
 Usage:
   theme.sh list
   theme.sh current
-  theme.sh set <theme> [--reload]
-  theme.sh apply [--reload]
+  theme.sh set <theme> [--no-reload]
+  theme.sh apply [--no-reload]
   theme.sh reload [component]
   theme.sh path [component]
   theme.sh palette [theme]
@@ -134,7 +134,7 @@ show_palette() {
 main() {
   local command_name="${1:-}"
   local theme_name
-  local should_reload=false
+  local should_reload=true
 
   case "$command_name" in
   list)
@@ -148,10 +148,13 @@ main() {
     ;;
 
   set)
-    [[ $# -ge 2 && $# -le 3 ]] || theme_die "usage: theme.sh set <theme> [--reload]"
+    [[ $# -ge 2 && $# -le 3 ]] || theme_die "usage: theme.sh set <theme> [--no-reload]"
     theme_name="$2"
 
-    if [[ ${3:-} == "--reload" ]]; then
+    if [[ ${3:-} == "--no-reload" ]]; then
+      should_reload=false
+    elif [[ ${3:-} == "--reload" ]]; then
+      # Kept for backwards compatibility.
       should_reload=true
     elif [[ $# -eq 3 ]]; then
       theme_die "unknown option: $3"
@@ -161,9 +164,12 @@ main() {
     ;;
 
   apply)
-    [[ $# -le 2 ]] || theme_die "usage: theme.sh apply [--reload]"
+    [[ $# -le 2 ]] || theme_die "usage: theme.sh apply [--no-reload]"
 
-    if [[ ${2:-} == "--reload" ]]; then
+    if [[ ${2:-} == "--no-reload" ]]; then
+      should_reload=false
+    elif [[ ${2:-} == "--reload" ]]; then
+      # Kept for backwards compatibility.
       should_reload=true
     elif [[ $# -eq 2 ]]; then
       theme_die "unknown option: $2"
