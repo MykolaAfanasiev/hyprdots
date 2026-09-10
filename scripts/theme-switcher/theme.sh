@@ -19,6 +19,7 @@ source "$SCRIPT_DIR/lib/reload.sh"
 
 THEME_MODE_FILE="$THEME_STATE_ROOT/mode"
 THEME_DYNAMIC_NAME="dynamic"
+THEME_HYBRID_NAME="hybrid"
 THEME_DEFAULT_STATIC="catppuccin-mocha"
 
 usage() {
@@ -29,6 +30,9 @@ Usage:
   theme.sh mode
   theme.sh mode fixed [--no-reload]
   theme.sh mode dynamic [--no-reload]
+  theme.sh mode hybrid [--no-reload]
+  theme.sh hybrid <theme> [--no-reload]
+  theme.sh selected
   theme.sh set <theme> [--no-reload]
   theme.sh apply [--no-reload]
   theme.sh wallpaper
@@ -71,7 +75,7 @@ theme_mode() {
   mode="$(<"$THEME_MODE_FILE")"
 
   case "$mode" in
-  fixed | dynamic)
+  fixed | dynamic | hybrid)
     printf '%s\n' "$mode"
     ;;
   *)
@@ -86,6 +90,7 @@ static_theme_list() {
   while IFS= read -r theme_name; do
     [[ -n "$theme_name" ]] || continue
     [[ "$theme_name" == "$THEME_DYNAMIC_NAME" ]] && continue
+    [[ "$theme_name" == "$THEME_HYBRID_NAME" ]] && continue
 
     printf '%s\n' "$theme_name"
   done < <(theme_list)
@@ -135,10 +140,35 @@ active_theme_name() {
   dynamic)
     printf '%s\n' "$THEME_DYNAMIC_NAME"
     ;;
+  hybrid)
+    printf '%s\n' "$THEME_HYBRID_NAME"
+    ;;
   fixed)
     theme_current
     ;;
   esac
+}
+
+selected_static_theme() {
+  local theme_name
+
+  theme_name="$(theme_current)"
+
+  if static_theme_exists "$theme_name"; then
+    printf '%s\n' "$theme_name"
+  else
+    printf '%s\n' "$THEME_DEFAULT_STATIC"
+  fi
+}
+
+render_hybrid_theme() {
+  local tint_theme="$1"
+
+  # Consumed indirectly by configs/theme/themes/hybrid.theme.
+  # shellcheck disable=SC2034
+  HYBRID_TINT_THEME="$tint_theme"
+  render_theme "$THEME_HYBRID_NAME"
+  unset HYBRID_TINT_THEME
 }
 
 set_fixed_theme() {
@@ -181,10 +211,17 @@ set_mode() {
     ;;
 
   dynamic)
-    # dynamic.theme is an internal provider backed by Matugen.
     render_theme "$THEME_DYNAMIC_NAME"
     save_theme_mode dynamic
     theme_name="$THEME_DYNAMIC_NAME"
+    ;;
+
+  hybrid)
+    theme_name="$(selected_static_theme)"
+
+    render_hybrid_theme "$theme_name"
+    save_current_theme "$theme_name"
+    save_theme_mode hybrid
     ;;
 
   *)
@@ -199,12 +236,47 @@ set_mode() {
   printf '%s\n' "$mode"
 }
 
+set_hybrid_theme() {
+  local theme_name="$1"
+  local should_reload="$2"
+
+  if ! static_theme_exists "$theme_name"; then
+    theme_die "unknown Hybrid tint theme: $theme_name"
+  fi
+
+  render_hybrid_theme "$theme_name"
+
+  save_current_theme "$theme_name"
+  save_theme_mode hybrid
+
+  if [[ "$should_reload" == "true" ]]; then
+    reload_all_components
+  fi
+
+  printf '%s\n' "$theme_name"
+}
+
 apply_theme() {
   local should_reload="$1"
   local theme_name
+  local mode
 
-  theme_name="$(active_theme_name)"
-  render_theme "$theme_name"
+  mode="$(theme_mode)"
+
+  case "$mode" in
+  fixed)
+    theme_name="$(selected_static_theme)"
+    render_theme "$theme_name"
+    ;;
+  dynamic)
+    theme_name="$THEME_DYNAMIC_NAME"
+    render_theme "$theme_name"
+    ;;
+  hybrid)
+    theme_name="$(selected_static_theme)"
+    render_hybrid_theme "$theme_name"
+    ;;
+  esac
 
   if [[ "$should_reload" == "true" ]]; then
     reload_all_components
@@ -220,8 +292,8 @@ wallpaper_changed() {
     return 0
     ;;
 
-  dynamic)
-    # Re-run Matugen against current-wallpaper and reload everything.
+  dynamic | hybrid)
+    # Dynamic and Hybrid both follow the current wallpaper.
     apply_theme true >/dev/null
     ;;
   esac
@@ -320,7 +392,7 @@ main() {
     fi
 
     [[ $# -le 3 ]] ||
-      theme_die "usage: theme.sh mode <fixed|dynamic> [--no-reload]"
+      theme_die "usage: theme.sh mode <fixed|dynamic|hybrid> [--no-reload]"
 
     if [[ ${3:-} == "--no-reload" ]]; then
       should_reload=false
@@ -331,6 +403,28 @@ main() {
     fi
 
     set_mode "$2" "$should_reload"
+    ;;
+
+  selected)
+    [[ $# -eq 1 ]] || theme_die "selected takes no arguments"
+    selected_static_theme
+    ;;
+
+  hybrid)
+    [[ $# -ge 2 && $# -le 3 ]] ||
+      theme_die "usage: theme.sh hybrid <theme> [--no-reload]"
+
+    theme_name="$2"
+
+    if [[ ${3:-} == "--no-reload" ]]; then
+      should_reload=false
+    elif [[ ${3:-} == "--reload" ]]; then
+      should_reload=true
+    elif [[ $# -eq 3 ]]; then
+      theme_die "unknown option: $3"
+    fi
+
+    set_hybrid_theme "$theme_name" "$should_reload"
     ;;
 
   set)

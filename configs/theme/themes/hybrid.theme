@@ -1,0 +1,40 @@
+HYBRID_TINT_THEME="${HYBRID_TINT_THEME:-}"
+
+if [[ -z "$HYBRID_TINT_THEME" && -r "$THEME_CURRENT_FILE" ]]; then
+  HYBRID_TINT_THEME="$(<"$THEME_CURRENT_FILE")"
+fi
+
+if [[ -z "$HYBRID_TINT_THEME" ]]; then
+  theme_die "Hybrid tint theme is not selected"
+fi
+
+case "$HYBRID_TINT_THEME" in
+dynamic | hybrid)
+  theme_die "Invalid Hybrid tint theme: $HYBRID_TINT_THEME"
+  ;;
+esac
+
+MATUGEN_GENERATOR="$THEME_PROJECT_ROOT/configs/matugen/generate.sh"
+HYBRID_BLENDER="$THEME_PROJECT_ROOT/scripts/theme-switcher/lib/blend-palette.py"
+
+DYNAMIC_PALETTE="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/theme/matugen-generated.theme"
+HYBRID_PALETTE="${XDG_CACHE_HOME:-$HOME/.cache}/hyprdots/theme/hybrid-generated.theme"
+
+STATIC_THEME="$THEME_PROJECT_ROOT/configs/theme/themes/$HYBRID_TINT_THEME.theme"
+
+if [[ ! -r "$STATIC_THEME" ]]; then
+  theme_die "Hybrid tint theme does not exist: $HYBRID_TINT_THEME"
+fi
+
+"$MATUGEN_GENERATOR" >/dev/null
+
+python3 \
+  "$HYBRID_BLENDER" \
+  "$DYNAMIC_PALETTE" \
+  "$STATIC_THEME" \
+  "$HYBRID_PALETTE"
+
+THEME_DISPLAY_NAME="Hybrid ($HYBRID_TINT_THEME)"
+
+# shellcheck disable=SC1090
+source "$HYBRID_PALETTE"
