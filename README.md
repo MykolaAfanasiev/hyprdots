@@ -127,6 +127,11 @@ Large source-code comment banners use one fixed style with 72 `=` characters:
 
 Lua uses the same convention with `--`.
 
-## License
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines, project
+structure, development conventions, and Pull Request workflow.
 
-See [LICENSE](LICENSE).
+## Project documentation
+
+- [Contributing](CONTRIBUTING.md) — contribution guidelines and Pull Request workflow.
+- [Changelog](CHANGELOG.md) — notable changes and release history.
+- [License](LICENSE) — MIT License.
