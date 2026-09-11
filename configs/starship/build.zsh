@@ -3,7 +3,7 @@
 emulate -L zsh
 setopt ERR_EXIT NO_UNSET PIPE_FAIL
 
-typeset root output output_dir temporary source_file theme_file
+typeset root output output_dir temporary source_file source_label theme_file
 typeset -a theme_files module_files source_files
 
 root="${0:A:h}"
@@ -76,7 +76,13 @@ trap cleanup_starship_build EXIT HUP INT TERM
     fi
 
     print
-    print -r -- "# Source: $source_file"
+    source_label="${source_file#$root/}"
+
+    if [[ "$source_label" == "$source_file" ]]; then
+      source_label="${source_file:t}"
+    fi
+
+    print -r -- "# Source: $source_label"
     command cat -- "$source_file"
   done
 } >"$temporary"
